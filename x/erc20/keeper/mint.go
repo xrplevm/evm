@@ -4,6 +4,7 @@ import (
 	"github.com/cosmos/evm/x/erc20/types"
 
 	errorsmod "cosmossdk.io/errors"
+	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
@@ -64,4 +65,48 @@ func (k Keeper) MintingEnabled(
 	}
 
 	return pair, nil
+}
+
+
+// MintCoins mints the provided amount of coins to the given address.
+func (k Keeper) MintCoins(ctx sdk.Context, sender, to sdk.AccAddress, amount math.Int, token string) error {
+	pair, err := k.MintingEnabled(ctx, sender, to, token)
+	if err != nil {
+		return err
+	}
+
+	if !pair.IsNativeCoin() {
+		return errorsmod.Wrap(types.ErrNonNativeCoinMintingDisabled, token)
+	}
+
+	contractOwnerAddr, err := sdk.AccAddressFromBech32(pair.OwnerAddress)
+	if err != nil {
+		return errorsmod.Wrapf(err, "invalid owner address")
+	}
+	if !sender.Equals(contractOwnerAddr) {
+		return types.ErrMinterIsNotOwner
+	}
+
+	coins := sdk.Coins{{Denom: pair.Denom, Amount: amount}}
+	err = k.bankKeeper.MintCoins(ctx, types.ModuleName, coins)
+	if err != nil {
+		return err
+	}
+
+	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, to, coins)
+	if err != nil {
+		return err
+	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.TypeMsgMint),
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeySender, sender.String()),
+			sdk.NewAttribute(sdk.AttributeKeyAmount, amount.String()),
+		),
+	)
+
+	return nil
 }
