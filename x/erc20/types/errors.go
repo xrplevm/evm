@@ -29,5 +29,5 @@ var (
 	ErrSenderIsNotOwner                   = errorsmod.Register(ModuleName, 22, "sender is not the owner")
 	ErrNonNativeCoinMintingDisabled       = errorsmod.Register(ModuleName, 23, "minting non-native coins is disabled")
 	ErrNonNativeCoinBurningDisabled       = errorsmod.Register(ModuleName, 24, "burning non-native coins is disabled")
-	ErrNonNativeTransferOwnershipDisabled = errorsmod.Register(ModuleName, 21, "transferring ownership of non-native coins is disabled")
+	ErrNonNativeTransferOwnershipDisabled = errorsmod.Register(ModuleName, 25, "transferring ownership of non-native coins is disabled")
 )
