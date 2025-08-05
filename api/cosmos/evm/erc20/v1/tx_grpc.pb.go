@@ -19,11 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_ConvertERC20_FullMethodName     = "/cosmos.evm.erc20.v1.Msg/ConvertERC20"
-	Msg_ConvertCoin_FullMethodName      = "/cosmos.evm.erc20.v1.Msg/ConvertCoin"
-	Msg_UpdateParams_FullMethodName     = "/cosmos.evm.erc20.v1.Msg/UpdateParams"
-	Msg_RegisterERC20_FullMethodName    = "/cosmos.evm.erc20.v1.Msg/RegisterERC20"
-	Msg_ToggleConversion_FullMethodName = "/cosmos.evm.erc20.v1.Msg/ToggleConversion"
+	Msg_ConvertERC20_FullMethodName              = "/cosmos.evm.erc20.v1.Msg/ConvertERC20"
+	Msg_ConvertCoin_FullMethodName               = "/cosmos.evm.erc20.v1.Msg/ConvertCoin"
+	Msg_UpdateParams_FullMethodName              = "/cosmos.evm.erc20.v1.Msg/UpdateParams"
+	Msg_RegisterERC20_FullMethodName             = "/cosmos.evm.erc20.v1.Msg/RegisterERC20"
+	Msg_ToggleConversion_FullMethodName          = "/cosmos.evm.erc20.v1.Msg/ToggleConversion"
+	Msg_TransferContractOwnership_FullMethodName = "/cosmos.evm.erc20.v1.Msg/TransferContractOwnership"
+	Msg_Mint_FullMethodName                      = "/cosmos.evm.erc20.v1.Msg/Mint"
+	Msg_Burn_FullMethodName                      = "/cosmos.evm.erc20.v1.Msg/Burn"
 )
 
 // MsgClient is the client API for Msg service.
@@ -48,6 +51,12 @@ type MsgClient interface {
 	// token pair conversion. The authority is hard-coded to the Cosmos SDK x/gov
 	// module account
 	ToggleConversion(ctx context.Context, in *MsgToggleConversion, opts ...grpc.CallOption) (*MsgToggleConversionResponse, error)
+	// TransferContractOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+	TransferContractOwnership(ctx context.Context, in *MsgTransferOwnership, opts ...grpc.CallOption) (*MsgTransferOwnershipResponse, error)
+	// Mint mints ERC20 tokens
+	Mint(ctx context.Context, in *MsgMint, opts ...grpc.CallOption) (*MsgMintResponse, error)
+	// Burn burns ERC20 tokens
+	Burn(ctx context.Context, in *MsgBurn, opts ...grpc.CallOption) (*MsgBurnResponse, error)
 }
 
 type msgClient struct {
@@ -103,6 +112,33 @@ func (c *msgClient) ToggleConversion(ctx context.Context, in *MsgToggleConversio
 	return out, nil
 }
 
+func (c *msgClient) TransferContractOwnership(ctx context.Context, in *MsgTransferOwnership, opts ...grpc.CallOption) (*MsgTransferOwnershipResponse, error) {
+	out := new(MsgTransferOwnershipResponse)
+	err := c.cc.Invoke(ctx, Msg_TransferContractOwnership_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) Mint(ctx context.Context, in *MsgMint, opts ...grpc.CallOption) (*MsgMintResponse, error) {
+	out := new(MsgMintResponse)
+	err := c.cc.Invoke(ctx, Msg_Mint_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) Burn(ctx context.Context, in *MsgBurn, opts ...grpc.CallOption) (*MsgBurnResponse, error) {
+	out := new(MsgBurnResponse)
+	err := c.cc.Invoke(ctx, Msg_Burn_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -125,6 +161,12 @@ type MsgServer interface {
 	// token pair conversion. The authority is hard-coded to the Cosmos SDK x/gov
 	// module account
 	ToggleConversion(context.Context, *MsgToggleConversion) (*MsgToggleConversionResponse, error)
+	// TransferContractOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+	TransferContractOwnership(context.Context, *MsgTransferOwnership) (*MsgTransferOwnershipResponse, error)
+	// Mint mints ERC20 tokens
+	Mint(context.Context, *MsgMint) (*MsgMintResponse, error)
+	// Burn burns ERC20 tokens
+	Burn(context.Context, *MsgBurn) (*MsgBurnResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -146,6 +188,15 @@ func (UnimplementedMsgServer) RegisterERC20(context.Context, *MsgRegisterERC20) 
 }
 func (UnimplementedMsgServer) ToggleConversion(context.Context, *MsgToggleConversion) (*MsgToggleConversionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToggleConversion not implemented")
+}
+func (UnimplementedMsgServer) TransferContractOwnership(context.Context, *MsgTransferOwnership) (*MsgTransferOwnershipResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransferContractOwnership not implemented")
+}
+func (UnimplementedMsgServer) Mint(context.Context, *MsgMint) (*MsgMintResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Mint not implemented")
+}
+func (UnimplementedMsgServer) Burn(context.Context, *MsgBurn) (*MsgBurnResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Burn not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -250,6 +301,60 @@ func _Msg_ToggleConversion_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_TransferContractOwnership_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgTransferOwnership)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).TransferContractOwnership(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_TransferContractOwnership_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).TransferContractOwnership(ctx, req.(*MsgTransferOwnership))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_Mint_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgMint)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).Mint(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_Mint_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).Mint(ctx, req.(*MsgMint))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_Burn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgBurn)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).Burn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_Burn_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).Burn(ctx, req.(*MsgBurn))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -276,6 +381,18 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ToggleConversion",
 			Handler:    _Msg_ToggleConversion_Handler,
+		},
+		{
+			MethodName: "TransferContractOwnership",
+			Handler:    _Msg_TransferContractOwnership_Handler,
+		},
+		{
+			MethodName: "Mint",
+			Handler:    _Msg_Mint_Handler,
+		},
+		{
+			MethodName: "Burn",
+			Handler:    _Msg_Burn_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
