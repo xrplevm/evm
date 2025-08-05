@@ -29,6 +29,12 @@ var (
 const (
 	TypeMsgConvertERC20 = "convert_ERC20"
 	TypeMsgConvertCoin  = "convert_coin"
+
+	TypeMsgMint              = "mint"
+	TypeMsgBurn              = "burn"
+	TypeMsgTransferOwnership = "transfer_ownership"
+
+	AttributeKeyNewOwner = "new_owner"
 )
 
 var MsgConvertERC20CustomGetSigner = txsigning.CustomGetSigner{

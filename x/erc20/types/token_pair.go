@@ -50,6 +50,11 @@ func (tp TokenPair) GetERC20Contract() common.Address {
 	return common.HexToAddress(tp.Erc20Address)
 }
 
+// SetOwnerAddress sets the address of the owner of the ERC20 contract
+func (tp *TokenPair) SetOwnerAddress(address string) {
+	tp.OwnerAddress = address
+}
+
 // Validate performs a stateless validation of a TokenPair
 func (tp TokenPair) Validate() error {
 	if err := sdk.ValidateDenom(tp.Denom); err != nil {

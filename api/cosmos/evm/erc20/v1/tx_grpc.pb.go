@@ -51,7 +51,8 @@ type MsgClient interface {
 	// token pair conversion. The authority is hard-coded to the Cosmos SDK x/gov
 	// module account
 	ToggleConversion(ctx context.Context, in *MsgToggleConversion, opts ...grpc.CallOption) (*MsgToggleConversionResponse, error)
-	// TransferContractOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+	// TransferContractOwnership defines a Msg to transfer the ownership of the
+	// ERC20 token pair to the new owner
 	TransferContractOwnership(ctx context.Context, in *MsgTransferOwnership, opts ...grpc.CallOption) (*MsgTransferOwnershipResponse, error)
 	// Mint mints ERC20 tokens
 	Mint(ctx context.Context, in *MsgMint, opts ...grpc.CallOption) (*MsgMintResponse, error)
@@ -161,7 +162,8 @@ type MsgServer interface {
 	// token pair conversion. The authority is hard-coded to the Cosmos SDK x/gov
 	// module account
 	ToggleConversion(context.Context, *MsgToggleConversion) (*MsgToggleConversionResponse, error)
-	// TransferContractOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+	// TransferContractOwnership defines a Msg to transfer the ownership of the
+	// ERC20 token pair to the new owner
 	TransferContractOwnership(context.Context, *MsgTransferOwnership) (*MsgTransferOwnershipResponse, error)
 	// Mint mints ERC20 tokens
 	Mint(context.Context, *MsgMint) (*MsgMintResponse, error)

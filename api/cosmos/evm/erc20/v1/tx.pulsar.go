@@ -7694,7 +7694,8 @@ func (*MsgToggleConversionResponse) Descriptor() ([]byte, []int) {
 	return file_cosmos_evm_erc20_v1_tx_proto_rawDescGZIP(), []int{9}
 }
 
-// MsgTransferOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+// MsgTransferOwnership defines a Msg to transfer the ownership of the ERC20
+// token pair to the new owner
 type MsgTransferOwnership struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -7782,7 +7783,8 @@ type MsgMint struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// contract_address of an ERC20 token contract, that is registered in a token pair
+	// contract_address of an ERC20 token contract, that is registered in a token
+	// pair
 	ContractAddress string `protobuf:"bytes,1,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
 	// amount of ERC20 tokens to mint
 	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
@@ -7872,7 +7874,8 @@ type MsgBurn struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// contract_address of an ERC20 token contract, that is registered in a token pair
+	// contract_address of an ERC20 token contract, that is registered in a token
+	// pair
 	ContractAddress string `protobuf:"bytes,1,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
 	// amount of ERC20 tokens to burn
 	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`

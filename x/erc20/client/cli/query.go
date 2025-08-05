@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/spf13/cobra"
 
@@ -9,6 +10,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 // GetQueryCmd returns the parent command for all erc20 CLI query commands
@@ -25,6 +27,7 @@ func GetQueryCmd() *cobra.Command {
 		GetTokenPairsCmd(),
 		GetTokenPairCmd(),
 		GetParamsCmd(),
+		GetOwnerAddressCmd(),
 	)
 	return cmd
 }
@@ -116,6 +119,40 @@ func GetParamsCmd() *cobra.Command {
 			req := &types.QueryParamsRequest{}
 
 			res, err := queryClient.Params(context.Background(), req)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
+}
+
+func GetOwnerAddressCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "owner-address CONTRACT_ADDRESS",
+		Short: "Gets the owner address for a given ERC20 contract address",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			if !common.IsHexAddress(args[0]) {
+				return fmt.Errorf("invalid contract address")
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			req := &types.QueryOwnerAddressRequest{
+				ContractAddress: args[0],
+			}
+
+			res, err := queryClient.OwnerAddress(context.Background(), req)
 			if err != nil {
 				return err
 			}

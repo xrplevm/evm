@@ -527,7 +527,8 @@ func (m *MsgToggleConversionResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgToggleConversionResponse proto.InternalMessageInfo
 
-// MsgTransferOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+// MsgTransferOwnership defines a Msg to transfer the ownership of the ERC20
+// token pair to the new owner
 type MsgTransferOwnership struct {
 	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
 	// token identifier can be either the hex contract address of the ERC20 or the
@@ -630,7 +631,8 @@ var xxx_messageInfo_MsgTransferOwnershipResponse proto.InternalMessageInfo
 
 // MsgMint defines a Msg to mint ERC20 tokens
 type MsgMint struct {
-	// contract_address of an ERC20 token contract, that is registered in a token pair
+	// contract_address of an ERC20 token contract, that is registered in a token
+	// pair
 	ContractAddress string `protobuf:"bytes,1,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
 	// amount of ERC20 tokens to mint
 	Amount cosmossdk_io_math.Int `protobuf:"bytes,2,opt,name=amount,proto3,customtype=cosmossdk.io/math.Int" json:"amount"`
@@ -732,7 +734,8 @@ var xxx_messageInfo_MsgMintResponse proto.InternalMessageInfo
 
 // MsgBurn defines a Msg to burn ERC20 tokens
 type MsgBurn struct {
-	// contract_address of an ERC20 token contract, that is registered in a token pair
+	// contract_address of an ERC20 token contract, that is registered in a token
+	// pair
 	ContractAddress string `protobuf:"bytes,1,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
 	// amount of ERC20 tokens to burn
 	Amount cosmossdk_io_math.Int `protobuf:"bytes,2,opt,name=amount,proto3,customtype=cosmossdk.io/math.Int" json:"amount"`
@@ -940,7 +943,8 @@ type MsgClient interface {
 	// token pair conversion. The authority is hard-coded to the Cosmos SDK x/gov
 	// module account
 	ToggleConversion(ctx context.Context, in *MsgToggleConversion, opts ...grpc.CallOption) (*MsgToggleConversionResponse, error)
-	// TransferContractOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+	// TransferContractOwnership defines a Msg to transfer the ownership of the
+	// ERC20 token pair to the new owner
 	TransferContractOwnership(ctx context.Context, in *MsgTransferOwnership, opts ...grpc.CallOption) (*MsgTransferOwnershipResponse, error)
 	// Mint mints ERC20 tokens
 	Mint(ctx context.Context, in *MsgMint, opts ...grpc.CallOption) (*MsgMintResponse, error)
@@ -1048,7 +1052,8 @@ type MsgServer interface {
 	// token pair conversion. The authority is hard-coded to the Cosmos SDK x/gov
 	// module account
 	ToggleConversion(context.Context, *MsgToggleConversion) (*MsgToggleConversionResponse, error)
-	// TransferContractOwnership defines a Msg to transfer the ownership of the ERC20 token pair to the new owner
+	// TransferContractOwnership defines a Msg to transfer the ownership of the
+	// ERC20 token pair to the new owner
 	TransferContractOwnership(context.Context, *MsgTransferOwnership) (*MsgTransferOwnershipResponse, error)
 	// Mint mints ERC20 tokens
 	Mint(context.Context, *MsgMint) (*MsgMintResponse, error)
