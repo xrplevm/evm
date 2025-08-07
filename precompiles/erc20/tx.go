@@ -32,6 +32,8 @@ const (
 	Burn0Method = "burn0"
 	// BurnFromMethod defines the ABI method name for the ERC-20 burnFrom transaction.
 	BurnFromMethod = "burnFrom"
+	// TransferOwnershipMethod defines the ABI method name for the ERC-20 transferOwnership transaction.
+	TransferOwnershipMethod = "transferOwnership"
 	// ApproveMethod defines the ABI method name for ERC-20 Approve
 	// transaction.
 	ApproveMethod = "approve"
@@ -206,7 +208,7 @@ func (p *Precompile) Mint(
 		return nil, err
 	}
 
-	return method.Outputs.Pack(true)
+	return method.Outputs.Pack()
 }
 
 // Burn executes a burn of the caller's tokens.
@@ -274,7 +276,75 @@ func (p *Precompile) BurnFrom(
 		return nil, err
 	}
 
-	return p.transfer(ctx, contract, stateDB, method, owner, ZeroAddress, amount)
+	coins := sdk.Coins{{Denom: p.tokenPair.Denom, Amount: math.NewIntFromBigInt(amount)}}
+
+	msg := banktypes.NewMsgSend(owner.Bytes(), ZeroAddress.Bytes(), coins)
+
+	if err = msg.Amount.Validate(); err != nil {
+		return nil, err
+	}
+
+	isTransferFrom := method.Name == TransferFromMethod
+	spenderAddr := contract.Caller()
+	newAllowance := big.NewInt(0)
+
+	if isTransferFrom {
+		spenderAddr := contract.Caller()
+
+		prevAllowance, err := p.erc20Keeper.GetAllowance(ctx, p.Address(), owner, spenderAddr)
+		if err != nil {
+			return nil, ConvertErrToERC20Error(err)
+		}
+
+		newAllowance := new(big.Int).Sub(prevAllowance, amount)
+		if newAllowance.Sign() < 0 {
+			return nil, ErrInsufficientAllowance
+		}
+
+		if newAllowance.Sign() == 0 {
+			// If the new allowance is 0, we need to delete it from the store.
+			err = p.erc20Keeper.DeleteAllowance(ctx, p.Address(), owner, spenderAddr)
+		} else {
+			// If the new allowance is not 0, we need to set it in the store.
+			err = p.erc20Keeper.SetAllowance(ctx, p.Address(), owner, spenderAddr, newAllowance)
+		}
+		if err != nil {
+			return nil, ConvertErrToERC20Error(err)
+		}
+	}
+
+	msgSrv := NewMsgServerImpl(p.BankKeeper)
+	if err = msgSrv.Send(ctx, msg); err != nil {
+		// This should return an error to avoid the contract from being executed and an event being emitted
+		return nil, ConvertErrToERC20Error(err)
+	}
+
+	// TODO: Properly handle native balance changes via the balance handler.
+	// Currently, decimal conversion issues exist with the precisebank module.
+	// As a temporary workaround, balances are adjusted directly using add/sub operations.
+	evmDenom := evmtypes.GetEVMCoinDenom()
+	if p.tokenPair.Denom == evmDenom {
+		convertedAmount, err := utils.Uint256FromBigInt(evmtypes.ConvertAmountTo18DecimalsBigInt(amount))
+		if err != nil {
+			return nil, err
+		}
+
+		stateDB.SubBalance(owner, convertedAmount, tracing.BalanceChangeUnspecified)
+	}
+
+	if err = p.EmitTransferEvent(ctx, stateDB, owner, ZeroAddress, amount); err != nil {
+		return nil, err
+	}
+
+	// NOTE: if it's a direct transfer, we return here but if used through transferFrom,
+	// we need to emit the approval event with the new allowance.
+	if isTransferFrom {
+		if err = p.EmitApprovalEvent(ctx, stateDB, owner, spenderAddr, newAllowance); err != nil {
+			return nil, err
+		}
+	}
+
+	return method.Outputs.Pack()
 }
 
 // TransferOwnership executes a transfer of ownership of the token.

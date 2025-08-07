@@ -21,14 +21,17 @@ const (
 	// abiPath defines the path to the ERC-20 precompile ABI JSON file.
 	abiPath = "abi.json"
 
-	GasTransfer    = 3_000_000
-	GasApprove     = 30_956
-	GasName        = 3_421
-	GasSymbol      = 3_464
-	GasDecimals    = 427
-	GasTotalSupply = 2_477
-	GasBalanceOf   = 2_851
-	GasAllowance   = 3_246
+	GasTransfer          = 100_000
+	GasApprove           = 30_956
+	GasIncreaseAllowance = 34_605
+	GasDecreaseAllowance = 34_519
+	GasName              = 3_421
+	GasSymbol            = 3_464
+	GasDecimals          = 427
+	GasTotalSupply       = 2_477
+	GasBalanceOf         = 2_851
+	GasAllowance         = 3_246
+	GasTransferOwnership = 50_000
 )
 
 // Embed abi json file to the executable binary. Needed when importing as dependency.
@@ -101,6 +104,16 @@ func (p Precompile) RequiredGas(input []byte) uint64 {
 		return GasTransfer
 	case ApproveMethod:
 		return GasApprove
+	case MintMethod:
+		return GasTransfer
+	case BurnMethod:
+		return GasTransfer
+	case Burn0Method:
+		return GasTransfer
+	case BurnFromMethod:
+		return GasTransfer
+	case TransferOwnershipMethod:
+		return GasTransferOwnership
 	// ERC-20 queries
 	case NameMethod:
 		return GasName
@@ -114,6 +127,8 @@ func (p Precompile) RequiredGas(input []byte) uint64 {
 		return GasBalanceOf
 	case AllowanceMethod:
 		return GasAllowance
+	case OwnerMethod:
+		return GasBalanceOf
 	default:
 		return 0
 	}
@@ -162,11 +177,16 @@ func (p Precompile) run(evm *vm.EVM, contract *vm.Contract, readOnly bool) (bz [
 }
 
 // IsTransaction checks if the given method name corresponds to a transaction or query.
-func (Precompile) IsTransaction(method *abi.Method) bool {
+func (p Precompile) IsTransaction(method *abi.Method) bool {
 	switch method.Name {
 	case TransferMethod,
 		TransferFromMethod,
-		ApproveMethod:
+		ApproveMethod,
+		MintMethod,
+		BurnMethod,
+		Burn0Method,
+		BurnFromMethod,
+		TransferOwnershipMethod:
 		return true
 	default:
 		return false
@@ -189,6 +209,16 @@ func (p *Precompile) HandleMethod(
 		bz, err = p.TransferFrom(ctx, contract, stateDB, method, args)
 	case ApproveMethod:
 		bz, err = p.Approve(ctx, contract, stateDB, method, args)
+	case MintMethod:
+		bz, err = p.Mint(ctx, contract, stateDB, method, args)
+	case BurnMethod:
+		bz, err = p.Burn(ctx, contract, stateDB, method, args)
+	case Burn0Method:
+		bz, err = p.Burn0(ctx, contract, stateDB, method, args)
+	case BurnFromMethod:
+		bz, err = p.BurnFrom(ctx, contract, stateDB, method, args)
+	case TransferOwnershipMethod:
+		bz, err = p.TransferOwnership(ctx, contract, stateDB, method, args)
 	// ERC-20 queries
 	case NameMethod:
 		bz, err = p.Name(ctx, contract, stateDB, method, args)
@@ -202,6 +232,8 @@ func (p *Precompile) HandleMethod(
 		bz, err = p.BalanceOf(ctx, contract, stateDB, method, args)
 	case AllowanceMethod:
 		bz, err = p.Allowance(ctx, contract, stateDB, method, args)
+	case OwnerMethod:
+		bz, err = p.Owner(ctx, contract, stateDB, method, args)
 	default:
 		return nil, fmt.Errorf(cmn.ErrUnknownMethod, method.Name)
 	}

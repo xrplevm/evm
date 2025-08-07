@@ -300,3 +300,37 @@ func (s *PrecompileTestSuite) TestParseBalanceOfArgs() {
 		})
 	}
 }
+
+func (s *PrecompileTestSuite) TestParseOwnerArgs() {
+	testcases := []struct {
+		name        string
+		args        []interface{}
+		expPass     bool
+		errContains string
+	}{
+		{
+			name:    "pass - correct arguments",
+			args:    []interface{}{},
+			expPass: true,
+		},
+		{
+			name: "fail - invalid number of arguments",
+			args: []interface{}{
+				1, 2, 3,
+			},
+			errContains: "invalid number of arguments",
+		},
+	}
+
+	for _, tc := range testcases {
+		s.Run(tc.name, func() {
+			err := erc20.ParseOwnerArgs(tc.args)
+			if tc.expPass {
+				s.Require().NoError(err, "unexpected error parsing the owner arguments")
+			} else {
+				s.Require().Error(err, "expected an error parsing the owner arguments")
+				s.Require().ErrorContains(err, tc.errContains, "expected different error message")
+			}
+		})
+	}
+}

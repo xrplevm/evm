@@ -33,6 +33,9 @@ const (
 	// AllowanceMethod defines the ABI method name for the Allowance
 	// query.
 	AllowanceMethod = "allowance"
+	// OwnerMethod defines the ABI method name for the ERC-20 Owner
+	// query.
+	OwnerMethod = "owner"
 )
 
 // Name returns the name of the token. If the token metadata is registered in the
@@ -191,6 +194,27 @@ func (p Precompile) Allowance(
 	}
 
 	return method.Outputs.Pack(allowance)
+}
+
+// Owner returns the address of the current owner of the token.
+func (p Precompile) Owner(
+	ctx sdk.Context,
+	_ *vm.Contract,
+	_ vm.StateDB,
+	method *abi.Method,
+	args []interface{},
+) ([]byte, error) {
+	err := ParseOwnerArgs(args)
+	if err != nil {
+		return nil, err
+	}
+
+	ownerAddr, err := p.erc20Keeper.GetTokenPairOwnerAddress(ctx, p.tokenPair.GetERC20Contract().Hex())
+	if err != nil {
+		return nil, ErrContractOwnerNotFound
+	}
+
+	return method.Outputs.Pack(common.Address(ownerAddr.Bytes()))
 }
 
 // getBaseDenomFromIBCVoucher returns the base denomination from the given IBC voucher denomination.

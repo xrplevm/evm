@@ -128,6 +128,15 @@ func ParseBalanceOfArgs(args []interface{}) (common.Address, error) {
 	return account, nil
 }
 
+// ParseOwnerArgs parses the arguments from the owner method and returns the owner address.
+func ParseOwnerArgs(args []interface{}) error {
+	if len(args) != 0 {
+		return fmt.Errorf("invalid number of arguments; expected 0; got: %d", len(args))
+	}
+
+	return nil
+}
+
 // ParseMintArgs parses the arguments from the mint method and returns the
 // destination address (to) and amount.
 func ParseMintArgs(args []interface{}) (to common.Address, amount *big.Int, err error) {

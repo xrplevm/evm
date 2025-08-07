@@ -33,6 +33,7 @@ var (
 	ErrTransferAmountExceedsBalance = errors.New("ERC20: transfer amount exceeds balance")
 	ErrMinterIsNotOwner             = errors.New("ERC20: minter is not the owner")
 	ErrSenderIsNotOwner             = errors.New("ERC20: sender is not the owner")
+	ErrContractOwnerNotFound        = errors.New("ERC20: contract owner not found")
 )
 
 // ConvertErrToERC20Error is a helper function which maps errors raised by the Cosmos SDK stack
