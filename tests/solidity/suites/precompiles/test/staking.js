@@ -2,6 +2,15 @@ const { expect } = require('chai')
 const hre = require('hardhat')
 
 describe('Staking', function () {
+  beforeEach(async function () {
+    // Check if we're running on Cosmos network
+    const network = hre.network.name
+    console.log('network', network)
+    if (network !== 'cosmos') {
+      this.skip() // Skip all tests in this describe block if not on Cosmos network
+    }
+  })
+
   it('should stake ATOM to a validator', async function () {
     const valAddr = 'cosmosvaloper10jmp6sgh4cc6zt3e8gw05wavvejgr5pw4xyrql'
     const stakeAmount = hre.ethers.parseEther('0.001')
