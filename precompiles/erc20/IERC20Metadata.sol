@@ -4,13 +4,16 @@
 pragma solidity ^0.8.0;
 
 import "./IERC20.sol";
+import "./IERC20Mintable.sol";
+import "./IERC20Burnable.sol";
+import "./IOwnable.sol";
 
 /**
  * @dev Interface for the optional metadata functions from the ERC20 standard.
  *
  * _Available since v4.1._
  */
-interface IERC20Metadata is IERC20 {
+interface IERC20Metadata is IERC20, IERC20Mintable, IERC20Burnable, IOwnable {
     /**
      * @dev Returns the name of the token.
      */
