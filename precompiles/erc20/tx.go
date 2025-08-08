@@ -45,10 +45,8 @@ const (
 	IncreaseAllowanceMethod = "increaseAllowance"
 )
 
-var (
-	// ZeroAddress represents the zero address
-	ZeroAddress = common.Address{}
-)
+// ZeroAddress represents the zero address
+var ZeroAddress = common.Address{}
 
 // Transfer executes a direct transfer from the caller address to the
 // destination address.
@@ -167,7 +165,6 @@ func (p *Precompile) transfer(
 
 	return method.Outputs.Pack(true)
 }
-
 
 // Mint executes a mint of the caller's tokens.
 func (p *Precompile) Mint(
@@ -403,11 +400,5 @@ func (p *Precompile) burn(ctx sdk.Context, stateDB vm.StateDB, burnerAddr common
 		stateDB.SubBalance(burnerAddr, convertedAmount, tracing.BalanceChangeUnspecified)
 	}
 
-	if err = p.EmitTransferEvent(ctx, stateDB, burnerAddr, ZeroAddress, amount); err != nil {
-		return err
-	}
-
-	return nil
+	return p.EmitTransferEvent(ctx, stateDB, burnerAddr, ZeroAddress, amount)
 }
-
-

@@ -91,4 +91,3 @@ func (k Keeper) OwnerAddress(c context.Context, req *types.QueryOwnerAddressRequ
 	owner := k.GetOwnerAddress(ctx, req.ContractAddress)
 	return &types.QueryOwnerAddressResponse{OwnerAddress: owner}, nil
 }
-

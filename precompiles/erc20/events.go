@@ -99,7 +99,7 @@ func (p Precompile) EmitApprovalEvent(ctx sdk.Context, stateDB vm.StateDB, owner
 // EmitTransferOwnershipEvent creates a new TransferOwnership event emitted on transferOwnership transactions.
 func (p Precompile) EmitTransferOwnershipEvent(ctx sdk.Context, stateDB vm.StateDB, previousOwner, newOwner common.Address) error {
 	// Prepare the event topics
-	event := p.ABI.Events[EventTypeTransferOwnership]
+	event := p.Events[EventTypeTransferOwnership]
 	topics := make([]common.Hash, 3)
 
 	// The first topic is always the signature of the event.

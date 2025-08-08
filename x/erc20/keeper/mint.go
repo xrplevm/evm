@@ -67,7 +67,6 @@ func (k Keeper) MintingEnabled(
 	return pair, nil
 }
 
-
 // MintCoins mints the provided amount of coins to the given address.
 func (k Keeper) MintCoins(ctx sdk.Context, sender, to sdk.AccAddress, amount math.Int, token string) error {
 	pair, err := k.MintingEnabled(ctx, sender, to, token)

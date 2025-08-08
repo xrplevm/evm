@@ -1,11 +1,12 @@
 package keeper
 
 import (
+	"github.com/cosmos/evm/x/erc20/types"
+
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/cosmos/evm/x/erc20/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // BurnCoins burns the provided amount of coins from the given address.

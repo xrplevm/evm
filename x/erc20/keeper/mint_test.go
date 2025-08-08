@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"math/big"
 
-	"cosmossdk.io/math"
 	utiltx "github.com/cosmos/evm/testutil/tx"
 	"github.com/cosmos/evm/x/erc20/types"
+
+	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -110,7 +111,6 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 		})
 	}
 }
-
 
 func (suite *KeeperTestSuite) TestMintCoins() {
 	var ctx sdk.Context

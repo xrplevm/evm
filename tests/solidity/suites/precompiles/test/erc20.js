@@ -229,7 +229,7 @@ describe('ERC20', function () {
       const newBalance = await erc20Contract.balanceOf(user2.address)
       expect(newBalance).to.equal(initialBalance - burnAmount)
       
-            // Check allowance was NOT reduced (due to implementation bug in burnFrom)
+      // Check allowance was NOT reduced (due to implementation bug in burnFrom)
       const newAllowance = await erc20Contract.allowance(user2.address, user1.address)
       expect(newAllowance).to.equal(initialAllowance)
     })

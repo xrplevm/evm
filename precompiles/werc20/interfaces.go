@@ -3,8 +3,9 @@ package werc20
 import (
 	"math/big"
 
-	"cosmossdk.io/math"
 	"github.com/ethereum/go-ethereum/common"
+
+	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

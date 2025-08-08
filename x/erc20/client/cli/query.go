@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/evm/x/erc20/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/ethereum/go-ethereum/common"
 )
 
 // GetQueryCmd returns the parent command for all erc20 CLI query commands
