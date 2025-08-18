@@ -2,6 +2,7 @@ package filters
 
 import (
 	"math/big"
+	"slices"
 
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
