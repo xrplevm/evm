@@ -20,9 +20,6 @@ import (
 var (
 	logTransferSig     = []byte("Transfer(address,address,uint256)")
 	logTransferSigHash = crypto.Keccak256Hash(logTransferSig)
-
-	logApprovalSig     = []byte("Approval(address,address,uint256)")
-	logApprovalSigHash = crypto.Keccak256Hash(logApprovalSig)
 )
 
 // DeployERC20Contract creates and deploys an ERC20 contract on the EVM with the

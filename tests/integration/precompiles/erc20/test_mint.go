@@ -167,7 +167,7 @@ func (suite *PrecompileTestSuite) TestMintCoins() {
 				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
 				params := banktypes.DefaultParams()
-				params.SendEnabled = []*banktypes.SendEnabled{ //nolint:staticcheck
+				params.SendEnabled = []*banktypes.SendEnabled{
 					{Denom: expPair.Denom, Enabled: false},
 				}
 				err := suite.network.App.GetBankKeeper().SetParams(ctx, params)
