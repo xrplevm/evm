@@ -1,4 +1,4 @@
-package keeper_test
+package erc20
 
 import (
 	"github.com/cosmos/evm/x/erc20/types"
@@ -6,7 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (suite *KeeperTestSuite) TestParams() {
+func (suite *PrecompileTestSuite) TestParams() {
 	var ctx sdk.Context
 
 	testCases := []struct {
@@ -21,7 +21,7 @@ func (suite *KeeperTestSuite) TestParams() {
 				return types.DefaultParams()
 			},
 			func() interface{} {
-				return suite.network.App.Erc20Keeper.GetParams(ctx)
+				return suite.network.App.GetErc20Keeper().GetParams(ctx)
 			},
 			true,
 		},

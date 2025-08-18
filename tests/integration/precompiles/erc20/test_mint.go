@@ -1,4 +1,4 @@
-package keeper_test
+package erc20
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
-func (suite *KeeperTestSuite) TestMintingEnabled() {
+func (suite *PrecompileTestSuite) TestMintingEnabled() {
 	var ctx sdk.Context
 	sender := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 	receiver := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
@@ -30,7 +30,7 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 			func() {
 				params := types.DefaultParams()
 				params.EnableErc20 = false
-				suite.network.App.Erc20Keeper.SetParams(ctx, params) //nolint:errcheck
+				suite.network.App.GetErc20Keeper().SetParams(ctx, params) //nolint:errcheck
 			},
 			false,
 		},
@@ -43,9 +43,9 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 			"conversion is disabled for the given pair",
 			func() {
 				expPair.Enabled = false
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 			},
 			false,
 		},
@@ -53,30 +53,30 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 			"token transfers are disabled",
 			func() {
 				expPair.Enabled = true
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
-				suite.network.App.BankKeeper.SetSendEnabled(ctx, expPair.Denom, false)
+				suite.network.App.GetBankKeeper().SetSendEnabled(ctx, expPair.Denom, false)
 			},
 			false,
 		},
 		{
 			"token not registered",
 			func() {
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 			},
 			false,
 		},
 		{
 			"receiver address is blocked (module account)",
 			func() {
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
-				acc := suite.network.App.AccountKeeper.GetModuleAccount(ctx, types.ModuleName)
+				acc := suite.network.App.GetAccountKeeper().GetModuleAccount(ctx, types.ModuleName)
 				receiver = acc.GetAddress()
 			},
 			false,
@@ -84,9 +84,9 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 		{
 			"ok",
 			func() {
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
 				receiver = sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 			},
@@ -101,7 +101,7 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 
 			tc.malleate()
 
-			pair, err := suite.network.App.Erc20Keeper.MintingEnabled(ctx, sender, receiver, expPair.Erc20Address)
+			pair, err := suite.network.App.GetErc20Keeper().MintingEnabled(ctx, sender, receiver, expPair.Erc20Address)
 			if tc.expPass {
 				suite.Require().NoError(err)
 				suite.Require().Equal(expPair, pair)
@@ -112,7 +112,7 @@ func (suite *KeeperTestSuite) TestMintingEnabled() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestMintCoins() {
+func (suite *PrecompileTestSuite) TestMintCoins() {
 	var ctx sdk.Context
 	sender := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 	to := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
@@ -133,7 +133,7 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 			func() {
 				params := types.DefaultParams()
 				params.EnableErc20 = false
-				suite.network.App.Erc20Keeper.SetParams(ctx, params) //nolint:errcheck
+				suite.network.App.GetErc20Keeper().SetParams(ctx, params) //nolint:errcheck
 			},
 			func() {},
 			true,
@@ -150,9 +150,9 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 			"fail - conversion is disabled for the given pair",
 			func() {
 				expPair.Enabled = false
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 			},
 			func() {},
 			true,
@@ -162,15 +162,15 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 			"fail - token transfers are disabled",
 			func() {
 				expPair.Enabled = true
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
 				params := banktypes.DefaultParams()
 				params.SendEnabled = []*banktypes.SendEnabled{ //nolint:staticcheck
 					{Denom: expPair.Denom, Enabled: false},
 				}
-				err := suite.network.App.BankKeeper.SetParams(ctx, params)
+				err := suite.network.App.GetBankKeeper().SetParams(ctx, params)
 				suite.Require().NoError(err)
 			},
 			func() {},
@@ -180,8 +180,8 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 		{
 			"fail - token not registered",
 			func() {
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 			},
 			func() {},
 			true,
@@ -190,11 +190,11 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 		{
 			"fail - receiver address is blocked (module account)",
 			func() {
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
-				acc := suite.network.App.AccountKeeper.GetModuleAccount(ctx, types.ModuleName)
+				acc := suite.network.App.GetAccountKeeper().GetModuleAccount(ctx, types.ModuleName)
 				to = acc.GetAddress()
 			},
 			func() {},
@@ -205,9 +205,9 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 			"fail - pair is not native coin",
 			func() {
 				expPair.ContractOwner = types.OWNER_EXTERNAL
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
 				to = sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 			},
@@ -220,9 +220,9 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 			func() {
 				expPair.ContractOwner = types.OWNER_MODULE
 				expPair.SetOwnerAddress(sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String())
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 			},
 			func() {},
 			true,
@@ -232,9 +232,9 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 			"pass",
 			func() {
 				expPair.SetOwnerAddress(sender.String())
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, expPair)
-				suite.network.App.Erc20Keeper.SetDenomMap(ctx, expPair.Denom, id)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, expPair.GetERC20Contract(), id)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
+				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
 
 				to = sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 			},
@@ -252,7 +252,7 @@ func (suite *KeeperTestSuite) TestMintCoins() {
 
 			tc.malleate()
 
-			err := suite.network.App.Erc20Keeper.MintCoins(ctx, sender, to, math.NewIntFromBigInt(amount), expPair.Erc20Address)
+			err := suite.network.App.GetErc20Keeper().MintCoins(ctx, sender, to, math.NewIntFromBigInt(amount), expPair.Erc20Address)
 			if tc.expErr {
 				suite.Require().Error(err, "expected transfer transaction to fail")
 				suite.Require().Contains(err.Error(), tc.errContains, "expected transfer transaction to fail with specific error")

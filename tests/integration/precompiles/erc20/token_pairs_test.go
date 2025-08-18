@@ -1,4 +1,4 @@
-package keeper_test
+package erc20
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (suite *KeeperTestSuite) TestGetTokenPairs() {
+func (suite *PrecompileTestSuite) TestGetTokenPairs() {
 	var (
 		ctx    sdk.Context
 		expRes []types.TokenPair
@@ -29,7 +29,7 @@ func (suite *KeeperTestSuite) TestGetTokenPairs() {
 			"1 pair registered",
 			func() {
 				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
 				expRes = testconstants.ExampleTokenPairs
 				expRes = append(expRes, pair)
 			},
@@ -39,8 +39,8 @@ func (suite *KeeperTestSuite) TestGetTokenPairs() {
 			func() {
 				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
 				pair2 := types.NewTokenPair(utiltx.GenerateAddress(), "coin2", types.OWNER_MODULE)
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair2)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair2)
 				expRes = testconstants.ExampleTokenPairs
 				expRes = append(expRes, []types.TokenPair{pair, pair2}...)
 			},
@@ -52,14 +52,14 @@ func (suite *KeeperTestSuite) TestGetTokenPairs() {
 			ctx = suite.network.GetContext()
 
 			tc.malleate()
-			res := suite.network.App.Erc20Keeper.GetTokenPairs(ctx)
+			res := suite.network.App.GetErc20Keeper().GetTokenPairs(ctx)
 
 			suite.Require().ElementsMatch(expRes, res, tc.name)
 		})
 	}
 }
 
-func (suite *KeeperTestSuite) TestGetTokenPairID() {
+func (suite *PrecompileTestSuite) TestGetTokenPairID() {
 	baseDenom, err := sdk.GetBaseDenom()
 	suite.Require().NoError(err, "failed to get base denom")
 
@@ -78,9 +78,9 @@ func (suite *KeeperTestSuite) TestGetTokenPairID() {
 		suite.SetupTest()
 		ctx := suite.network.GetContext()
 
-		suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
+		suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
 
-		id := suite.network.App.Erc20Keeper.GetTokenPairID(ctx, tc.token)
+		id := suite.network.App.GetErc20Keeper().GetTokenPairID(ctx, tc.token)
 		if id != nil {
 			suite.Require().Equal(tc.expID, id, tc.name)
 		} else {
@@ -89,7 +89,7 @@ func (suite *KeeperTestSuite) TestGetTokenPairID() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestGetTokenPair() {
+func (suite *PrecompileTestSuite) TestGetTokenPair() {
 	baseDenom, err := sdk.GetBaseDenom()
 	suite.Require().NoError(err, "failed to get base denom")
 
@@ -108,8 +108,8 @@ func (suite *KeeperTestSuite) TestGetTokenPair() {
 		suite.SetupTest()
 		ctx := suite.network.GetContext()
 
-		suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-		p, found := suite.network.App.Erc20Keeper.GetTokenPair(ctx, tc.id)
+		suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+		p, found := suite.network.App.GetErc20Keeper().GetTokenPair(ctx, tc.id)
 		if tc.ok {
 			suite.Require().True(found, tc.name)
 			suite.Require().Equal(pair, p, tc.name)
@@ -119,7 +119,7 @@ func (suite *KeeperTestSuite) TestGetTokenPair() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestDeleteTokenPair() {
+func (suite *PrecompileTestSuite) TestDeleteTokenPair() {
 	tokenDenom := "random"
 
 	var ctx sdk.Context
@@ -139,7 +139,7 @@ func (suite *KeeperTestSuite) TestDeleteTokenPair() {
 			"delete tokenpair",
 			id,
 			func() {
-				suite.network.App.Erc20Keeper.DeleteTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().DeleteTokenPair(ctx, pair)
 			},
 			false,
 		},
@@ -147,11 +147,11 @@ func (suite *KeeperTestSuite) TestDeleteTokenPair() {
 	for _, tc := range testCases {
 		suite.SetupTest()
 		ctx = suite.network.GetContext()
-		err := suite.network.App.Erc20Keeper.SetToken(ctx, pair)
+		err := suite.network.App.GetErc20Keeper().SetToken(ctx, pair)
 		suite.Require().NoError(err)
 
 		tc.malleate()
-		p, found := suite.network.App.Erc20Keeper.GetTokenPair(ctx, tc.id)
+		p, found := suite.network.App.GetErc20Keeper().GetTokenPair(ctx, tc.id)
 		if tc.ok {
 			suite.Require().True(found, tc.name)
 			suite.Require().Equal(pair, p, tc.name)
@@ -161,7 +161,7 @@ func (suite *KeeperTestSuite) TestDeleteTokenPair() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestIsTokenPairRegistered() {
+func (suite *PrecompileTestSuite) TestIsTokenPairRegistered() {
 	baseDenom, err := sdk.GetBaseDenom()
 	suite.Require().NoError(err, "failed to get base denom")
 
@@ -180,8 +180,8 @@ func (suite *KeeperTestSuite) TestIsTokenPairRegistered() {
 		suite.SetupTest()
 		ctx = suite.network.GetContext()
 
-		suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-		found := suite.network.App.Erc20Keeper.IsTokenPairRegistered(ctx, tc.id)
+		suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+		found := suite.network.App.GetErc20Keeper().IsTokenPairRegistered(ctx, tc.id)
 		if tc.ok {
 			suite.Require().True(found, tc.name)
 		} else {
@@ -190,7 +190,7 @@ func (suite *KeeperTestSuite) TestIsTokenPairRegistered() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestIsERC20Registered() {
+func (suite *PrecompileTestSuite) TestIsERC20Registered() {
 	var ctx sdk.Context
 	addr := utiltx.GenerateAddress()
 	pair := types.NewTokenPair(addr, "coin", types.OWNER_MODULE)
@@ -207,7 +207,7 @@ func (suite *KeeperTestSuite) TestIsERC20Registered() {
 			"deleted erc20 map",
 			pair.GetERC20Contract(),
 			func() {
-				suite.network.App.Erc20Keeper.DeleteTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().DeleteTokenPair(ctx, pair)
 			},
 			false,
 		},
@@ -216,12 +216,12 @@ func (suite *KeeperTestSuite) TestIsERC20Registered() {
 		suite.SetupTest()
 		ctx = suite.network.GetContext()
 
-		err := suite.network.App.Erc20Keeper.SetToken(ctx, pair)
+		err := suite.network.App.GetErc20Keeper().SetToken(ctx, pair)
 		suite.Require().NoError(err)
 
 		tc.malleate()
 
-		found := suite.network.App.Erc20Keeper.IsERC20Registered(ctx, tc.erc20)
+		found := suite.network.App.GetErc20Keeper().IsERC20Registered(ctx, tc.erc20)
 
 		if tc.ok {
 			suite.Require().True(found, tc.name)
@@ -231,7 +231,7 @@ func (suite *KeeperTestSuite) TestIsERC20Registered() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestIsDenomRegistered() {
+func (suite *PrecompileTestSuite) TestIsDenomRegistered() {
 	var ctx sdk.Context
 	addr := utiltx.GenerateAddress()
 	pair := types.NewTokenPair(addr, "coin", types.OWNER_MODULE)
@@ -248,7 +248,7 @@ func (suite *KeeperTestSuite) TestIsDenomRegistered() {
 			"deleted denom map",
 			pair.GetDenom(),
 			func() {
-				suite.network.App.Erc20Keeper.DeleteTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().DeleteTokenPair(ctx, pair)
 			},
 			false,
 		},
@@ -257,12 +257,12 @@ func (suite *KeeperTestSuite) TestIsDenomRegistered() {
 		suite.SetupTest()
 		ctx = suite.network.GetContext()
 
-		err := suite.network.App.Erc20Keeper.SetToken(ctx, pair)
+		err := suite.network.App.GetErc20Keeper().SetToken(ctx, pair)
 		suite.Require().NoError(err)
 
 		tc.malleate()
 
-		found := suite.network.App.Erc20Keeper.IsDenomRegistered(ctx, tc.denom)
+		found := suite.network.App.GetErc20Keeper().IsDenomRegistered(ctx, tc.denom)
 
 		if tc.ok {
 			suite.Require().True(found, tc.name)
@@ -272,7 +272,7 @@ func (suite *KeeperTestSuite) TestIsDenomRegistered() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestGetTokenDenom() {
+func (suite *PrecompileTestSuite) TestGetTokenDenom() {
 	var ctx sdk.Context
 	tokenAddress := utiltx.GenerateAddress()
 	tokenDenom := "token"
@@ -289,8 +289,8 @@ func (suite *KeeperTestSuite) TestGetTokenDenom() {
 			tokenDenom,
 			func() {
 				pair := types.NewTokenPair(tokenAddress, tokenDenom, types.OWNER_MODULE)
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, tokenAddress, pair.GetID())
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, tokenAddress, pair.GetID())
 			},
 			true,
 			"",
@@ -301,8 +301,8 @@ func (suite *KeeperTestSuite) TestGetTokenDenom() {
 			func() {
 				address := utiltx.GenerateAddress()
 				pair := types.NewTokenPair(address, tokenDenom, types.OWNER_MODULE)
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, address, pair.GetID())
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, address, pair.GetID())
 			},
 			false,
 			fmt.Sprintf("token '%s' not registered", tokenAddress),
@@ -314,7 +314,7 @@ func (suite *KeeperTestSuite) TestGetTokenDenom() {
 			ctx = suite.network.GetContext()
 
 			tc.malleate()
-			res, err := suite.network.App.Erc20Keeper.GetTokenDenom(ctx, tokenAddress)
+			res, err := suite.network.App.GetErc20Keeper().GetTokenDenom(ctx, tokenAddress)
 
 			if tc.expError {
 				suite.Require().NoError(err)
@@ -327,7 +327,7 @@ func (suite *KeeperTestSuite) TestGetTokenDenom() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestSetToken() {
+func (suite *PrecompileTestSuite) TestSetToken() {
 	testCases := []struct {
 		name     string
 		pair1    types.TokenPair
@@ -343,9 +343,9 @@ func (suite *KeeperTestSuite) TestSetToken() {
 		suite.SetupTest()
 		ctx := suite.network.GetContext()
 
-		err := suite.network.App.Erc20Keeper.SetToken(ctx, tc.pair1)
+		err := suite.network.App.GetErc20Keeper().SetToken(ctx, tc.pair1)
 		suite.Require().NoError(err)
-		err = suite.network.App.Erc20Keeper.SetToken(ctx, tc.pair2)
+		err = suite.network.App.GetErc20Keeper().SetToken(ctx, tc.pair2)
 		if tc.expError {
 			suite.Require().Error(err)
 		} else {
@@ -354,7 +354,7 @@ func (suite *KeeperTestSuite) TestSetToken() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestGetTokenPairOwnerAddress() {
+func (suite *PrecompileTestSuite) TestGetTokenPairOwnerAddress() {
 	var ctx sdk.Context
 
 	tokenAddress := utiltx.GenerateAddress()
@@ -372,8 +372,8 @@ func (suite *KeeperTestSuite) TestGetTokenPairOwnerAddress() {
 			func() {
 				pair := types.NewTokenPair(tokenAddress, "coin", types.OWNER_MODULE)
 				pair.SetOwnerAddress(sdk.AccAddress(ownerAddress.Bytes()).String())
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, tokenAddress, pair.GetID())
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, tokenAddress, pair.GetID())
 			},
 			true,
 			"",
@@ -385,8 +385,8 @@ func (suite *KeeperTestSuite) TestGetTokenPairOwnerAddress() {
 				address := utiltx.GenerateAddress()
 				pair := types.NewTokenPair(address, "coin", types.OWNER_MODULE)
 				pair.SetOwnerAddress(sdk.AccAddress(address.Bytes()).String())
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, address, pair.GetID())
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, address, pair.GetID())
 			},
 			false,
 			fmt.Sprintf("token '%s' not registered", tokenAddress),
@@ -399,7 +399,7 @@ func (suite *KeeperTestSuite) TestGetTokenPairOwnerAddress() {
 			ctx = suite.network.GetContext()
 
 			tc.malleate()
-			res, err := suite.network.App.Erc20Keeper.GetTokenPairOwnerAddress(ctx, tokenAddress.Hex())
+			res, err := suite.network.App.GetErc20Keeper().GetTokenPairOwnerAddress(ctx, tokenAddress.Hex())
 
 			if tc.expError {
 				suite.Require().NoError(err)
@@ -412,7 +412,7 @@ func (suite *KeeperTestSuite) TestGetTokenPairOwnerAddress() {
 	}
 }
 
-func (suite *KeeperTestSuite) TestSetTokenPairOwnerAddress() {
+func (suite *PrecompileTestSuite) TestSetTokenPairOwnerAddress() {
 	var ctx sdk.Context
 	tokenAddress := utiltx.GenerateAddress()
 	newOwnerAddress := utiltx.GenerateAddress()
@@ -431,12 +431,12 @@ func (suite *KeeperTestSuite) TestSetTokenPairOwnerAddress() {
 			func() types.TokenPair {
 				pair := types.NewTokenPair(tokenAddress, "coin", types.OWNER_MODULE)
 				pair.SetOwnerAddress(sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String())
-				suite.network.App.Erc20Keeper.SetTokenPair(ctx, pair)
-				suite.network.App.Erc20Keeper.SetERC20Map(ctx, tokenAddress, pair.GetID())
+				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, tokenAddress, pair.GetID())
 				return pair
 			},
 			func(tp *types.TokenPair, expectedNewOwner string) error {
-				pair, found := suite.network.App.Erc20Keeper.GetTokenPair(ctx, tp.GetID())
+				pair, found := suite.network.App.GetErc20Keeper().GetTokenPair(ctx, tp.GetID())
 				if !found {
 					return fmt.Errorf("token pair not found")
 				}
@@ -457,7 +457,7 @@ func (suite *KeeperTestSuite) TestSetTokenPairOwnerAddress() {
 			ctx = suite.network.GetContext()
 
 			pair := tc.malleate()
-			suite.network.App.Erc20Keeper.SetTokenPairOwnerAddress(ctx, pair, tc.newOwnerAddress.String())
+			suite.network.App.GetErc20Keeper().SetTokenPairOwnerAddress(ctx, pair, tc.newOwnerAddress.String())
 
 			suite.Require().Nil(tc.postCheck(&pair, tc.newOwnerAddress.String()))
 		})
