@@ -84,7 +84,7 @@ func (k Keeper) QueryERC20(
 	}
 
 	// Decimals - standard uint8, no fallback needed
-	res, err := k.evmKeeper.CallEVM(ctx, erc20, types.ModuleAddress, contract, false, "decimals")
+	res, err := k.evmKeeper.CallEVM(ctx, erc20, types.ModuleAddress, contract, false, nil, "decimals")
 	if err != nil {
 		return types.ERC20Data{}, err
 	}

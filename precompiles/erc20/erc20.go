@@ -15,7 +15,6 @@ import (
 	storetypes "cosmossdk.io/store/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 )
 
 const (
