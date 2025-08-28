@@ -20,6 +20,10 @@ func (s *PrecompileTestSuite) TestIsTransaction() {
 	s.Require().False(s.precompile.IsTransaction(&method))
 	method = s.precompile.Methods[erc20.TotalSupplyMethod]
 	s.Require().False(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.AllowanceMethod]
+	s.Require().False(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.OwnerMethod]
+	s.Require().False(s.precompile.IsTransaction(&method))
 
 	// Transactions
 	method = s.precompile.Methods[erc20.ApproveMethod]
@@ -27,6 +31,16 @@ func (s *PrecompileTestSuite) TestIsTransaction() {
 	method = s.precompile.Methods[erc20.TransferMethod]
 	s.Require().True(s.precompile.IsTransaction(&method))
 	method = s.precompile.Methods[erc20.TransferFromMethod]
+	s.Require().True(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.MintMethod]
+	s.Require().True(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.BurnMethod]
+	s.Require().True(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.BurnFromMethod]
+	s.Require().True(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.Burn0Method]
+	s.Require().True(s.precompile.IsTransaction(&method))
+	method = s.precompile.Methods[erc20.TransferOwnershipMethod]
 	s.Require().True(s.precompile.IsTransaction(&method))
 }
 
@@ -118,6 +132,24 @@ func (s *PrecompileTestSuite) TestRequiredGas() {
 				return bz
 			},
 			expGas: erc20.GasAllowance,
+		},
+		{
+			name: erc20.OwnerMethod,
+			malleate: func() []byte {
+				bz, err := s.precompile.Pack(erc20.OwnerMethod)
+				s.Require().NoError(err, "expected no error packing ABI")
+				return bz
+			},
+			expGas: erc20.GasBalanceOf,
+		},
+		{
+			name: erc20.TransferOwnershipMethod,
+			malleate: func() []byte {
+				bz, err := s.precompile.Pack(erc20.TransferOwnershipMethod, s.keyring.GetAddr(0))
+				s.Require().NoError(err, "expected no error packing ABI")
+				return bz
+			},
+			expGas: erc20.GasTransferOwnership,
 		},
 		{
 			name: "invalid method",

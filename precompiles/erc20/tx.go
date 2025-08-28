@@ -284,19 +284,17 @@ func (p *Precompile) BurnFrom(
 		return nil, err
 	}
 
-	isTransferFrom := method.Name == TransferFromMethod
+	isBurnFrom := method.Name == BurnFromMethod
 	spenderAddr := contract.Caller()
 	newAllowance := big.NewInt(0)
 
-	if isTransferFrom {
-		spenderAddr := contract.Caller()
-
+	if isBurnFrom {
 		prevAllowance, err := p.erc20Keeper.GetAllowance(ctx, p.Address(), owner, spenderAddr)
 		if err != nil {
 			return nil, ConvertErrToERC20Error(err)
 		}
 
-		newAllowance := new(big.Int).Sub(prevAllowance, amount)
+		newAllowance = new(big.Int).Sub(prevAllowance, amount)
 		if newAllowance.Sign() < 0 {
 			return nil, ErrInsufficientAllowance
 		}
@@ -338,7 +336,7 @@ func (p *Precompile) BurnFrom(
 
 	// NOTE: if it's a direct transfer, we return here but if used through transferFrom,
 	// we need to emit the approval event with the new allowance.
-	if isTransferFrom {
+	if isBurnFrom {
 		if err = p.EmitApprovalEvent(ctx, stateDB, owner, spenderAddr, newAllowance); err != nil {
 			return nil, err
 		}

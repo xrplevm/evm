@@ -5,7 +5,11 @@ import (
 	"fmt"
 	"math/big"
 	"slices"
+	"time"
 
+	"github.com/cosmos/cosmos-sdk/x/authz"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	commonfactory "github.com/cosmos/evm/testutil/integration/base/factory"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -458,4 +462,51 @@ func NewAddrKey() (common.Address, *ethsecp256k1.PrivKey) {
 func GenerateAddress() common.Address {
 	addr, _ := NewAddrKey()
 	return addr
+}
+
+func (s *PrecompileTestSuite) setupSendAuthz(
+	grantee sdk.AccAddress, granterPriv cryptotypes.PrivKey, amount sdk.Coins,
+) {
+	err := setupSendAuthz(
+		s.network,
+		s.factory,
+		grantee,
+		granterPriv,
+		amount,
+	)
+	s.Require().NoError(err, "failed to set up send authorization")
+}
+
+func setupSendAuthz(
+	network network.Network,
+	factory commonfactory.BaseTxFactory,
+	grantee sdk.AccAddress,
+	granterPriv cryptotypes.PrivKey,
+	amount sdk.Coins,
+) error {
+	granter := sdk.AccAddress(granterPriv.PubKey().Address())
+	expiration := network.GetContext().BlockHeader().Time.Add(time.Hour)
+	sendAuthz := banktypes.NewSendAuthorization(
+		amount,
+		[]sdk.AccAddress{},
+	)
+
+	msgGrant, err := authz.NewMsgGrant(
+		granter,
+		grantee,
+		sendAuthz,
+		&expiration,
+	)
+	if err != nil {
+		return errorsmod.Wrap(err, "failed to create MsgGrant")
+	}
+
+	// Create an authorization
+	txArgs := commonfactory.CosmosTxArgs{Msgs: []sdk.Msg{msgGrant}}
+	_, err = factory.ExecuteCosmosTx(granterPriv, txArgs)
+	if err != nil {
+		return errorsmod.Wrap(err, "failed to execute MsgGrant")
+	}
+
+	return nil
 }

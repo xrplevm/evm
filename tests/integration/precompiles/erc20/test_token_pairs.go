@@ -23,7 +23,18 @@ func (suite *PrecompileTestSuite) TestGetTokenPairs() {
 		malleate func()
 	}{
 		{
-			"no pair registered", func() { expRes = testconstants.ExampleTokenPairs },
+			"no pair registered", func() {
+				// Account for the token pair created during SetupTest()
+				expRes = testconstants.ExampleTokenPairs
+				// Get the token pair created during setup
+				tokenPairID := suite.network.App.GetErc20Keeper().GetDenomMap(suite.network.GetContext(), suite.tokenDenom)
+				if tokenPairID != nil {
+					tokenPair, found := suite.network.App.GetErc20Keeper().GetTokenPair(suite.network.GetContext(), tokenPairID)
+					if found {
+						expRes = append(expRes, tokenPair)
+					}
+				}
+			},
 		},
 		{
 			"1 pair registered",
@@ -31,6 +42,14 @@ func (suite *PrecompileTestSuite) TestGetTokenPairs() {
 				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
 				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
 				expRes = testconstants.ExampleTokenPairs
+				// Get the token pair created during setup
+				tokenPairID := suite.network.App.GetErc20Keeper().GetDenomMap(suite.network.GetContext(), suite.tokenDenom)
+				if tokenPairID != nil {
+					tokenPair, found := suite.network.App.GetErc20Keeper().GetTokenPair(suite.network.GetContext(), tokenPairID)
+					if found {
+						expRes = append(expRes, tokenPair)
+					}
+				}
 				expRes = append(expRes, pair)
 			},
 		},
@@ -42,6 +61,14 @@ func (suite *PrecompileTestSuite) TestGetTokenPairs() {
 				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
 				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair2)
 				expRes = testconstants.ExampleTokenPairs
+				// Get the token pair created during setup
+				tokenPairID := suite.network.App.GetErc20Keeper().GetDenomMap(suite.network.GetContext(), suite.tokenDenom)
+				if tokenPairID != nil {
+					tokenPair, found := suite.network.App.GetErc20Keeper().GetTokenPair(suite.network.GetContext(), tokenPairID)
+					if found {
+						expRes = append(expRes, tokenPair)
+					}
+				}
 				expRes = append(expRes, []types.TokenPair{pair, pair2}...)
 			},
 		},
