@@ -3,8 +3,6 @@ package erc20
 import (
 	"math/big"
 
-	"github.com/cosmos/evm/testutil/keyring"
-	utiltx "github.com/cosmos/evm/testutil/tx"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/holiman/uint256"
@@ -13,6 +11,8 @@ import (
 	"github.com/cosmos/evm/precompiles/common/mocks"
 	"github.com/cosmos/evm/precompiles/erc20"
 	"github.com/cosmos/evm/precompiles/testutil"
+	"github.com/cosmos/evm/testutil/keyring"
+	utiltx "github.com/cosmos/evm/testutil/tx"
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	"github.com/cosmos/evm/x/vm/statedb"
 	vmtypes "github.com/cosmos/evm/x/vm/types"
@@ -533,7 +533,7 @@ func (s *PrecompileTestSuite) TestBurn() {
 			"",
 		},
 		{
-			"pass - burn from address",
+			"pass - burn tokens",
 			s.keyring.GetKey(0),
 			s.keyring.GetKey(1),
 			func() (keyring.Key, keyring.Key, []interface{}) {
