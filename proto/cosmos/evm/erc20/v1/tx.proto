@@ -44,11 +44,11 @@ service Msg {
       returns (MsgTransferOwnershipResponse);
   // Mint mints ERC20 tokens
   rpc Mint(MsgMint) returns (MsgMintResponse) {
-    option (google.api.http).post = "/evmos/erc20/v1/tx/mint";
+    option (google.api.http).post = "/cosmos/evm/erc20/v1/tx/mint";
   };
   // Burn burns ERC20 tokens
   rpc Burn(MsgBurn) returns (MsgBurnResponse) {
-    option (google.api.http).post = "/evmos/erc20/v1/tx/burn";
+    option (google.api.http).post = "/cosmos/evm/erc20/v1/tx/burn";
   };
 }
 

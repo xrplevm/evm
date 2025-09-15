@@ -37,12 +37,6 @@ const (
 	// ApproveMethod defines the ABI method name for ERC-20 Approve
 	// transaction.
 	ApproveMethod = "approve"
-	// DecreaseAllowanceMethod defines the ABI method name for the DecreaseAllowance
-	// transaction.
-	DecreaseAllowanceMethod = "decreaseAllowance"
-	// IncreaseAllowanceMethod defines the ABI method name for the IncreaseAllowance
-	// transaction.
-	IncreaseAllowanceMethod = "increaseAllowance"
 )
 
 // ZeroAddress represents the zero address
@@ -283,32 +277,28 @@ func (p *Precompile) BurnFrom(
 	if err = msg.Amount.Validate(); err != nil {
 		return nil, err
 	}
-
-	isBurnFrom := method.Name == BurnFromMethod
 	spenderAddr := contract.Caller()
 	newAllowance := big.NewInt(0)
 
-	if isBurnFrom {
-		prevAllowance, err := p.erc20Keeper.GetAllowance(ctx, p.Address(), owner, spenderAddr)
-		if err != nil {
-			return nil, ConvertErrToERC20Error(err)
-		}
+	prevAllowance, err := p.erc20Keeper.GetAllowance(ctx, p.Address(), owner, spenderAddr)
+	if err != nil {
+		return nil, ConvertErrToERC20Error(err)
+	}
 
-		newAllowance = new(big.Int).Sub(prevAllowance, amount)
-		if newAllowance.Sign() < 0 {
-			return nil, ErrInsufficientAllowance
-		}
+	newAllowance = new(big.Int).Sub(prevAllowance, amount)
+	if newAllowance.Sign() < 0 {
+		return nil, ErrInsufficientAllowance
+	}
 
-		if newAllowance.Sign() == 0 {
-			// If the new allowance is 0, we need to delete it from the store.
-			err = p.erc20Keeper.DeleteAllowance(ctx, p.Address(), owner, spenderAddr)
-		} else {
-			// If the new allowance is not 0, we need to set it in the store.
-			err = p.erc20Keeper.SetAllowance(ctx, p.Address(), owner, spenderAddr, newAllowance)
-		}
-		if err != nil {
-			return nil, ConvertErrToERC20Error(err)
-		}
+	if newAllowance.Sign() == 0 {
+		// If the new allowance is 0, we need to delete it from the store.
+		err = p.erc20Keeper.DeleteAllowance(ctx, p.Address(), owner, spenderAddr)
+	} else {
+		// If the new allowance is not 0, we need to set it in the store.
+		err = p.erc20Keeper.SetAllowance(ctx, p.Address(), owner, spenderAddr, newAllowance)
+	}
+	if err != nil {
+		return nil, ConvertErrToERC20Error(err)
 	}
 
 	msgSrv := NewMsgServerImpl(p.BankKeeper)
@@ -336,10 +326,8 @@ func (p *Precompile) BurnFrom(
 
 	// NOTE: if it's a direct transfer, we return here but if used through transferFrom,
 	// we need to emit the approval event with the new allowance.
-	if isBurnFrom {
-		if err = p.EmitApprovalEvent(ctx, stateDB, owner, spenderAddr, newAllowance); err != nil {
-			return nil, err
-		}
+	if err = p.EmitApprovalEvent(ctx, stateDB, owner, spenderAddr, newAllowance); err != nil {
+		return nil, err
 	}
 
 	return method.Outputs.Pack()
@@ -364,7 +352,7 @@ func (p *Precompile) TransferOwnership(
 		return nil, ConvertErrToERC20Error(ErrSenderIsNotOwner)
 	}
 
-	err = p.erc20Keeper.TransferOwnership(ctx, sender, sdk.AccAddress(newOwner.Bytes()), p.tokenPair.GetERC20Contract().Hex())
+	err = p.erc20Keeper.TransferOwnership(ctx, sender, newOwner.Bytes(), p.tokenPair.GetERC20Contract().Hex())
 	if err != nil {
 		return nil, ConvertErrToERC20Error(err)
 	}
