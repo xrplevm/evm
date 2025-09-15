@@ -278,14 +278,13 @@ func (p *Precompile) BurnFrom(
 		return nil, err
 	}
 	spenderAddr := contract.Caller()
-	newAllowance := big.NewInt(0)
 
 	prevAllowance, err := p.erc20Keeper.GetAllowance(ctx, p.Address(), owner, spenderAddr)
 	if err != nil {
 		return nil, ConvertErrToERC20Error(err)
 	}
 
-	newAllowance = new(big.Int).Sub(prevAllowance, amount)
+	newAllowance := new(big.Int).Sub(prevAllowance, amount)
 	if newAllowance.Sign() < 0 {
 		return nil, ErrInsufficientAllowance
 	}
