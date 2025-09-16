@@ -10,6 +10,7 @@ import (
 )
 
 // validateApprovalEventDoesNotExist returns an error if the given transactions logs include
+// an unexpected `Approval` event
 func validateApprovalEventDoesNotExist(logs []*types.Log) error {
 	for _, log := range logs {
 		if log.Topics[0] == logApprovalSigHash.Hex() {

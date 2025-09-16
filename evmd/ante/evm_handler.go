@@ -18,5 +18,6 @@ func newMonoEVMAnteHandler(options ante.HandlerOptions) sdk.AnteHandler {
 		),
 		ante.NewTxListenerDecorator(options.PendingTxListener),
 	}
+
 	return sdk.ChainAnteDecorators(decorators...)
 }
