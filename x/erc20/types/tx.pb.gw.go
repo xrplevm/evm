@@ -404,9 +404,9 @@ var (
 
 	pattern_Msg_ConvertCoin_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"cosmos", "evm", "erc20", "v1", "tx", "convert_coin"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Msg_Mint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"evmos", "erc20", "v1", "tx", "mint"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Msg_Mint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"cosmos", "evm", "erc20", "v1", "tx", "mint"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Msg_Burn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"evmos", "erc20", "v1", "tx", "burn"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Msg_Burn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"cosmos", "evm", "erc20", "v1", "tx", "burn"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (
