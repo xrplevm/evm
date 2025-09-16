@@ -9,6 +9,7 @@ import (
 	txsigning "cosmossdk.io/x/tx/signing"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
@@ -31,6 +32,8 @@ type HandlerOptions struct {
 	MaxTxGasWanted         uint64
 	TxFeeChecker           ante.TxFeeChecker
 	PendingTxListener      PendingTxListener
+	ExtraDecorator         sdk.AnteDecorator
+	AuthzDisabledMsgTypes  []string
 }
 
 // Validate checks if the keepers are defined
@@ -62,7 +65,6 @@ func (options HandlerOptions) Validate() error {
 	if options.TxFeeChecker == nil {
 		return errorsmod.Wrap(errortypes.ErrLogic, "tx fee checker is required for AnteHandler")
 	}
-
 	if options.PendingTxListener == nil {
 		return errorsmod.Wrap(errortypes.ErrLogic, "pending tx listener is required for AnteHandler")
 	}
