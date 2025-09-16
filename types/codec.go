@@ -12,11 +12,11 @@ import (
 func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*sdktypes.AccountI)(nil),
-		//&EthAccount{},
+		// &EthAccount{},
 	)
 	registry.RegisterImplementations(
 		(*authtypes.GenesisAccount)(nil),
-		//&EthAccount{},
+		// &EthAccount{},
 	)
 	registry.RegisterImplementations(
 		(*tx.TxExtensionOptionI)(nil),
