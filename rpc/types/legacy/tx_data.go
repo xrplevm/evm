@@ -18,8 +18,6 @@ var (
 // TxData implements the Ethereum transaction tx structure. It is used
 // solely as intended in Ethereum abiding by the protocol.
 type TxData interface {
-	// TODO: embed ethtypes.TxData. See https://github.com/ethereum/go-ethereum/issues/23154
-
 	TxType() byte
 	Copy() TxData
 	GetChainID() *big.Int
