@@ -1,12 +1,12 @@
 package types
 
 import (
+	legacytypes "github.com/cosmos/evm/rpc/types/legacy"
+
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	legacytypes "github.com/cosmos/evm/rpc/types/legacy"
 )
 
 // RegisterInterfaces registers the CometBFT concrete client-related
@@ -40,7 +40,7 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 	)
 
 	registry.RegisterImplementations(
-		(*sdk.Msg)(nil),
+		(*sdktypes.Msg)(nil),
 		&legacytypes.MsgEthereumTx{},
 		&legacytypes.MsgUpdateParams{},
 	)

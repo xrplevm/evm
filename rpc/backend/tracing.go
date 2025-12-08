@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
@@ -13,6 +12,7 @@ import (
 	tmrpcclient "github.com/cometbft/cometbft/rpc/client"
 	tmrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	rpctypes "github.com/cosmos/evm/rpc/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 

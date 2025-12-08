@@ -7,7 +7,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -18,6 +17,7 @@ import (
 	"github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/cosmos/evm/rpc/types"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	"github.com/cosmos/evm/utils"

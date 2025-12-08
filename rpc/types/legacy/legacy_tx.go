@@ -5,11 +5,12 @@ package types
 import (
 	"math/big"
 
-	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
-
-	errorsmod "cosmossdk.io/errors"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+
+	errorsmod "cosmossdk.io/errors"
+
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func NewLegacyTx(tx *ethtypes.Transaction) (*LegacyTx, error) {

@@ -3,10 +3,11 @@ package eth
 import (
 	"math/big"
 
-	legacytypes "github.com/cosmos/evm/rpc/types/legacy"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+
+	legacytypes "github.com/cosmos/evm/rpc/types/legacy"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
 var _ TxMsg = LegacyEvmosEthTxMsg{}
@@ -34,8 +35,8 @@ func (m LegacyEvmosEthTxMsg) Hash() common.Hash {
 // GetSenderLegacy returns the sender address for the legacy Evmos type
 func (m LegacyEvmosEthTxMsg) GetSenderLegacy(signer ethtypes.Signer) (common.Address, error) {
 	// If From field is set, use it
-	if m.MsgEthereumTx.From != "" {
-		return common.HexToAddress(m.MsgEthereumTx.From), nil
+	if m.From != "" {
+		return common.HexToAddress(m.From), nil
 	}
 	// Otherwise recover from signature
 	tx := m.AsTransaction()
@@ -44,7 +45,7 @@ func (m LegacyEvmosEthTxMsg) GetSenderLegacy(signer ethtypes.Signer) (common.Add
 		return common.Address{}, err
 	}
 	// Cache the sender for future use
-	m.MsgEthereumTx.From = sender.Hex()
+	m.From = sender.Hex()
 	return sender, nil
 }
 

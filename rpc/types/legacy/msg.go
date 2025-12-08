@@ -7,10 +7,14 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	protov2 "google.golang.org/protobuf/proto"
 
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -20,10 +24,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
-
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
 
 var (
@@ -40,82 +40,6 @@ const (
 	// TypeMsgEthereumTx defines the type string of an Ethereum transaction
 	TypeMsgEthereumTx = "ethereum_tx"
 )
-
-func newMsgEthereumTx(
-	tx *EvmTxArgs,
-) *MsgEthereumTx {
-	var (
-		cid, amt, gp *sdkmath.Int
-		toAddr       string
-		txData       TxData
-	)
-
-	if tx.To != nil {
-		toAddr = tx.To.Hex()
-	}
-
-	if tx.Amount != nil {
-		amountInt := sdkmath.NewIntFromBigInt(tx.Amount)
-		amt = &amountInt
-	}
-
-	if tx.ChainID != nil {
-		chainIDInt := sdkmath.NewIntFromBigInt(tx.ChainID)
-		cid = &chainIDInt
-	}
-
-	if tx.GasPrice != nil {
-		gasPriceInt := sdkmath.NewIntFromBigInt(tx.GasPrice)
-		gp = &gasPriceInt
-	}
-
-	switch {
-	case tx.GasFeeCap != nil:
-		gtc := sdkmath.NewIntFromBigInt(tx.GasTipCap)
-		gfc := sdkmath.NewIntFromBigInt(tx.GasFeeCap)
-
-		txData = &DynamicFeeTx{
-			ChainID:   cid,
-			Amount:    amt,
-			To:        toAddr,
-			GasTipCap: &gtc,
-			GasFeeCap: &gfc,
-			Nonce:     tx.Nonce,
-			GasLimit:  tx.GasLimit,
-			Data:      tx.Input,
-			Accesses:  NewAccessList(tx.Accesses),
-		}
-	case tx.Accesses != nil:
-		txData = &AccessListTx{
-			ChainID:  cid,
-			Nonce:    tx.Nonce,
-			To:       toAddr,
-			Amount:   amt,
-			GasLimit: tx.GasLimit,
-			GasPrice: gp,
-			Data:     tx.Input,
-			Accesses: NewAccessList(tx.Accesses),
-		}
-	default:
-		txData = &LegacyTx{
-			To:       toAddr,
-			Amount:   amt,
-			GasPrice: gp,
-			Nonce:    tx.Nonce,
-			GasLimit: tx.GasLimit,
-			Data:     tx.Input,
-		}
-	}
-
-	dataAny, err := PackTxData(txData)
-	if err != nil {
-		panic(err)
-	}
-
-	msg := MsgEthereumTx{Data: dataAny}
-	msg.Hash = msg.AsTransaction().Hash().Hex()
-	return &msg
-}
 
 // FromEthereumTx populates the message fields from the given ethereum transaction
 func (msg *MsgEthereumTx) FromEthereumTx(tx *ethtypes.Transaction) error {

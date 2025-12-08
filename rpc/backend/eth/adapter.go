@@ -3,9 +3,10 @@ package eth
 import (
 	"fmt"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	legacytypes "github.com/cosmos/evm/rpc/types/legacy"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // AdaptEthTxMsg converts an sdk.Msg to our unified TxMsg interface.

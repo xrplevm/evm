@@ -3,9 +3,10 @@ package eth
 import (
 	"fmt"
 
-	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
 var _ TxMsg = NewEVMEthTxMsg{}

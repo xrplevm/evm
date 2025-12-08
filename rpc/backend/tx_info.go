@@ -6,7 +6,6 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -15,6 +14,7 @@ import (
 	cmtrpcclient "github.com/cometbft/cometbft/rpc/client"
 	cmtrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	rpctypes "github.com/cosmos/evm/rpc/types"
 	"github.com/cosmos/evm/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"

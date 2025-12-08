@@ -5,9 +5,8 @@ package types
 import (
 	"math/big"
 
-	ethtypes "github.com/ethereum/go-ethereum/core/types"
-
 	"github.com/ethereum/go-ethereum/common"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
 
 // EvmTxArgs encapsulates all possible params to create all EVM txs types.

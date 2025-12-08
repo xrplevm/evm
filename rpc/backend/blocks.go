@@ -5,7 +5,6 @@ import (
 	"math/big"
 	"strconv"
 
-	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -17,6 +16,7 @@ import (
 
 	cmtrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	rpctypes "github.com/cosmos/evm/rpc/types"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
