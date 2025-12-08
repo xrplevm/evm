@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -88,11 +89,12 @@ func (b *Backend) getAccountNonce(accAddr common.Address, pending bool, height i
 	}
 
 	// add the uncommitted txs to the nonce counter
-	// only supports `MsgEthereumTx` style tx
+	// supports both new EVM and legacy Evmos `MsgEthereumTx` style tx
 	for _, tx := range pendingTxs {
 		for _, msg := range (*tx).GetMsgs() {
-			ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
 				// not ethereum tx
 				break
 			}
@@ -213,8 +215,9 @@ func (b *Backend) ProcessBlock(
 		}
 		txGasUsed := uint64(cometTxResult.GasUsed) // #nosec G115
 		for _, msg := range tx.GetMsgs() {
-			ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
 				continue
 			}
 			tx := ethMsg.AsTransaction()

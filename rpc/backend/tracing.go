@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
@@ -57,12 +58,19 @@ func (b *Backend) TraceTransaction(hash common.Hash, config *rpctypes.TraceConfi
 			continue
 		}
 		for _, msg := range tx.GetMsgs() {
-			ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
 				continue
 			}
 
-			predecessors = append(predecessors, ethMsg)
+			// Convert to new format for predecessors
+			convertedMsg, err := eth.ConvertToNewEVMMsgWithChainID(ethMsg, b.EvmChainID)
+			if err != nil {
+				b.Logger.Debug("failed to convert ethereum tx", "height", blk.Block.Height, "error", err.Error())
+				continue
+			}
+			predecessors = append(predecessors, convertedMsg)
 		}
 	}
 
@@ -75,17 +83,31 @@ func (b *Backend) TraceTransaction(hash common.Hash, config *rpctypes.TraceConfi
 	// add predecessor messages in current cosmos tx
 	index := int(transaction.MsgIndex) // #nosec G115
 	for i := 0; i < index; i++ {
-		ethMsg, ok := tx.GetMsgs()[i].(*evmtypes.MsgEthereumTx)
-		if !ok {
+		ethMsg := eth.TryAdaptEthTxMsg(tx.GetMsgs()[i])
+		if ethMsg == nil {
 			continue
 		}
-		predecessors = append(predecessors, ethMsg)
+		// Convert to new format for predecessors
+		convertedMsg, err := eth.ConvertToNewEVMMsgWithChainID(ethMsg, b.EvmChainID)
+		if err != nil {
+			b.Logger.Debug("failed to convert ethereum tx", "error", err.Error())
+			continue
+		}
+		predecessors = append(predecessors, convertedMsg)
 	}
 
-	ethMessage, ok := tx.GetMsgs()[transaction.MsgIndex].(*evmtypes.MsgEthereumTx)
-	if !ok {
+	// Adapt the target message
+	adaptedMsg, err := eth.AdaptEthTxMsg(tx.GetMsgs()[transaction.MsgIndex])
+	if err != nil {
 		b.Logger.Debug("invalid transaction type", "type", fmt.Sprintf("%T", tx))
 		return nil, fmt.Errorf("invalid transaction type %T", tx)
+	}
+
+	// Convert to new format
+	ethMessage, err := eth.ConvertToNewEVMMsgWithChainID(adaptedMsg, b.EvmChainID)
+	if err != nil {
+		b.Logger.Debug("failed to convert ethereum tx", "error", err.Error())
+		return nil, fmt.Errorf("failed to convert ethereum tx: %w", err)
 	}
 
 	nc, ok := b.ClientCtx.Client.(tmrpcclient.NetworkClient)
@@ -179,12 +201,19 @@ func (b *Backend) TraceBlock(height rpctypes.BlockNumber,
 		}
 
 		for _, msg := range decodedTx.GetMsgs() {
-			ethMessage, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
 				// Just considers Ethereum transactions
 				continue
 			}
-			txsMessages = append(txsMessages, ethMessage)
+			// Convert to new format
+			convertedMsg, err := eth.ConvertToNewEVMMsgWithChainID(ethMsg, b.EvmChainID)
+			if err != nil {
+				b.Logger.Debug("failed to convert ethereum tx", "error", err.Error())
+				continue
+			}
+			txsMessages = append(txsMessages, convertedMsg)
 		}
 	}
 
