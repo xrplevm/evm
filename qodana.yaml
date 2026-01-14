@@ -11,6 +11,10 @@ linter: jetbrains/qodana-go:2025.2
 profile:
   name: qodana.recommended
 
-# Enable license checks
+# Enable license checks and specific Docker inspections
 include:
   - name: CheckDependencyLicenses
+  - name: DockerfileOptimization
+  - name: DockerfilePostInstallClean
+  - name: DockerfileMissingCommand
+  - name: DockerfileMiddleInstruction
