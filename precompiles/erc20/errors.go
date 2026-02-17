@@ -31,6 +31,11 @@ var (
 	ErrDecreasedAllowanceBelowZero  = errors.New("ERC20: decreased allowance below zero")
 	ErrInsufficientAllowance        = errors.New("ERC20: insufficient allowance")
 	ErrTransferAmountExceedsBalance = errors.New("ERC20: transfer amount exceeds balance")
+	ErrOwnableInvalidOwner          = errors.New("ERC20: invalid new owner")
+	ErrOwnableUnauthorizedAccount   = errors.New("ERC20: unauthorized account")
+	ErrMinterIsNotOwner             = errors.New("ERC20: minter is not the owner")
+	ErrSenderIsNotOwner             = errors.New("ERC20: sender is not the owner")
+	ErrContractOwnerNotFound        = errors.New("ERC20: contract owner not found")
 )
 
 // ConvertErrToERC20Error is a helper function which maps errors raised by the Cosmos SDK stack
@@ -49,6 +54,12 @@ func ConvertErrToERC20Error(err error) error {
 		return ErrDecreasedAllowanceBelowZero
 	case strings.Contains(err.Error(), cmn.ErrIntegerOverflow):
 		return vm.ErrExecutionReverted
+	case strings.Contains(err.Error(), "invalid owner"):
+		return ErrOwnableInvalidOwner
+	case strings.Contains(err.Error(), "unauthorized") || strings.Contains(err.Error(), "authorization not found"):
+		return ErrOwnableUnauthorizedAccount
+	case strings.Contains(err.Error(), "minter is not the owner"):
+		return ErrMinterIsNotOwner
 	case errors.Is(err, ibc.ErrNoIBCVoucherDenom) ||
 		errors.Is(err, ibc.ErrDenomNotFound) ||
 		strings.Contains(err.Error(), "invalid base denomination") ||
