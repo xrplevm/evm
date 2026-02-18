@@ -19,6 +19,7 @@ import (
 	cmtrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
 	"github.com/cosmos/evm/mempool/txpool"
+	"github.com/cosmos/evm/rpc/backend/eth"
 	rpctypes "github.com/cosmos/evm/rpc/types"
 	servertypes "github.com/cosmos/evm/server/types"
 	"github.com/cosmos/evm/utils"
@@ -47,9 +48,16 @@ func (b *Backend) GetTransactionByHash(txHash common.Hash) (*rpctypes.RPCTransac
 	}
 
 	// the `res.MsgIndex` is inferred from tx index, should be within the bound.
-	msg, ok := tx.GetMsgs()[res.MsgIndex].(*evmtypes.MsgEthereumTx)
-	if !ok {
-		return nil, errors.New("invalid ethereum tx")
+	// Support both new EVM and legacy Evmos message types
+	ethMsg, err := eth.AdaptEthTxMsg(tx.GetMsgs()[res.MsgIndex])
+	if err != nil {
+		return nil, fmt.Errorf("invalid ethereum tx: %w", err)
+	}
+
+	// Convert to new format for further processing
+	msg, err := eth.ConvertToNewEVMMsgWithChainID(ethMsg, b.EvmChainID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert ethereum tx: %w", err)
 	}
 
 	blockRes, err := b.RPCClient.BlockResults(b.Ctx, &block.Block.Height)
@@ -192,7 +200,19 @@ func (b *Backend) GetTransactionReceipt(hash common.Hash) (map[string]interface{
 		return nil, fmt.Errorf("block result not found at height %d: %w", res.Height, err)
 	}
 
-	ethMsg := tx.GetMsgs()[res.MsgIndex].(*evmtypes.MsgEthereumTx)
+	// Support both new EVM and legacy Evmos message types
+	adaptedMsg, err := eth.AdaptEthTxMsg(tx.GetMsgs()[res.MsgIndex])
+	if err != nil {
+		b.Logger.Debug("invalid ethereum tx", "error", err.Error())
+		return nil, fmt.Errorf("invalid ethereum tx: %w", err)
+	}
+
+	// Convert to new format for receipt formatting
+	ethMsg, err := eth.ConvertToNewEVMMsgWithChainID(adaptedMsg, b.EvmChainID)
+	if err != nil {
+		b.Logger.Debug("failed to convert ethereum tx", "error", err.Error())
+		return nil, fmt.Errorf("failed to convert ethereum tx: %w", err)
+	}
 	receipts, err := b.ReceiptsFromCometBlock(resBlock, blockRes, []*evmtypes.MsgEthereumTx{ethMsg})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get receipts from comet block")
@@ -374,11 +394,17 @@ func (b *Backend) GetTransactionByBlockAndIndex(block *cmtrpctypes.ResultBlock, 
 			return nil, nil
 		}
 
-		var ok bool
 		// msgIndex is inferred from tx events, should be within bound.
-		msg, ok = tx.GetMsgs()[res.MsgIndex].(*evmtypes.MsgEthereumTx)
-		if !ok {
+		// Support both new EVM and legacy Evmos message types
+		adaptedMsg, err := eth.AdaptEthTxMsg(tx.GetMsgs()[res.MsgIndex])
+		if err != nil {
 			b.Logger.Debug("invalid ethereum tx", "height", block.Block.Header, "index", idx)
+			return nil, nil
+		}
+		// Convert to new format
+		msg, err = eth.ConvertToNewEVMMsgWithChainID(adaptedMsg, b.EvmChainID)
+		if err != nil {
+			b.Logger.Debug("failed to convert ethereum tx", "height", block.Block.Header, "index", idx, "error", err.Error())
 			return nil, nil
 		}
 	} else {

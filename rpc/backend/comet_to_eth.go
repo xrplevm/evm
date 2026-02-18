@@ -13,6 +13,7 @@ import (
 
 	cmtrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	rpctypes "github.com/cosmos/evm/rpc/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 
@@ -110,12 +111,22 @@ func (b *Backend) EthMsgsFromCometBlock(
 		}
 
 		for _, msg := range tx.GetMsgs() {
-			ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
+				// Not an Ethereum transaction message
 				continue
 			}
 
-			result = append(result, ethMsg)
+			// Convert to new EVM format for return
+			// Use the chain ID from the backend
+			convertedMsg, err := eth.ConvertToNewEVMMsgWithChainID(ethMsg, b.EvmChainID)
+			if err != nil {
+				b.Logger.Debug("failed to convert ethereum tx", "height", block.Height, "error", err.Error())
+				continue
+			}
+
+			result = append(result, convertedMsg)
 		}
 	}
 
