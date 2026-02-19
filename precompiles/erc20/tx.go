@@ -5,11 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/vm"
-
-	"github.com/cosmos/evm/utils"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
 
 	"cosmossdk.io/math"
 
@@ -169,19 +165,6 @@ func (p *Precompile) Mint(
 		return nil, ConvertErrToERC20Error(err)
 	}
 
-	// TODO: Properly handle native balance changes via the balance handler.Expand commentComment on line R188Resolved
-	// Currently, decimal conversion issues exist with the precisebank module.
-	// As a temporary workaround, balances are adjusted directly using add/sub operations.
-	evmDenom := evmtypes.GetEVMCoinDenom()
-	if p.tokenPair.Denom == evmDenom {
-		convertedAmount, err := utils.Uint256FromBigInt(evmtypes.ConvertAmountTo18DecimalsBigInt(amount))
-		if err != nil {
-			return nil, err
-		}
-
-		stateDB.AddBalance(to, convertedAmount, tracing.BalanceChangeUnspecified)
-	}
-
 	if err = p.EmitTransferEvent(ctx, stateDB, ZeroAddress, to, amount); err != nil {
 		return nil, err
 	}
@@ -290,19 +273,6 @@ func (p *Precompile) BurnFrom(
 		return nil, ConvertErrToERC20Error(err)
 	}
 
-	// TODO: Properly handle native balance changes via the balance handler.Expand commentComment on line R309Resolved
-	// Currently, decimal conversion issues exist with the precisebank module.Expand commentComment on line R310Resolved
-	// As a temporary workaround, balances are adjusted directly using add/sub operations.
-	evmDenom := evmtypes.GetEVMCoinDenom()
-	if p.tokenPair.Denom == evmDenom {
-		convertedAmount, err := utils.Uint256FromBigInt(evmtypes.ConvertAmountTo18DecimalsBigInt(amount))
-		if err != nil {
-			return nil, err
-		}
-
-		stateDB.SubBalance(owner, convertedAmount, tracing.BalanceChangeUnspecified)
-	}
-
 	if err = p.EmitTransferEvent(ctx, stateDB, owner, ZeroAddress, amount); err != nil {
 		return nil, err
 	}
@@ -357,19 +327,6 @@ func (p *Precompile) burn(ctx sdk.Context, stateDB vm.StateDB, burnerAddr common
 	err := p.erc20Keeper.BurnCoins(ctx, burner, math.NewIntFromBigInt(amount), p.tokenPair.GetERC20Contract().Hex())
 	if err != nil {
 		return ConvertErrToERC20Error(err)
-	}
-
-	// TODO: Properly handle native balance changes via the balance handler.
-	// Currently, decimal conversion issues exist with the precisebank module.
-	// As a temporary workaround, balances are adjusted directly using add/sub operations.
-	evmDenom := evmtypes.GetEVMCoinDenom()
-	if p.tokenPair.Denom == evmDenom {
-		convertedAmount, err := utils.Uint256FromBigInt(evmtypes.ConvertAmountTo18DecimalsBigInt(amount))
-		if err != nil {
-			return err
-		}
-
-		stateDB.SubBalance(burnerAddr, convertedAmount, tracing.BalanceChangeUnspecified)
 	}
 
 	return p.EmitTransferEvent(ctx, stateDB, burnerAddr, ZeroAddress, amount)
