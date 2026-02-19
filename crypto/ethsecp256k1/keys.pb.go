@@ -118,12 +118,12 @@ func (m *PrivKey) GetKey() []byte {
 }
 
 func init() {
-	proto.RegisterType((*PubKey)(nil), "cosmos.evm.crypto.v1.ethsecp256k1.PubKey")
-	proto.RegisterType((*PrivKey)(nil), "cosmos.evm.crypto.v1.ethsecp256k1.PrivKey")
+	proto.RegisterType((*PubKey)(nil), "ethermint.crypto.v1.ethsecp256k1.PubKey")
+	proto.RegisterType((*PrivKey)(nil), "ethermint.crypto.v1.ethsecp256k1.PrivKey")
 }
 
 func init() {
-	proto.RegisterFile("cosmos/evm/crypto/v1/ethsecp256k1/keys.proto", fileDescriptor_3033ac433209de5f)
+	proto.RegisterFile("ethermint/crypto/v1/ethsecp256k1/keys.proto", fileDescriptor_3033ac433209de5f)
 }
 
 var fileDescriptor_3033ac433209de5f = []byte{
