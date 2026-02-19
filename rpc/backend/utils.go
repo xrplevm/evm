@@ -18,6 +18,7 @@ import (
 	"github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 
+	"github.com/cosmos/evm/rpc/backend/eth"
 	"github.com/cosmos/evm/rpc/types"
 	"github.com/cosmos/evm/utils"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
@@ -91,8 +92,9 @@ func (b *Backend) getAccountNonce(accAddr common.Address, pending bool, height i
 	// only supports `MsgEthereumTx` style tx
 	for _, tx := range pendingTxs {
 		for _, msg := range (*tx).GetMsgs() {
-			ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
 				// not ethereum tx
 				break
 			}
@@ -247,8 +249,9 @@ func (b *Backend) ProcessBlock(
 		}
 		txGasUsed := uint64(cometTxResult.GasUsed) // #nosec G115
 		for _, msg := range tx.GetMsgs() {
-			ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
-			if !ok {
+			// Try to adapt the message to our unified interface
+			ethMsg := eth.TryAdaptEthTxMsg(msg)
+			if ethMsg == nil {
 				continue
 			}
 			tx := ethMsg.AsTransaction()

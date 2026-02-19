@@ -2,6 +2,7 @@ package eip712
 
 import (
 	antetypes "github.com/cosmos/evm/ante/types"
+	legacytypes "github.com/cosmos/evm/rpc/types/legacy"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
@@ -26,5 +27,27 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 		(*tx.TxExtensionOptionI)(nil),
 		&ExtensionOptionsWeb3Tx{},
 		&antetypes.ExtensionOptionDynamicFeeTx{},
+	)
+
+	// Register the TxData interface for legacy ethermint transaction types.
+	// These are needed to decode pre-v9 upgrade transactions that use ethermint.evm.v1 proto package.
+	// The proto types are registered in evm/rpc/types/legacy/tx.pb.go via init().
+	registry.RegisterInterface(
+		"ethermint.evm.v1.TxData",
+		(*legacytypes.TxData)(nil),
+		&legacytypes.LegacyTx{},
+		&legacytypes.AccessListTx{},
+		&legacytypes.DynamicFeeTx{},
+	)
+
+	registry.RegisterImplementations(
+		(*sdktypes.Msg)(nil),
+		&legacytypes.MsgEthereumTx{},
+		&legacytypes.MsgUpdateParams{},
+	)
+
+	registry.RegisterImplementations(
+		(*tx.TxExtensionOptionI)(nil),
+		&legacytypes.ExtensionOptionsEthereumTx{},
 	)
 }
