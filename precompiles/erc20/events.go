@@ -21,7 +21,7 @@ const (
 	EventTypeApproval = "Approval"
 
 	// EventTypeTransferOwnership defines the event type for the ERC-20 transferOwnership transaction.
-	EventTypeTransferOwnership = "TransferOwnership"
+	EventTypeTransferOwnership = "OwnershipTransferred"
 )
 
 // EmitTransferEvent creates a new Transfer event emitted on transfer and transferFrom transactions.
