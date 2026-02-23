@@ -97,7 +97,10 @@ func GetEVMCoinDisplayDenom() string {
 
 // setEVMCoinInfo allows to define denom and decimals of the coin used in the EVM.
 func setEVMCoinInfo(eci EvmCoinInfo) error {
-	if evmCoinInfo != nil {
+	if evmCoinInfo != nil && (evmCoinInfo.Denom != eci.Denom ||
+		evmCoinInfo.ExtendedDenom != eci.ExtendedDenom ||
+		evmCoinInfo.DisplayDenom != eci.DisplayDenom ||
+		evmCoinInfo.Decimals != eci.Decimals) {
 		return errors.New("EVM coin info already set")
 	}
 
