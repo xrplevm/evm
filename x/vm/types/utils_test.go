@@ -205,6 +205,21 @@ func createTxResponseData(t *testing.T, key string) ([]byte, []*evmtypes.MsgEthe
 		}
 		txDataBz, _ := proto.Marshal(txData)
 		return txDataBz, []*evmtypes.MsgEthereumTxResponse{evmData}
+	case "legacy":
+		data := &evmtypes.MsgEthereumTxResponse{
+			Hash: common.BytesToHash([]byte("legacy_hash")).String(),
+			Ret:  []byte{0xAB},
+		}
+		dataBz, _ := proto.Marshal(data)
+		legacyAny := &codectypes.Any{
+			TypeUrl: "/ethermint.evm.v1.MsgEthereumTxResponse",
+			Value:   dataBz,
+		}
+		txData := &sdk.TxMsgData{
+			MsgResponses: []*codectypes.Any{legacyAny},
+		}
+		txDataBz, _ := proto.Marshal(txData)
+		return txDataBz, []*evmtypes.MsgEthereumTxResponse{data}
 	case "invalid":
 		return []byte("invalid protobuf data"), nil
 	case "nil":
@@ -264,6 +279,13 @@ func TestDecodeTxResponses(t *testing.T) {
 			expectLength: 0,
 			expectNil:    true,
 		},
+		{
+			name:         "legacy ethermint type url",
+			txDataKey:    "legacy",
+			expectError:  false,
+			expectLength: 1,
+			expectNil:    false,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -301,6 +323,11 @@ func TestDecodeTxResponses(t *testing.T) {
 				if tc.name == "mixed response types" {
 					require.Equal(t, common.BytesToHash([]byte("evm_hash")).String(), results[0].Hash)
 					require.Equal(t, []byte{0x99}, results[0].Ret)
+				}
+
+				if tc.name == "legacy ethermint type url" {
+					require.Equal(t, common.BytesToHash([]byte("legacy_hash")).String(), results[0].Hash)
+					require.Equal(t, []byte{0xAB}, results[0].Ret)
 				}
 			}
 		})

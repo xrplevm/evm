@@ -32,6 +32,10 @@ var (
 	EmptyCodeHash = crypto.Keccak256(nil)
 )
 
+// legacyMsgEthereumTxResponseTypeURL is the TypeUrl used by legacy Ethermint blocks.
+// It is need it for backward compatibility with legacy blocks.
+const legacyMsgEthereumTxResponseTypeURL = "/ethermint.evm.v1.MsgEthereumTxResponse"
+
 // IsEmptyCodeHash checks if the given byte slice represents an empty code hash.
 func IsEmptyCodeHash(bz []byte) bool {
 	return bytes.Equal(bz, EmptyCodeHash)
@@ -58,14 +62,14 @@ func DecodeTxResponses(in []byte) ([]*MsgEthereumTxResponse, error) {
 	if err := proto.Unmarshal(in, &txMsgData); err != nil {
 		return nil, err
 	}
+	newTypeURL := "/" + proto.MessageName(&MsgEthereumTxResponse{})
 	responses := make([]*MsgEthereumTxResponse, 0, len(txMsgData.MsgResponses))
 	for _, res := range txMsgData.MsgResponses {
-		var response MsgEthereumTxResponse
-		if res.TypeUrl != "/"+proto.MessageName(&response) {
+		if res.TypeUrl != newTypeURL && res.TypeUrl != legacyMsgEthereumTxResponseTypeURL {
 			continue
 		}
-		err := proto.Unmarshal(res.Value, &response)
-		if err != nil {
+		var response MsgEthereumTxResponse
+		if err := proto.Unmarshal(res.Value, &response); err != nil {
 			return nil, errorsmod.Wrap(err, "failed to unmarshal tx response message data")
 		}
 		responses = append(responses, &response)
