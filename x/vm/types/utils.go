@@ -32,8 +32,8 @@ var (
 	EmptyCodeHash = crypto.Keccak256(nil)
 )
 
-// legacyMsgEthereumTxResponseTypeURL is the TypeUrl used by legacy Ethermint blocks.
-// It is need it for backward compatibility with legacy blocks.
+// legacyMsgEthereumTxResponseTypeURL is the legacy type URL used in older Ethermint tx response Any messages.
+// It is needed for backward compatibility with those legacy Ethermint tx response Any type URLs.
 const legacyMsgEthereumTxResponseTypeURL = "/ethermint.evm.v1.MsgEthereumTxResponse"
 
 // IsEmptyCodeHash checks if the given byte slice represents an empty code hash.
