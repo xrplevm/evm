@@ -68,7 +68,7 @@ func AdaptUnmarshalParams(cdc codec.BinaryCodec, bz []byte) (types.Params, error
 		},
 	}
 
-	parsedParams := types.Params{
+	return types.Params{
 		EvmDenom:                legacy.EvmDenom,
 		ExtraEIPs:               eips,
 		EVMChannels:             legacy.EVMChannels,
@@ -76,7 +76,5 @@ func AdaptUnmarshalParams(cdc codec.BinaryCodec, bz []byte) (types.Params, error
 		ActiveStaticPrecompiles: legacy.ActiveStaticPrecompiles,
 		// HistoryServeWindow and ExtendedDenomOptions are new fields that don't
 		// exist in legacy — Go zero values (0 and nil) are correct defaults.
-	}
-
-	return parsedParams, nil
+	}, nil
 }
