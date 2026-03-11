@@ -20,7 +20,10 @@ func (k Keeper) GetParams(ctx sdk.Context) (params types.Params) {
 	if bz == nil {
 		return params
 	}
-	k.cdc.MustUnmarshal(bz, &params)
+	params, err := AdaptUnmarshalParams(k.cdc, bz)
+	if err != nil {
+		panic(err)
+	}
 	return
 }
 
