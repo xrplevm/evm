@@ -33,6 +33,9 @@ func (k Keeper) TokenPairs(c context.Context, req *types.QueryTokenPairsRequest)
 		if err := k.cdc.Unmarshal(value, &pair); err != nil {
 			return err
 		}
+		if len(pair.OwnerAddresses) > 0 {
+			pair.OwnerAddress = pair.OwnerAddresses[0]
+		}
 		pairs = append(pairs, pair)
 		return nil
 	})
@@ -75,6 +78,9 @@ func (k Keeper) TokenPair(c context.Context, req *types.QueryTokenPairRequest) (
 		return nil, status.Errorf(codes.NotFound, "token pair with token '%s'", req.Token)
 	}
 
+	if len(pair.OwnerAddresses) > 0 {
+		pair.OwnerAddress = pair.OwnerAddresses[0]
+	}
 	return &types.QueryTokenPairResponse{TokenPair: pair}, nil
 }
 
