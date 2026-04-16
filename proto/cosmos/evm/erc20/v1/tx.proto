@@ -50,6 +50,10 @@ service Msg {
   rpc Burn(MsgBurn) returns (MsgBurnResponse) {
     option (google.api.http).post = "/cosmos/evm/erc20/v1/tx/burn";
   };
+  // AddMinter grants minting permissions to an address
+  rpc AddMinter(MsgAddMinter) returns (MsgAddMinterResponse);
+  // RemoveMinter removes minting permissions from an address
+  rpc RemoveMinter(MsgRemoveMinter) returns (MsgRemoveMinterResponse);
 }
 
 // MsgConvertERC20 defines a Msg to convert a ERC20 token to a native Cosmos
@@ -234,4 +238,3 @@ message MsgRemoveMinter {
 
 // MsgRemoveMinterResponse returns no fields
 message MsgRemoveMinterResponse {}
-

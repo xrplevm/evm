@@ -27,6 +27,8 @@ const (
 	Msg_TransferContractOwnership_FullMethodName = "/cosmos.evm.erc20.v1.Msg/TransferContractOwnership"
 	Msg_Mint_FullMethodName                      = "/cosmos.evm.erc20.v1.Msg/Mint"
 	Msg_Burn_FullMethodName                      = "/cosmos.evm.erc20.v1.Msg/Burn"
+	Msg_AddMinter_FullMethodName                 = "/cosmos.evm.erc20.v1.Msg/AddMinter"
+	Msg_RemoveMinter_FullMethodName              = "/cosmos.evm.erc20.v1.Msg/RemoveMinter"
 )
 
 // MsgClient is the client API for Msg service.
@@ -58,6 +60,10 @@ type MsgClient interface {
 	Mint(ctx context.Context, in *MsgMint, opts ...grpc.CallOption) (*MsgMintResponse, error)
 	// Burn burns ERC20 tokens
 	Burn(ctx context.Context, in *MsgBurn, opts ...grpc.CallOption) (*MsgBurnResponse, error)
+	// AddMinter grants minting permissions to an address
+	AddMinter(ctx context.Context, in *MsgAddMinter, opts ...grpc.CallOption) (*MsgAddMinterResponse, error)
+	// RemoveMinter removes minting permissions from an address
+	RemoveMinter(ctx context.Context, in *MsgRemoveMinter, opts ...grpc.CallOption) (*MsgRemoveMinterResponse, error)
 }
 
 type msgClient struct {
@@ -140,6 +146,24 @@ func (c *msgClient) Burn(ctx context.Context, in *MsgBurn, opts ...grpc.CallOpti
 	return out, nil
 }
 
+func (c *msgClient) AddMinter(ctx context.Context, in *MsgAddMinter, opts ...grpc.CallOption) (*MsgAddMinterResponse, error) {
+	out := new(MsgAddMinterResponse)
+	err := c.cc.Invoke(ctx, Msg_AddMinter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RemoveMinter(ctx context.Context, in *MsgRemoveMinter, opts ...grpc.CallOption) (*MsgRemoveMinterResponse, error) {
+	out := new(MsgRemoveMinterResponse)
+	err := c.cc.Invoke(ctx, Msg_RemoveMinter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -169,6 +193,10 @@ type MsgServer interface {
 	Mint(context.Context, *MsgMint) (*MsgMintResponse, error)
 	// Burn burns ERC20 tokens
 	Burn(context.Context, *MsgBurn) (*MsgBurnResponse, error)
+	// AddMinter grants minting permissions to an address
+	AddMinter(context.Context, *MsgAddMinter) (*MsgAddMinterResponse, error)
+	// RemoveMinter removes minting permissions from an address
+	RemoveMinter(context.Context, *MsgRemoveMinter) (*MsgRemoveMinterResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -199,6 +227,12 @@ func (UnimplementedMsgServer) Mint(context.Context, *MsgMint) (*MsgMintResponse,
 }
 func (UnimplementedMsgServer) Burn(context.Context, *MsgBurn) (*MsgBurnResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Burn not implemented")
+}
+func (UnimplementedMsgServer) AddMinter(context.Context, *MsgAddMinter) (*MsgAddMinterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMinter not implemented")
+}
+func (UnimplementedMsgServer) RemoveMinter(context.Context, *MsgRemoveMinter) (*MsgRemoveMinterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveMinter not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -357,6 +391,42 @@ func _Msg_Burn_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_AddMinter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddMinter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).AddMinter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_AddMinter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).AddMinter(ctx, req.(*MsgAddMinter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RemoveMinter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRemoveMinter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RemoveMinter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_RemoveMinter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RemoveMinter(ctx, req.(*MsgRemoveMinter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -395,6 +465,14 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Burn",
 			Handler:    _Msg_Burn_Handler,
+		},
+		{
+			MethodName: "AddMinter",
+			Handler:    _Msg_AddMinter_Handler,
+		},
+		{
+			MethodName: "RemoveMinter",
+			Handler:    _Msg_RemoveMinter_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
