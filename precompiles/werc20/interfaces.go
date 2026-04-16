@@ -16,6 +16,5 @@ type Erc20Keeper interface {
 	DeleteAllowance(ctx sdk.Context, erc20 common.Address, owner common.Address, spender common.Address) error
 	BurnCoins(ctx sdk.Context, sender sdk.AccAddress, amount math.Int, token string) error
 	GetTokenPairOwnerAddress(ctx sdk.Context, token string) (sdk.AccAddress, error)
-	TransferOwnership(ctx sdk.Context, sender sdk.AccAddress, newOwner sdk.AccAddress, token string) error
 	MintCoins(ctx sdk.Context, sender, to sdk.AccAddress, amount math.Int, token string) error
 }
