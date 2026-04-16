@@ -78,11 +78,20 @@ func (k Keeper) MintCoins(ctx sdk.Context, sender, to sdk.AccAddress, amount mat
 		return errorsmod.Wrap(types.ErrNonNativeCoinMintingDisabled, token)
 	}
 
-	contractOwnerAddr, err := sdk.AccAddressFromBech32(pair.OwnerAddress)
-	if err != nil {
-		return errorsmod.Wrapf(err, "invalid owner address")
+	authorized := false
+	for _, addr := range pair.OwnerAddresses {
+		ownerAddr, err := sdk.AccAddressFromBech32(addr)
+		if err != nil {
+			continue
+		}
+
+		if sender.Equals(ownerAddr) {
+			authorized = true
+			break
+		}
 	}
-	if !sender.Equals(contractOwnerAddr) {
+
+	if !authorized {
 		return types.ErrMinterIsNotOwner
 	}
 
