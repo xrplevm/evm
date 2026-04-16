@@ -173,23 +173,7 @@ func (k *Keeper) UpdateParams(goCtx context.Context, req *types.MsgUpdateParams)
 
 // TransferOwnership implements the MsgServer interface for the ERC20 module.
 func (k Keeper) TransferContractOwnership(goCtx context.Context, msg *types.MsgTransferOwnership) (*types.MsgTransferOwnershipResponse, error) {
-	if err := k.validateAuthority(msg.Authority); err != nil {
-		return nil, err
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	newOwner, err := sdk.AccAddressFromBech32(msg.NewOwner)
-	if err != nil {
-		return nil, err
-	}
-
-	err = k.TransferOwnershipProposal(ctx, newOwner, msg.Token)
-	if err != nil {
-		return nil, err
-	}
-
-	return &types.MsgTransferOwnershipResponse{}, nil
+	return nil, types.ErrTransferOwnershipDeprecated
 }
 
 // Mint implements the MsgServer interface for the ERC20 module. It mints ERC20 tokens to a given address.
@@ -300,6 +284,48 @@ func (k *Keeper) ToggleConversion(goCtx context.Context, req *types.MsgToggleCon
 	)
 
 	return &types.MsgToggleConversionResponse{}, nil
+}
+
+// AddMinter implements the MsgServer interface for the ERC20 module. It adds a minter to the ERC20 token.
+func (k *Keeper) AddMinter(goCtx context.Context, msg *types.MsgAddMinter) (*types.MsgAddMinterResponse, error) {
+	if err := k.validateAuthority(msg.Authority); err != nil {
+		return nil, err
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	newMinter, err := sdk.AccAddressFromBech32(msg.MinterAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	err = k.AddMinterAddress(ctx, newMinter, msg.Token)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgAddMinterResponse{}, nil
+}
+
+// RemoveMinter implements the MsgServer interface for the ERC20 module. It removes a minter from the ERC20 token.
+func (k *Keeper) RemoveMinter(goCtx context.Context, msg *types.MsgRemoveMinter) (*types.MsgRemoveMinterResponse, error) {
+	if err := k.validateAuthority(msg.Authority); err != nil {
+		return nil, err
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	delMinter, err := sdk.AccAddressFromBech32(msg.MinterAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	err = k.RemoveMinterAddress(ctx, delMinter, msg.Token)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgRemoveMinterResponse{}, nil
 }
 
 // validateAuthority is a helper function to validate that the provided authority

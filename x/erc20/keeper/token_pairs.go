@@ -240,3 +240,11 @@ func (k Keeper) SetTokenPairOwnerAddress(ctx sdk.Context, pair types.TokenPair, 
 
 	k.SetTokenPair(ctx, pair)
 }
+
+// SetTokenPairOwnerAddresses sets the authorized minter addresses for the token pair
+func (k Keeper) SetTokenPairOwnerAddresses(ctx sdk.Context, pair types.TokenPair, addresses []string) {
+	pair.SetOwnerAddresses(addresses)
+
+	k.SetTokenPair(ctx, pair)
+}
+

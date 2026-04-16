@@ -22,6 +22,8 @@ var (
 	_ sdk.Msg              = &MsgMint{}
 	_ sdk.Msg              = &MsgBurn{}
 	_ sdk.Msg              = &MsgTransferOwnership{}
+	_ sdk.Msg              = &MsgAddMinter{}
+	_ sdk.Msg              = &MsgRemoveMinter{}
 	_ sdk.HasValidateBasic = &MsgConvertERC20{}
 	_ sdk.HasValidateBasic = &MsgConvertCoin{}
 	_ sdk.HasValidateBasic = &MsgUpdateParams{}
@@ -30,6 +32,8 @@ var (
 	_ sdk.HasValidateBasic = &MsgMint{}
 	_ sdk.HasValidateBasic = &MsgBurn{}
 	_ sdk.HasValidateBasic = &MsgTransferOwnership{}
+	_ sdk.HasValidateBasic = &MsgAddMinter{}
+	_ sdk.HasValidateBasic = &MsgRemoveMinter{}
 )
 
 const (
@@ -38,9 +42,12 @@ const (
 
 	TypeMsgMint              = "mint"
 	TypeMsgBurn              = "burn"
-	TypeMsgTransferOwnership = "transfer_ownership"
+	TypeMsgAddMinter         = "add_minter"
+	TypeMsgRemoveMinter      = "remove_minter"
 
-	AttributeKeyNewOwner = "new_owner"
+	AttributeKeyMinterAddress   = "minter_address"
+	AttributeKeyToken           = "token"
+	AttributeKeyOwnerAddresses  = "owner_addresses"
 )
 
 var MsgConvertERC20CustomGetSigner = txsigning.CustomGetSigner{
@@ -159,6 +166,38 @@ func (m *MsgTransferOwnership) ValidateBasic() error {
 
 	if _, err := sdk.AccAddressFromBech32(m.NewOwner); err != nil {
 		return errorsmod.Wrap(err, "invalid new owner address")
+	}
+
+	return nil
+}
+
+func (m MsgAddMinter) ValidateBasic() error {
+	if _, err := sdk.AccAddressFromBech32(m.Authority); err != nil {
+		return errorsmod.Wrap(err, "invalid authority address")
+	}
+
+	if !common.IsHexAddress(m.Token) {
+		return errorsmod.Wrapf(errortypes.ErrInvalidAddress, "invalid ERC20 contract address %s", m.Token)
+	}
+
+	if _, err := sdk.AccAddressFromBech32(m.MinterAddress); err != nil {
+		return errorsmod.Wrap(err, "invalid minter address")
+	}
+
+	return nil
+}
+
+func (m MsgRemoveMinter) ValidateBasic() error {
+	if _, err := sdk.AccAddressFromBech32(m.Authority); err != nil {
+		return errorsmod.Wrap(err, "invalid authority address")
+	}
+
+	if !common.IsHexAddress(m.Token) {
+		return errorsmod.Wrapf(errortypes.ErrInvalidAddress, "invalid ERC20 contract address %s", m.Token)
+	}
+
+	if _, err := sdk.AccAddressFromBech32(m.MinterAddress); err != nil {
+		return errorsmod.Wrap(err, "invalid minter address")
 	}
 
 	return nil
