@@ -219,3 +219,15 @@ func Bytes32ToString(data [32]byte) string {
 	}
 	return string(data[:i])
 }
+
+// HasDuplicates returns true if the slice contains any duplicate elements.
+func HasDuplicates[T comparable](s []T) bool {
+	seen := make(map[T]struct{}, len(s))
+	for _, v := range s {
+		if _, ok := seen[v]; ok {
+			return true
+		}
+		seen[v] = struct{}{}
+	}
+	return false
+}

@@ -1,6 +1,7 @@
 package types
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/cometbft/cometbft/crypto/tmhash"
@@ -54,13 +55,49 @@ func (tp *TokenPair) SetOwnerAddress(address string) {
 	tp.OwnerAddress = address
 }
 
+// SetOwnerAddresses sets the authorized minter addresses for the token pair
+func (tp *TokenPair) SetOwnerAddresses(addresses []string) {
+	tp.OwnerAddresses = addresses
+}
+
 // Validate performs a stateless validation of a TokenPair
 func (tp TokenPair) Validate() error {
 	if err := sdk.ValidateDenom(tp.Denom); err != nil {
 		return err
 	}
 
-	return utils.ValidateAddress(tp.Erc20Address)
+	if err := utils.ValidateAddress(tp.Erc20Address); err != nil {
+		return err
+	}
+
+	if tp.IsNativeCoin() {
+		return validateOwnerAddresses(tp.OwnerAddresses)
+	}
+
+	// Externally owned tokens must not have owner addresses
+	if len(tp.OwnerAddresses) > 0 {
+		return errorsmod.Wrap(ErrExternalTokenNotSupported, "owner_addresses must be empty for externally owned tokens")
+	}
+
+	return nil
+}
+
+func validateOwnerAddresses(addresses []string) error {
+	if len(addresses) == 0 {
+		return errorsmod.Wrap(ErrInvalidOwnerAddresses, "owner addresses cannot be empty")
+	}
+
+	for _, addr := range addresses {
+		if _, err := sdk.AccAddressFromBech32(addr); err != nil {
+			return errorsmod.Wrapf(ErrInvalidOwnerAddresses, "invalid owner address: %s", addr)
+		}
+	}
+
+	if utils.HasDuplicates(addresses) {
+		return errorsmod.Wrap(ErrInvalidOwnerAddresses, "owner addresses cannot contain duplicates")
+	}
+
+	return nil
 }
 
 // IsNativeCoin returns true if the owner of the ERC20 contract is the
