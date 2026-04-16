@@ -80,3 +80,14 @@ func emitEventOwnerAddressesChange(ctx sdk.Context, eventType string, token stri
 		),
 	)
 }
+
+func (k Keeper) MigrateOwnerAddresses(ctx sdk.Context) {
+	tokenPairs := k.GetTokenPairs(ctx)
+	for _, pair := range tokenPairs {
+		if pair.ContractOwner == types.OWNER_MODULE && pair.OwnerAddress != "" {
+			pair.OwnerAddresses = []string{pair.OwnerAddress}
+			pair.OwnerAddress = ""
+			k.SetTokenPair(ctx, pair)
+		}
+	}
+}
