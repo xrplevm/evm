@@ -2671,25 +2671,25 @@ func (x *fastReflection_QueryParamsResponse) ProtoMethods() *protoiface.Methods 
 }
 
 var (
-	md_QueryOwnerAddressRequest                  protoreflect.MessageDescriptor
-	fd_QueryOwnerAddressRequest_contract_address protoreflect.FieldDescriptor
+	md_QueryOwnerAddressesRequest                  protoreflect.MessageDescriptor
+	fd_QueryOwnerAddressesRequest_contract_address protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_cosmos_evm_erc20_v1_query_proto_init()
-	md_QueryOwnerAddressRequest = File_cosmos_evm_erc20_v1_query_proto.Messages().ByName("QueryOwnerAddressRequest")
-	fd_QueryOwnerAddressRequest_contract_address = md_QueryOwnerAddressRequest.Fields().ByName("contract_address")
+	md_QueryOwnerAddressesRequest = File_cosmos_evm_erc20_v1_query_proto.Messages().ByName("QueryOwnerAddressesRequest")
+	fd_QueryOwnerAddressesRequest_contract_address = md_QueryOwnerAddressesRequest.Fields().ByName("contract_address")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryOwnerAddressRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryOwnerAddressesRequest)(nil)
 
-type fastReflection_QueryOwnerAddressRequest QueryOwnerAddressRequest
+type fastReflection_QueryOwnerAddressesRequest QueryOwnerAddressesRequest
 
-func (x *QueryOwnerAddressRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryOwnerAddressRequest)(x)
+func (x *QueryOwnerAddressesRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryOwnerAddressesRequest)(x)
 }
 
-func (x *QueryOwnerAddressRequest) slowProtoReflect() protoreflect.Message {
+func (x *QueryOwnerAddressesRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_cosmos_evm_erc20_v1_query_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2701,43 +2701,43 @@ func (x *QueryOwnerAddressRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryOwnerAddressRequest_messageType fastReflection_QueryOwnerAddressRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryOwnerAddressRequest_messageType{}
+var _fastReflection_QueryOwnerAddressesRequest_messageType fastReflection_QueryOwnerAddressesRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryOwnerAddressesRequest_messageType{}
 
-type fastReflection_QueryOwnerAddressRequest_messageType struct{}
+type fastReflection_QueryOwnerAddressesRequest_messageType struct{}
 
-func (x fastReflection_QueryOwnerAddressRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryOwnerAddressRequest)(nil)
+func (x fastReflection_QueryOwnerAddressesRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryOwnerAddressesRequest)(nil)
 }
-func (x fastReflection_QueryOwnerAddressRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryOwnerAddressRequest)
+func (x fastReflection_QueryOwnerAddressesRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryOwnerAddressesRequest)
 }
-func (x fastReflection_QueryOwnerAddressRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryOwnerAddressRequest
+func (x fastReflection_QueryOwnerAddressesRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryOwnerAddressesRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryOwnerAddressRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryOwnerAddressRequest
+func (x *fastReflection_QueryOwnerAddressesRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryOwnerAddressesRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryOwnerAddressRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryOwnerAddressRequest_messageType
+func (x *fastReflection_QueryOwnerAddressesRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryOwnerAddressesRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryOwnerAddressRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryOwnerAddressRequest)
+func (x *fastReflection_QueryOwnerAddressesRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryOwnerAddressesRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryOwnerAddressRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryOwnerAddressRequest)(x)
+func (x *fastReflection_QueryOwnerAddressesRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryOwnerAddressesRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -2745,10 +2745,10 @@ func (x *fastReflection_QueryOwnerAddressRequest) Interface() protoreflect.Proto
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryOwnerAddressRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryOwnerAddressesRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.ContractAddress != "" {
 		value := protoreflect.ValueOfString(x.ContractAddress)
-		if !f(fd_QueryOwnerAddressRequest_contract_address, value) {
+		if !f(fd_QueryOwnerAddressesRequest_contract_address, value) {
 			return
 		}
 	}
@@ -2765,15 +2765,15 @@ func (x *fastReflection_QueryOwnerAddressRequest) Range(f func(protoreflect.Fiel
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryOwnerAddressRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryOwnerAddressesRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressRequest.contract_address":
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesRequest.contract_address":
 		return x.ContractAddress != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2783,15 +2783,15 @@ func (x *fastReflection_QueryOwnerAddressRequest) Has(fd protoreflect.FieldDescr
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryOwnerAddressesRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressRequest.contract_address":
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesRequest.contract_address":
 		x.ContractAddress = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2801,16 +2801,16 @@ func (x *fastReflection_QueryOwnerAddressRequest) Clear(fd protoreflect.FieldDes
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryOwnerAddressRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryOwnerAddressesRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressRequest.contract_address":
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesRequest.contract_address":
 		value := x.ContractAddress
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2824,15 +2824,15 @@ func (x *fastReflection_QueryOwnerAddressRequest) Get(descriptor protoreflect.Fi
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryOwnerAddressesRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressRequest.contract_address":
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesRequest.contract_address":
 		x.ContractAddress = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2846,40 +2846,40 @@ func (x *fastReflection_QueryOwnerAddressRequest) Set(fd protoreflect.FieldDescr
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryOwnerAddressesRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressRequest.contract_address":
-		panic(fmt.Errorf("field contract_address of message cosmos.evm.erc20.v1.QueryOwnerAddressRequest is not mutable"))
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesRequest.contract_address":
+		panic(fmt.Errorf("field contract_address of message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryOwnerAddressRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryOwnerAddressesRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressRequest.contract_address":
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesRequest.contract_address":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryOwnerAddressRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryOwnerAddressesRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in cosmos.evm.erc20.v1.QueryOwnerAddressRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in cosmos.evm.erc20.v1.QueryOwnerAddressesRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2887,7 +2887,7 @@ func (x *fastReflection_QueryOwnerAddressRequest) WhichOneof(d protoreflect.Oneo
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryOwnerAddressRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryOwnerAddressesRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -2898,7 +2898,7 @@ func (x *fastReflection_QueryOwnerAddressRequest) GetUnknown() protoreflect.RawF
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryOwnerAddressesRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -2910,7 +2910,7 @@ func (x *fastReflection_QueryOwnerAddressRequest) SetUnknown(fields protoreflect
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryOwnerAddressRequest) IsValid() bool {
+func (x *fastReflection_QueryOwnerAddressesRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -2920,9 +2920,9 @@ func (x *fastReflection_QueryOwnerAddressRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryOwnerAddressRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryOwnerAddressesRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryOwnerAddressRequest)
+		x := input.Message.Interface().(*QueryOwnerAddressesRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2948,7 +2948,7 @@ func (x *fastReflection_QueryOwnerAddressRequest) ProtoMethods() *protoiface.Met
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryOwnerAddressRequest)
+		x := input.Message.Interface().(*QueryOwnerAddressesRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2985,7 +2985,7 @@ func (x *fastReflection_QueryOwnerAddressRequest) ProtoMethods() *protoiface.Met
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryOwnerAddressRequest)
+		x := input.Message.Interface().(*QueryOwnerAddressesRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3017,10 +3017,10 @@ func (x *fastReflection_QueryOwnerAddressRequest) ProtoMethods() *protoiface.Met
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressesRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -3090,26 +3090,72 @@ func (x *fastReflection_QueryOwnerAddressRequest) ProtoMethods() *protoiface.Met
 	}
 }
 
+var _ protoreflect.List = (*_QueryOwnerAddressesResponse_1_list)(nil)
+
+type _QueryOwnerAddressesResponse_1_list struct {
+	list *[]string
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfString((*x.list)[i])
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message QueryOwnerAddressesResponse at list field OwnerAddresses as it is not of Message kind"))
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) Truncate(n int) {
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) NewElement() protoreflect.Value {
+	v := ""
+	return protoreflect.ValueOfString(v)
+}
+
+func (x *_QueryOwnerAddressesResponse_1_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
-	md_QueryOwnerAddressResponse               protoreflect.MessageDescriptor
-	fd_QueryOwnerAddressResponse_owner_address protoreflect.FieldDescriptor
+	md_QueryOwnerAddressesResponse                 protoreflect.MessageDescriptor
+	fd_QueryOwnerAddressesResponse_owner_addresses protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_cosmos_evm_erc20_v1_query_proto_init()
-	md_QueryOwnerAddressResponse = File_cosmos_evm_erc20_v1_query_proto.Messages().ByName("QueryOwnerAddressResponse")
-	fd_QueryOwnerAddressResponse_owner_address = md_QueryOwnerAddressResponse.Fields().ByName("owner_address")
+	md_QueryOwnerAddressesResponse = File_cosmos_evm_erc20_v1_query_proto.Messages().ByName("QueryOwnerAddressesResponse")
+	fd_QueryOwnerAddressesResponse_owner_addresses = md_QueryOwnerAddressesResponse.Fields().ByName("owner_addresses")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryOwnerAddressResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryOwnerAddressesResponse)(nil)
 
-type fastReflection_QueryOwnerAddressResponse QueryOwnerAddressResponse
+type fastReflection_QueryOwnerAddressesResponse QueryOwnerAddressesResponse
 
-func (x *QueryOwnerAddressResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryOwnerAddressResponse)(x)
+func (x *QueryOwnerAddressesResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryOwnerAddressesResponse)(x)
 }
 
-func (x *QueryOwnerAddressResponse) slowProtoReflect() protoreflect.Message {
+func (x *QueryOwnerAddressesResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_cosmos_evm_erc20_v1_query_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3121,43 +3167,43 @@ func (x *QueryOwnerAddressResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryOwnerAddressResponse_messageType fastReflection_QueryOwnerAddressResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryOwnerAddressResponse_messageType{}
+var _fastReflection_QueryOwnerAddressesResponse_messageType fastReflection_QueryOwnerAddressesResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryOwnerAddressesResponse_messageType{}
 
-type fastReflection_QueryOwnerAddressResponse_messageType struct{}
+type fastReflection_QueryOwnerAddressesResponse_messageType struct{}
 
-func (x fastReflection_QueryOwnerAddressResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryOwnerAddressResponse)(nil)
+func (x fastReflection_QueryOwnerAddressesResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryOwnerAddressesResponse)(nil)
 }
-func (x fastReflection_QueryOwnerAddressResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryOwnerAddressResponse)
+func (x fastReflection_QueryOwnerAddressesResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryOwnerAddressesResponse)
 }
-func (x fastReflection_QueryOwnerAddressResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryOwnerAddressResponse
+func (x fastReflection_QueryOwnerAddressesResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryOwnerAddressesResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryOwnerAddressResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryOwnerAddressResponse
+func (x *fastReflection_QueryOwnerAddressesResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryOwnerAddressesResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryOwnerAddressResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryOwnerAddressResponse_messageType
+func (x *fastReflection_QueryOwnerAddressesResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryOwnerAddressesResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryOwnerAddressResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryOwnerAddressResponse)
+func (x *fastReflection_QueryOwnerAddressesResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryOwnerAddressesResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryOwnerAddressResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryOwnerAddressResponse)(x)
+func (x *fastReflection_QueryOwnerAddressesResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryOwnerAddressesResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -3165,10 +3211,10 @@ func (x *fastReflection_QueryOwnerAddressResponse) Interface() protoreflect.Prot
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryOwnerAddressResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.OwnerAddress != "" {
-		value := protoreflect.ValueOfString(x.OwnerAddress)
-		if !f(fd_QueryOwnerAddressResponse_owner_address, value) {
+func (x *fastReflection_QueryOwnerAddressesResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.OwnerAddresses) != 0 {
+		value := protoreflect.ValueOfList(&_QueryOwnerAddressesResponse_1_list{list: &x.OwnerAddresses})
+		if !f(fd_QueryOwnerAddressesResponse_owner_addresses, value) {
 			return
 		}
 	}
@@ -3185,15 +3231,15 @@ func (x *fastReflection_QueryOwnerAddressResponse) Range(f func(protoreflect.Fie
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryOwnerAddressResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryOwnerAddressesResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressResponse.owner_address":
-		return x.OwnerAddress != ""
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesResponse.owner_addresses":
+		return len(x.OwnerAddresses) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3203,15 +3249,15 @@ func (x *fastReflection_QueryOwnerAddressResponse) Has(fd protoreflect.FieldDesc
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryOwnerAddressesResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressResponse.owner_address":
-		x.OwnerAddress = ""
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesResponse.owner_addresses":
+		x.OwnerAddresses = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3221,16 +3267,19 @@ func (x *fastReflection_QueryOwnerAddressResponse) Clear(fd protoreflect.FieldDe
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryOwnerAddressResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryOwnerAddressesResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressResponse.owner_address":
-		value := x.OwnerAddress
-		return protoreflect.ValueOfString(value)
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesResponse.owner_addresses":
+		if len(x.OwnerAddresses) == 0 {
+			return protoreflect.ValueOfList(&_QueryOwnerAddressesResponse_1_list{})
+		}
+		listValue := &_QueryOwnerAddressesResponse_1_list{list: &x.OwnerAddresses}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -3244,15 +3293,17 @@ func (x *fastReflection_QueryOwnerAddressResponse) Get(descriptor protoreflect.F
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryOwnerAddressesResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressResponse.owner_address":
-		x.OwnerAddress = value.Interface().(string)
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesResponse.owner_addresses":
+		lv := value.List()
+		clv := lv.(*_QueryOwnerAddressesResponse_1_list)
+		x.OwnerAddresses = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -3266,40 +3317,45 @@ func (x *fastReflection_QueryOwnerAddressResponse) Set(fd protoreflect.FieldDesc
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryOwnerAddressesResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressResponse.owner_address":
-		panic(fmt.Errorf("field owner_address of message cosmos.evm.erc20.v1.QueryOwnerAddressResponse is not mutable"))
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesResponse.owner_addresses":
+		if x.OwnerAddresses == nil {
+			x.OwnerAddresses = []string{}
+		}
+		value := &_QueryOwnerAddressesResponse_1_list{list: &x.OwnerAddresses}
+		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryOwnerAddressResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryOwnerAddressesResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "cosmos.evm.erc20.v1.QueryOwnerAddressResponse.owner_address":
-		return protoreflect.ValueOfString("")
+	case "cosmos.evm.erc20.v1.QueryOwnerAddressesResponse.owner_addresses":
+		list := []string{}
+		return protoreflect.ValueOfList(&_QueryOwnerAddressesResponse_1_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse"))
 		}
-		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message cosmos.evm.erc20.v1.QueryOwnerAddressesResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryOwnerAddressResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryOwnerAddressesResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in cosmos.evm.erc20.v1.QueryOwnerAddressResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in cosmos.evm.erc20.v1.QueryOwnerAddressesResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -3307,7 +3363,7 @@ func (x *fastReflection_QueryOwnerAddressResponse) WhichOneof(d protoreflect.One
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryOwnerAddressResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryOwnerAddressesResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -3318,7 +3374,7 @@ func (x *fastReflection_QueryOwnerAddressResponse) GetUnknown() protoreflect.Raw
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryOwnerAddressResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryOwnerAddressesResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -3330,7 +3386,7 @@ func (x *fastReflection_QueryOwnerAddressResponse) SetUnknown(fields protoreflec
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryOwnerAddressResponse) IsValid() bool {
+func (x *fastReflection_QueryOwnerAddressesResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -3340,9 +3396,9 @@ func (x *fastReflection_QueryOwnerAddressResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryOwnerAddressesResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryOwnerAddressResponse)
+		x := input.Message.Interface().(*QueryOwnerAddressesResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3354,9 +3410,11 @@ func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Me
 		var n int
 		var l int
 		_ = l
-		l = len(x.OwnerAddress)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if len(x.OwnerAddresses) > 0 {
+			for _, s := range x.OwnerAddresses {
+				l = len(s)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -3368,7 +3426,7 @@ func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Me
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryOwnerAddressResponse)
+		x := input.Message.Interface().(*QueryOwnerAddressesResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3387,12 +3445,14 @@ func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Me
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.OwnerAddress) > 0 {
-			i -= len(x.OwnerAddress)
-			copy(dAtA[i:], x.OwnerAddress)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.OwnerAddress)))
-			i--
-			dAtA[i] = 0xa
+		if len(x.OwnerAddresses) > 0 {
+			for iNdEx := len(x.OwnerAddresses) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.OwnerAddresses[iNdEx])
+				copy(dAtA[i:], x.OwnerAddresses[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.OwnerAddresses[iNdEx])))
+				i--
+				dAtA[i] = 0xa
+			}
 		}
 		if input.Buf != nil {
 			input.Buf = append(input.Buf, dAtA...)
@@ -3405,7 +3465,7 @@ func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Me
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryOwnerAddressResponse)
+		x := input.Message.Interface().(*QueryOwnerAddressesResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3437,15 +3497,15 @@ func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Me
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressesResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryOwnerAddressesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field OwnerAddress", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field OwnerAddresses", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -3473,7 +3533,7 @@ func (x *fastReflection_QueryOwnerAddressResponse) ProtoMethods() *protoiface.Me
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.OwnerAddress = string(dAtA[iNdEx:postIndex])
+				x.OwnerAddresses = append(x.OwnerAddresses, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -3750,7 +3810,7 @@ func (x *QueryParamsResponse) GetParams() *Params {
 	return nil
 }
 
-type QueryOwnerAddressRequest struct {
+type QueryOwnerAddressesRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -3758,8 +3818,8 @@ type QueryOwnerAddressRequest struct {
 	ContractAddress string `protobuf:"bytes,1,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
 }
 
-func (x *QueryOwnerAddressRequest) Reset() {
-	*x = QueryOwnerAddressRequest{}
+func (x *QueryOwnerAddressesRequest) Reset() {
+	*x = QueryOwnerAddressesRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cosmos_evm_erc20_v1_query_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3767,34 +3827,34 @@ func (x *QueryOwnerAddressRequest) Reset() {
 	}
 }
 
-func (x *QueryOwnerAddressRequest) String() string {
+func (x *QueryOwnerAddressesRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryOwnerAddressRequest) ProtoMessage() {}
+func (*QueryOwnerAddressesRequest) ProtoMessage() {}
 
-// Deprecated: Use QueryOwnerAddressRequest.ProtoReflect.Descriptor instead.
-func (*QueryOwnerAddressRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryOwnerAddressesRequest.ProtoReflect.Descriptor instead.
+func (*QueryOwnerAddressesRequest) Descriptor() ([]byte, []int) {
 	return file_cosmos_evm_erc20_v1_query_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *QueryOwnerAddressRequest) GetContractAddress() string {
+func (x *QueryOwnerAddressesRequest) GetContractAddress() string {
 	if x != nil {
 		return x.ContractAddress
 	}
 	return ""
 }
 
-type QueryOwnerAddressResponse struct {
+type QueryOwnerAddressesResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	OwnerAddress string `protobuf:"bytes,1,opt,name=owner_address,json=ownerAddress,proto3" json:"owner_address,omitempty"`
+	OwnerAddresses []string `protobuf:"bytes,1,rep,name=owner_addresses,json=ownerAddresses,proto3" json:"owner_addresses,omitempty"`
 }
 
-func (x *QueryOwnerAddressResponse) Reset() {
-	*x = QueryOwnerAddressResponse{}
+func (x *QueryOwnerAddressesResponse) Reset() {
+	*x = QueryOwnerAddressesResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cosmos_evm_erc20_v1_query_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3802,22 +3862,22 @@ func (x *QueryOwnerAddressResponse) Reset() {
 	}
 }
 
-func (x *QueryOwnerAddressResponse) String() string {
+func (x *QueryOwnerAddressesResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryOwnerAddressResponse) ProtoMessage() {}
+func (*QueryOwnerAddressesResponse) ProtoMessage() {}
 
-// Deprecated: Use QueryOwnerAddressResponse.ProtoReflect.Descriptor instead.
-func (*QueryOwnerAddressResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryOwnerAddressesResponse.ProtoReflect.Descriptor instead.
+func (*QueryOwnerAddressesResponse) Descriptor() ([]byte, []int) {
 	return file_cosmos_evm_erc20_v1_query_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *QueryOwnerAddressResponse) GetOwnerAddress() string {
+func (x *QueryOwnerAddressesResponse) GetOwnerAddresses() []string {
 	if x != nil {
-		return x.OwnerAddress
+		return x.OwnerAddresses
 	}
-	return ""
+	return nil
 }
 
 var File_cosmos_evm_erc20_v1_query_proto protoreflect.FileDescriptor
@@ -3871,52 +3931,53 @@ var file_cosmos_evm_erc20_v1_query_proto_rawDesc = []byte{
 	0x32, 0x1b, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72,
 	0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8,
 	0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x22, 0x45, 0x0a, 0x18, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x29, 0x0a, 0x10,
-	0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x40, 0x0a, 0x19, 0x51, 0x75, 0x65, 0x72, 0x79,
-	0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a, 0x0d, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x5f, 0x61, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x6f, 0x77, 0x6e,
-	0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x32, 0xe4, 0x04, 0x0a, 0x05, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x12, 0x91, 0x01, 0x0a, 0x0a, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69,
-	0x72, 0x73, 0x12, 0x2b, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e,
-	0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x2c, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63,
-	0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
-	0x50, 0x61, 0x69, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x28, 0x82,
-	0xd3, 0xe4, 0x93, 0x02, 0x22, 0x12, 0x20, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x65,
-	0x76, 0x6d, 0x2f, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x6f, 0x6b, 0x65,
-	0x6e, 0x5f, 0x70, 0x61, 0x69, 0x72, 0x73, 0x12, 0x99, 0x01, 0x0a, 0x09, 0x54, 0x6f, 0x6b, 0x65,
-	0x6e, 0x50, 0x61, 0x69, 0x72, 0x12, 0x2a, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65,
-	0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x2b, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65,
-	0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x6f, 0x6b,
-	0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x33,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2d, 0x12, 0x2b, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f,
-	0x65, 0x76, 0x6d, 0x2f, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x6f, 0x6b,
-	0x65, 0x6e, 0x5f, 0x70, 0x61, 0x69, 0x72, 0x73, 0x2f, 0x7b, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x3d,
-	0x2a, 0x2a, 0x7d, 0x12, 0x80, 0x01, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x27,
-	0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32,
-	0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x28, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
+	0x22, 0x47, 0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x29,
+	0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x46, 0x0a, 0x1b, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x6f, 0x77, 0x6e, 0x65,
+	0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x09, 0x52, 0x0e, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65,
+	0x73, 0x32, 0xec, 0x04, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x91, 0x01, 0x0a, 0x0a,
+	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x73, 0x12, 0x2b, 0x2e, 0x63, 0x6f, 0x73,
+	0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31,
+	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x73,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
 	0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x23, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1d, 0x12, 0x1b, 0x2f, 0x63, 0x6f, 0x73, 0x6d,
-	0x6f, 0x73, 0x2f, 0x65, 0x76, 0x6d, 0x2f, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2f, 0x76, 0x31, 0x2f,
-	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0xa7, 0x01, 0x0a, 0x0c, 0x4f, 0x77, 0x6e, 0x65, 0x72,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x2d, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
+	0x65, 0x72, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x28, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x22, 0x12, 0x20, 0x2f,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x65, 0x76, 0x6d, 0x2f, 0x65, 0x72, 0x63, 0x32, 0x30,
+	0x2f, 0x76, 0x31, 0x2f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5f, 0x70, 0x61, 0x69, 0x72, 0x73, 0x12,
+	0x99, 0x01, 0x0a, 0x09, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x12, 0x2a, 0x2e,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30,
+	0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61,
+	0x69, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2b, 0x2e, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x50, 0x61, 0x69, 0x72, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x33, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2d, 0x12, 0x2b,
+	0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x65, 0x76, 0x6d, 0x2f, 0x65, 0x72, 0x63, 0x32,
+	0x30, 0x2f, 0x76, 0x31, 0x2f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5f, 0x70, 0x61, 0x69, 0x72, 0x73,
+	0x2f, 0x7b, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x3d, 0x2a, 0x2a, 0x7d, 0x12, 0x80, 0x01, 0x0a, 0x06,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
 	0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x38, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x32, 0x12, 0x30,
-	0x2f, 0x65, 0x76, 0x6d, 0x6f, 0x73, 0x2f, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2f, 0x76, 0x31, 0x2f,
-	0x6f, 0x77, 0x6e, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x2f, 0x7b, 0x63,
+	0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x28, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63,
+	0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x23, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x1d, 0x12, 0x1b, 0x2f, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x65, 0x76, 0x6d, 0x2f, 0x65,
+	0x72, 0x63, 0x32, 0x30, 0x2f, 0x76, 0x31, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0xaf,
+	0x01, 0x0a, 0x0e, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65,
+	0x73, 0x12, 0x2f, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e, 0x65,
+	0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x77, 0x6e,
+	0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x30, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x65, 0x76, 0x6d, 0x2e,
+	0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x77,
+	0x6e, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x3a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x34, 0x12, 0x32, 0x2f, 0x65,
+	0x76, 0x6d, 0x6f, 0x73, 0x2f, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2f, 0x76, 0x31, 0x2f, 0x6f, 0x77,
+	0x6e, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x2f, 0x7b, 0x63,
 	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x7d,
 	0x42, 0xc2, 0x01, 0x0a, 0x17, 0x63, 0x6f, 0x6d, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
 	0x65, 0x76, 0x6d, 0x2e, 0x65, 0x72, 0x63, 0x32, 0x30, 0x2e, 0x76, 0x31, 0x42, 0x0a, 0x51, 0x75,
@@ -3947,18 +4008,18 @@ func file_cosmos_evm_erc20_v1_query_proto_rawDescGZIP() []byte {
 
 var file_cosmos_evm_erc20_v1_query_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_cosmos_evm_erc20_v1_query_proto_goTypes = []interface{}{
-	(*QueryTokenPairsRequest)(nil),    // 0: cosmos.evm.erc20.v1.QueryTokenPairsRequest
-	(*QueryTokenPairsResponse)(nil),   // 1: cosmos.evm.erc20.v1.QueryTokenPairsResponse
-	(*QueryTokenPairRequest)(nil),     // 2: cosmos.evm.erc20.v1.QueryTokenPairRequest
-	(*QueryTokenPairResponse)(nil),    // 3: cosmos.evm.erc20.v1.QueryTokenPairResponse
-	(*QueryParamsRequest)(nil),        // 4: cosmos.evm.erc20.v1.QueryParamsRequest
-	(*QueryParamsResponse)(nil),       // 5: cosmos.evm.erc20.v1.QueryParamsResponse
-	(*QueryOwnerAddressRequest)(nil),  // 6: cosmos.evm.erc20.v1.QueryOwnerAddressRequest
-	(*QueryOwnerAddressResponse)(nil), // 7: cosmos.evm.erc20.v1.QueryOwnerAddressResponse
-	(*v1beta1.PageRequest)(nil),       // 8: cosmos.base.query.v1beta1.PageRequest
-	(*TokenPair)(nil),                 // 9: cosmos.evm.erc20.v1.TokenPair
-	(*v1beta1.PageResponse)(nil),      // 10: cosmos.base.query.v1beta1.PageResponse
-	(*Params)(nil),                    // 11: cosmos.evm.erc20.v1.Params
+	(*QueryTokenPairsRequest)(nil),      // 0: cosmos.evm.erc20.v1.QueryTokenPairsRequest
+	(*QueryTokenPairsResponse)(nil),     // 1: cosmos.evm.erc20.v1.QueryTokenPairsResponse
+	(*QueryTokenPairRequest)(nil),       // 2: cosmos.evm.erc20.v1.QueryTokenPairRequest
+	(*QueryTokenPairResponse)(nil),      // 3: cosmos.evm.erc20.v1.QueryTokenPairResponse
+	(*QueryParamsRequest)(nil),          // 4: cosmos.evm.erc20.v1.QueryParamsRequest
+	(*QueryParamsResponse)(nil),         // 5: cosmos.evm.erc20.v1.QueryParamsResponse
+	(*QueryOwnerAddressesRequest)(nil),  // 6: cosmos.evm.erc20.v1.QueryOwnerAddressesRequest
+	(*QueryOwnerAddressesResponse)(nil), // 7: cosmos.evm.erc20.v1.QueryOwnerAddressesResponse
+	(*v1beta1.PageRequest)(nil),         // 8: cosmos.base.query.v1beta1.PageRequest
+	(*TokenPair)(nil),                   // 9: cosmos.evm.erc20.v1.TokenPair
+	(*v1beta1.PageResponse)(nil),        // 10: cosmos.base.query.v1beta1.PageResponse
+	(*Params)(nil),                      // 11: cosmos.evm.erc20.v1.Params
 }
 var file_cosmos_evm_erc20_v1_query_proto_depIdxs = []int32{
 	8,  // 0: cosmos.evm.erc20.v1.QueryTokenPairsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
@@ -3969,11 +4030,11 @@ var file_cosmos_evm_erc20_v1_query_proto_depIdxs = []int32{
 	0,  // 5: cosmos.evm.erc20.v1.Query.TokenPairs:input_type -> cosmos.evm.erc20.v1.QueryTokenPairsRequest
 	2,  // 6: cosmos.evm.erc20.v1.Query.TokenPair:input_type -> cosmos.evm.erc20.v1.QueryTokenPairRequest
 	4,  // 7: cosmos.evm.erc20.v1.Query.Params:input_type -> cosmos.evm.erc20.v1.QueryParamsRequest
-	6,  // 8: cosmos.evm.erc20.v1.Query.OwnerAddress:input_type -> cosmos.evm.erc20.v1.QueryOwnerAddressRequest
+	6,  // 8: cosmos.evm.erc20.v1.Query.OwnerAddresses:input_type -> cosmos.evm.erc20.v1.QueryOwnerAddressesRequest
 	1,  // 9: cosmos.evm.erc20.v1.Query.TokenPairs:output_type -> cosmos.evm.erc20.v1.QueryTokenPairsResponse
 	3,  // 10: cosmos.evm.erc20.v1.Query.TokenPair:output_type -> cosmos.evm.erc20.v1.QueryTokenPairResponse
 	5,  // 11: cosmos.evm.erc20.v1.Query.Params:output_type -> cosmos.evm.erc20.v1.QueryParamsResponse
-	7,  // 12: cosmos.evm.erc20.v1.Query.OwnerAddress:output_type -> cosmos.evm.erc20.v1.QueryOwnerAddressResponse
+	7,  // 12: cosmos.evm.erc20.v1.Query.OwnerAddresses:output_type -> cosmos.evm.erc20.v1.QueryOwnerAddressesResponse
 	9,  // [9:13] is the sub-list for method output_type
 	5,  // [5:9] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -4062,7 +4123,7 @@ func file_cosmos_evm_erc20_v1_query_proto_init() {
 			}
 		}
 		file_cosmos_evm_erc20_v1_query_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryOwnerAddressRequest); i {
+			switch v := v.(*QueryOwnerAddressesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4074,7 +4135,7 @@ func file_cosmos_evm_erc20_v1_query_proto_init() {
 			}
 		}
 		file_cosmos_evm_erc20_v1_query_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryOwnerAddressResponse); i {
+			switch v := v.(*QueryOwnerAddressesResponse); i {
 			case 0:
 				return &v.state
 			case 1:

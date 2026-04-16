@@ -27,7 +27,7 @@ func GetQueryCmd() *cobra.Command {
 		GetTokenPairsCmd(),
 		GetTokenPairCmd(),
 		GetParamsCmd(),
-		GetOwnerAddressCmd(),
+		GetOwnerAddressesCmd(),
 	)
 	return cmd
 }
@@ -132,10 +132,10 @@ func GetParamsCmd() *cobra.Command {
 	return cmd
 }
 
-func GetOwnerAddressCmd() *cobra.Command {
+func GetOwnerAddressesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "owner-address CONTRACT_ADDRESS",
-		Short: "Gets the owner address for a given ERC20 contract address",
+		Use:   "owner-addresses CONTRACT_ADDRESS",
+		Short: "Gets the owner addresses for a given ERC20 contract address",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -149,11 +149,11 @@ func GetOwnerAddressCmd() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			req := &types.QueryOwnerAddressRequest{
+			req := &types.QueryOwnerAddressesRequest{
 				ContractAddress: args[0],
 			}
 
-			res, err := queryClient.OwnerAddress(context.Background(), req)
+			res, err := queryClient.OwnerAddresses(context.Background(), req)
 			if err != nil {
 				return err
 			}

@@ -91,9 +91,9 @@ func (k Keeper) Params(c context.Context, _ *types.QueryParamsRequest) (*types.Q
 	return &types.QueryParamsResponse{Params: params}, nil
 }
 
-// OwnerAddress returns the owner address for a given ERC20 contract address
-func (k Keeper) OwnerAddress(c context.Context, req *types.QueryOwnerAddressRequest) (*types.QueryOwnerAddressResponse, error) {
+// OwnerAddresses returns the owner addresses for a given ERC20 contract address
+func (k Keeper) OwnerAddresses(c context.Context, req *types.QueryOwnerAddressesRequest) (*types.QueryOwnerAddressesResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
-	owner := k.GetOwnerAddress(ctx, req.ContractAddress)
-	return &types.QueryOwnerAddressResponse{OwnerAddress: owner}, nil
+	owners := k.GetOwnerAddresses(ctx, req.ContractAddress)
+	return &types.QueryOwnerAddressesResponse{OwnerAddresses: owners}, nil
 }
