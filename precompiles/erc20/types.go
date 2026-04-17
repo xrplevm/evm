@@ -200,16 +200,3 @@ func ParseBurnFromArgs(args []interface{}) (from common.Address, amount *big.Int
 	return from, amount, nil
 }
 
-// ParseTransferOwnershipArgs parses the arguments from the transferOwnership method and returns the new owner address.
-func ParseTransferOwnershipArgs(args []interface{}) (common.Address, error) {
-	if len(args) != 1 {
-		return common.Address{}, fmt.Errorf("invalid number of arguments; expected 1; got: %d", len(args))
-	}
-
-	newOwner, ok := args[0].(common.Address)
-	if !ok {
-		return common.Address{}, fmt.Errorf("invalid new owner address: %v", args[0])
-	}
-
-	return newOwner, nil
-}

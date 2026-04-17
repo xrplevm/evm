@@ -3,7 +3,6 @@ package erc20
 import (
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/holiman/uint256"
 
@@ -833,69 +832,3 @@ func (s *PrecompileTestSuite) TestBurnFrom() {
 	}
 }
 
-func (s *PrecompileTestSuite) TestTransferOwnership() {
-	method := s.precompile.Methods[erc20.TransferOwnershipMethod]
-	from := s.keyring.GetKey(0)
-	newOwner := common.Address(utiltx.GenerateAddress().Bytes())
-
-	testcases := []struct {
-		name        string
-		malleate    func() []interface{}
-		postCheck   func()
-		expErr      bool
-		errContains string
-	}{
-		{
-			name: "fail - invalid number of arguments",
-			malleate: func() []interface{} {
-				return []interface{}{}
-			},
-			expErr:      true,
-			errContains: "invalid number of arguments; expected 1; got: 0",
-		},
-		{
-			name: "fail - invalid address",
-			malleate: func() []interface{} {
-				return []interface{}{"invalid"}
-			},
-			expErr:      true,
-			errContains: "invalid new owner address",
-		},
-		{
-			name: "pass",
-			malleate: func() []interface{} {
-				return []interface{}{newOwner}
-			},
-			postCheck: func() {},
-		},
-	}
-
-	for _, tc := range testcases {
-		s.Run(tc.name, func() {
-			s.SetupTest()
-			stateDB := s.network.GetStateDB()
-
-			tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-			tokenPair.SetOwnerAddress(from.AccAddr.String())
-			s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
-			s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
-			s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
-
-			precompile, err := setupERC20PrecompileForTokenPair(*s.network, tokenPair)
-			s.Require().NoError(err, "failed to set up %q erc20 precompile", tokenPair.Denom)
-
-			var contract *vm.Contract
-
-			contract, ctx := testutil.NewPrecompileContract(s.T(), s.network.GetContext(), from.Addr, precompile.Address(), 0)
-
-			_, err = precompile.TransferOwnership(ctx, contract, stateDB, &method, tc.malleate())
-			if tc.expErr {
-				s.Require().Error(err)
-				s.Require().Contains(err.Error(), tc.errContains)
-			} else {
-				s.Require().NoError(err)
-				tc.postCheck()
-			}
-		})
-	}
-}

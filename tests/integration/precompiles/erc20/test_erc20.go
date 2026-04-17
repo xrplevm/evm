@@ -38,8 +38,6 @@ func (s *PrecompileTestSuite) TestIsTransaction() {
 	s.Require().True(s.precompile.IsTransaction(&method))
 	method = s.precompile.Methods[erc20.Burn0Method]
 	s.Require().True(s.precompile.IsTransaction(&method))
-	method = s.precompile.Methods[erc20.TransferOwnershipMethod]
-	s.Require().True(s.precompile.IsTransaction(&method))
 }
 
 func (s *PrecompileTestSuite) TestRequiredGas() {

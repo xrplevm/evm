@@ -28,8 +28,6 @@ const (
 	Burn0Method = "burn0"
 	// BurnFromMethod defines the ABI method name for the ERC-20 burnFrom transaction.
 	BurnFromMethod = "burnFrom"
-	// TransferOwnershipMethod defines the ABI method name for the ERC-20 transferOwnership transaction.
-	TransferOwnershipMethod = "transferOwnership"
 	// ApproveMethod defines the ABI method name for ERC-20 Approve
 	// transaction.
 	ApproveMethod = "approve"
@@ -280,39 +278,6 @@ func (p *Precompile) BurnFrom(
 	// NOTE: if it's a direct transfer, we return here but if used through transferFrom,
 	// we need to emit the approval event with the new allowance.
 	if err = p.EmitApprovalEvent(ctx, stateDB, owner, spenderAddr, newAllowance); err != nil {
-		return nil, err
-	}
-
-	return method.Outputs.Pack()
-}
-
-// TransferOwnership executes a transfer of ownership of the token.
-func (p *Precompile) TransferOwnership(
-	ctx sdk.Context,
-	contract *vm.Contract,
-	stateDB vm.StateDB,
-	method *abi.Method,
-	args []interface{},
-) ([]byte, error) {
-	newOwner, err := ParseTransferOwnershipArgs(args)
-	if err != nil {
-		return nil, err
-	}
-
-	sender := sdk.AccAddress(contract.Caller().Bytes())
-
-	if p.tokenPair.OwnerAddress != sender.String() {
-		return nil, ConvertErrToERC20Error(ErrSenderIsNotOwner)
-	}
-
-	err = p.erc20Keeper.TransferOwnership(ctx, sender, newOwner.Bytes(), p.tokenPair.GetERC20Contract().Hex())
-	if err != nil {
-		return nil, ConvertErrToERC20Error(err)
-	}
-
-	p.tokenPair.OwnerAddress = newOwner.String()
-
-	if err = p.EmitTransferOwnershipEvent(ctx, stateDB, contract.Caller(), newOwner); err != nil {
 		return nil, err
 	}
 
