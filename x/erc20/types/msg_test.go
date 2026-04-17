@@ -444,3 +444,145 @@ func (suite *MsgsTestSuite) TestMsgTransferOwnershipValidateBasic() {
 		})
 	}
 }
+
+func (suite *MsgsTestSuite) TestMsgAddMinterValidateBasic() {
+	testcases := []struct {
+		name    string
+		msg     *types.MsgAddMinter
+		expPass bool
+	}{
+		{
+			"fail - invalid authority address",
+			&types.MsgAddMinter{
+				Authority: "invalid",
+			},
+			false,
+		},
+		{
+			"fail - invalid contract address",
+			&types.MsgAddMinter{
+				Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				Token:     "invalid!",
+			},
+			false,
+		},
+		{
+			"fail - invalid new minter address",
+			&types.MsgAddMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: "invalid",
+				Token:         utiltx.GenerateAddress().String(),
+			},
+			false,
+		},
+		{
+			"pass - valid msg",
+			&types.MsgAddMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+				Token:         utiltx.GenerateAddress().String(),
+			},
+			true,
+		},
+		{
+			"pass - valid IBC denom token",
+			&types.MsgAddMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+				Token:         "ibc/DF63978F803A2E27CA5CC9B7631654CCF0BBC788B3B7F0A10200508E37C70992",
+			},
+			true,
+		},
+		{
+			"pass - valid denom token",
+			&types.MsgAddMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+				Token:         "axrp",
+			},
+			true,
+		},
+	}
+
+	for _, tc := range testcases {
+		suite.Run(tc.name, func() {
+			err := tc.msg.ValidateBasic()
+			if tc.expPass {
+				suite.NoError(err)
+			} else {
+				suite.Error(err)
+			}
+		})
+	}
+}
+
+func (suite *MsgsTestSuite) TestMsgRemoveMinterValidateBasic() {
+	testcases := []struct {
+		name    string
+		msg     *types.MsgRemoveMinter
+		expPass bool
+	}{
+		{
+			"fail - invalid authority address",
+			&types.MsgRemoveMinter{
+				Authority: "invalid",
+			},
+			false,
+		},
+		{
+			"fail - invalid contract address",
+			&types.MsgRemoveMinter{
+				Authority: authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				Token:     "invalid!",
+			},
+			false,
+		},
+		{
+			"fail - invalid new minter address",
+			&types.MsgRemoveMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: "invalid",
+				Token:         utiltx.GenerateAddress().String(),
+			},
+			false,
+		},
+		{
+			"pass - valid msg",
+			&types.MsgRemoveMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+				Token:         utiltx.GenerateAddress().String(),
+			},
+			true,
+		},
+		{
+			"pass - valid IBC denom token",
+			&types.MsgRemoveMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+				Token:         "ibc/DF63978F803A2E27CA5CC9B7631654CCF0BBC788B3B7F0A10200508E37C70992",
+			},
+			true,
+		},
+		{
+			"pass - valid denom token",
+			&types.MsgRemoveMinter{
+				Authority:     authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+				MinterAddress: sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+				Token:         "axrp",
+			},
+			true,
+		},
+	}
+
+	for _, tc := range testcases {
+		suite.Run(tc.name, func() {
+			err := tc.msg.ValidateBasic()
+			if tc.expPass {
+				suite.NoError(err)
+			} else {
+				suite.Error(err)
+			}
+		})
+	}
+}
