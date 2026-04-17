@@ -22,8 +22,6 @@ func (s *PrecompileTestSuite) TestIsTransaction() {
 	s.Require().False(s.precompile.IsTransaction(&method))
 	method = s.precompile.Methods[erc20.AllowanceMethod]
 	s.Require().False(s.precompile.IsTransaction(&method))
-	method = s.precompile.Methods[erc20.OwnerMethod]
-	s.Require().False(s.precompile.IsTransaction(&method))
 
 	// Transactions
 	method = s.precompile.Methods[erc20.ApproveMethod]

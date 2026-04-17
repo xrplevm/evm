@@ -381,64 +381,6 @@ func (suite *PrecompileTestSuite) TestSetToken() {
 	}
 }
 
-func (suite *PrecompileTestSuite) TestGetTokenPairOwnerAddress() {
-	var ctx sdk.Context
-
-	tokenAddress := utiltx.GenerateAddress()
-	ownerAddress := utiltx.GenerateAddress()
-	testCases := []struct {
-		name         string
-		ownerAddress sdk.AccAddress
-		malleate     func()
-		expError     bool
-		errContains  string
-	}{
-		{
-			"owner address found",
-			sdk.AccAddress(ownerAddress.Bytes()),
-			func() {
-				pair := types.NewTokenPair(tokenAddress, "coin", types.OWNER_MODULE)
-				pair.SetOwnerAddress(sdk.AccAddress(ownerAddress.Bytes()).String())
-				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
-				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, tokenAddress, pair.GetID())
-			},
-			true,
-			"",
-		},
-		{
-			"owner address not found",
-			sdk.AccAddress(utiltx.GenerateAddress().Bytes()),
-			func() {
-				address := utiltx.GenerateAddress()
-				pair := types.NewTokenPair(address, "coin", types.OWNER_MODULE)
-				pair.SetOwnerAddress(sdk.AccAddress(address.Bytes()).String())
-				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
-				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, address, pair.GetID())
-			},
-			false,
-			fmt.Sprintf("token '%s' not registered", tokenAddress),
-		},
-	}
-	for _, tc := range testCases {
-		suite.Run(fmt.Sprintf("Case %s", tc.name), func() {
-			suite.SetupTest() // reset
-
-			ctx = suite.network.GetContext()
-
-			tc.malleate()
-			res, err := suite.network.App.GetErc20Keeper().GetTokenPairOwnerAddress(ctx, tokenAddress.Hex())
-
-			if tc.expError {
-				suite.Require().NoError(err)
-				suite.Require().Equal(res.String(), tc.ownerAddress.String())
-			} else {
-				suite.Require().Error(err, "expected an error while getting the token denom")
-				suite.Require().ErrorContains(err, tc.errContains)
-			}
-		})
-	}
-}
-
 func (suite *PrecompileTestSuite) TestSetTokenPairOwnerAddress() {
 	var ctx sdk.Context
 	tokenAddress := utiltx.GenerateAddress()

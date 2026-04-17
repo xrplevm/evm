@@ -37,7 +37,6 @@ const (
 	GasBalanceOf         = 2_870
 	GasAllowance         = 3_225
 	GasTransferOwnership = 50_000
-	GasOwner             = 2_870
 )
 
 var (
@@ -146,8 +145,6 @@ func (p Precompile) RequiredGas(input []byte) uint64 {
 		return GasBalanceOf
 	case AllowanceMethod:
 		return GasAllowance
-	case OwnerMethod:
-		return GasOwner
 	default:
 		return 0
 	}
@@ -232,8 +229,6 @@ func (p *Precompile) HandleMethod(
 		bz, err = p.BalanceOf(ctx, contract, stateDB, method, args)
 	case AllowanceMethod:
 		bz, err = p.Allowance(ctx, contract, stateDB, method, args)
-	case OwnerMethod:
-		bz, err = p.Owner(ctx, contract, stateDB, method, args)
 	default:
 		return nil, fmt.Errorf(cmn.ErrUnknownMethod, method.Name)
 	}
