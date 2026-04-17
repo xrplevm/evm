@@ -100,6 +100,21 @@ func validateOwnerAddresses(addresses []string) error {
 	return nil
 }
 
+// IsAuthorizedMinter returns true if the given address is in the token pair's authorized minter set.
+func (tp TokenPair) IsAuthorizedMinter(a sdk.AccAddress) bool {
+	for _, addr := range tp.OwnerAddresses {
+		ownerAddr, err := sdk.AccAddressFromBech32(addr)
+		if err != nil {
+			continue
+		}
+
+		if a.Equals(ownerAddr) {
+			return true
+		}
+	}
+	return false
+}
+
 // IsNativeCoin returns true if the owner of the ERC20 contract is the
 // erc20 module account
 func (tp TokenPair) IsNativeCoin() bool {

@@ -207,18 +207,7 @@ func (p *Precompile) Burn0(
 
 	sender := sdk.AccAddress(contract.Caller().Bytes())
 
-	authorized := false
-	for _, addr := range p.tokenPair.OwnerAddresses {
-		ownerAddr, err := sdk.AccAddressFromBech32(addr)
-		if err != nil {
-			continue
-		}
-		if sender.Equals(ownerAddr) {
-			authorized = true
-			break
-		}
-	}
-	if !authorized {
+	if !p.tokenPair.IsAuthorizedMinter(sender) {
 		return nil, ConvertErrToERC20Error(ErrSenderIsNotOwner)
 	}
 
