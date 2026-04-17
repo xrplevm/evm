@@ -386,7 +386,7 @@ func (s *PrecompileTestSuite) TestMint() {
 			"fail - negative amount",
 			func() ([]interface{}, erc20types.TokenPair) {
 				tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-				tokenPair.SetOwnerAddress(sender.AccAddr.String())
+				tokenPair.SetOwnerAddresses([]string{sender.AccAddr.String()})
 				s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 				s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 				s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -400,7 +400,7 @@ func (s *PrecompileTestSuite) TestMint() {
 			"fail - invalid to address",
 			func() ([]interface{}, erc20types.TokenPair) {
 				tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-				tokenPair.SetOwnerAddress(sender.AccAddr.String())
+				tokenPair.SetOwnerAddresses([]string{sender.AccAddr.String()})
 				s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 				s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 				s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -414,7 +414,7 @@ func (s *PrecompileTestSuite) TestMint() {
 			"fail - invalid amount",
 			func() ([]interface{}, erc20types.TokenPair) {
 				tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-				tokenPair.SetOwnerAddress(sender.AccAddr.String())
+				tokenPair.SetOwnerAddresses([]string{sender.AccAddr.String()})
 				s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 				s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 				s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -428,7 +428,7 @@ func (s *PrecompileTestSuite) TestMint() {
 			"fail - minter is not the owner",
 			func() ([]interface{}, erc20types.TokenPair) {
 				tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-				tokenPair.SetOwnerAddress(sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String())
+				tokenPair.SetOwnerAddresses([]string{sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()})
 				s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 				s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 				s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -442,7 +442,7 @@ func (s *PrecompileTestSuite) TestMint() {
 			"pass",
 			func() ([]interface{}, erc20types.TokenPair) {
 				tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-				tokenPair.SetOwnerAddress(sender.AccAddr.String())
+				tokenPair.SetOwnerAddresses([]string{sender.AccAddr.String()})
 				s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 				s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 				s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -560,7 +560,7 @@ func (s *PrecompileTestSuite) TestBurn() {
 			stateDB := s.network.GetStateDB()
 
 			tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-			tokenPair.SetOwnerAddress(contractDeployer.AccAddr.String())
+			tokenPair.SetOwnerAddresses([]string{contractDeployer.AccAddr.String()})
 			s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 			s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 			s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -674,7 +674,7 @@ func (s *PrecompileTestSuite) TestBurn0() {
 			stateDB := s.network.GetStateDB()
 
 			tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-			tokenPair.SetOwnerAddress(owner.AccAddr.String())
+			tokenPair.SetOwnerAddresses([]string{owner.AccAddr.String()})
 			s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 			s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 			s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())
@@ -797,7 +797,7 @@ func (s *PrecompileTestSuite) TestBurnFrom() {
 			stateDB := s.network.GetStateDB()
 
 			tokenPair := erc20types.NewTokenPair(utiltx.GenerateAddress(), s.tokenDenom, erc20types.OWNER_MODULE)
-			tokenPair.SetOwnerAddress(s.keyring.GetAddr(0).String())
+			tokenPair.SetOwnerAddresses([]string{s.keyring.GetAddr(0).String()})
 			s.network.App.GetErc20Keeper().SetTokenPair(s.network.GetContext(), tokenPair)
 			s.network.App.GetErc20Keeper().SetDenomMap(s.network.GetContext(), tokenPair.Denom, tokenPair.GetID())
 			s.network.App.GetErc20Keeper().SetERC20Map(s.network.GetContext(), tokenPair.GetERC20Contract(), tokenPair.GetID())

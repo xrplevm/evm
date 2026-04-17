@@ -15,7 +15,7 @@ func (suite *PrecompileTestSuite) TestBurnCoins() {
 	var ctx sdk.Context
 	sender := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 	expPair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-	expPair.SetOwnerAddress(sender.String())
+	expPair.SetOwnerAddresses([]string{sender.String()})
 	amount := big.NewInt(1000000)
 	id := expPair.GetID()
 
@@ -59,7 +59,7 @@ func (suite *PrecompileTestSuite) TestBurnCoins() {
 				if err := suite.network.App.GetBankKeeper().SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, sdk.Coins{{Denom: expPair.Denom, Amount: math.NewIntFromBigInt(amount)}}); err != nil {
 					suite.FailNow(err.Error())
 				}
-				expPair.SetOwnerAddress(sender.String())
+				expPair.SetOwnerAddresses([]string{sender.String()})
 				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
 				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
 				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)

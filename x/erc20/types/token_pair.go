@@ -50,11 +50,6 @@ func (tp TokenPair) GetERC20Contract() common.Address {
 	return common.HexToAddress(tp.Erc20Address)
 }
 
-// SetOwnerAddress sets the address of the owner of the ERC20 contract
-func (tp *TokenPair) SetOwnerAddress(address string) {
-	tp.OwnerAddress = address
-}
-
 // SetOwnerAddresses sets the authorized minter addresses for the token pair
 func (tp *TokenPair) SetOwnerAddresses(addresses []string) {
 	tp.OwnerAddresses = addresses

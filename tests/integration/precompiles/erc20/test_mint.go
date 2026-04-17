@@ -116,7 +116,7 @@ func (suite *PrecompileTestSuite) TestMintCoins() {
 	sender := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 	to := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
 	expPair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-	expPair.SetOwnerAddress(sender.String())
+	expPair.SetOwnerAddresses([]string{sender.String()})
 	amount := big.NewInt(1000000)
 	id := expPair.GetID()
 
@@ -218,7 +218,7 @@ func (suite *PrecompileTestSuite) TestMintCoins() {
 			"fail - minter is not the owner",
 			func() {
 				expPair.ContractOwner = types.OWNER_MODULE
-				expPair.SetOwnerAddress(sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String())
+				expPair.SetOwnerAddresses([]string{sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()})
 				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
 				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
 				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)
@@ -230,7 +230,7 @@ func (suite *PrecompileTestSuite) TestMintCoins() {
 		{
 			"pass",
 			func() {
-				expPair.SetOwnerAddress(sender.String())
+				expPair.SetOwnerAddresses([]string{sender.String()})
 				suite.network.App.GetErc20Keeper().SetTokenPair(ctx, expPair)
 				suite.network.App.GetErc20Keeper().SetDenomMap(ctx, expPair.Denom, id)
 				suite.network.App.GetErc20Keeper().SetERC20Map(ctx, expPair.GetERC20Contract(), id)

@@ -219,13 +219,6 @@ func (k Keeper) GetTokenDenom(ctx sdk.Context, tokenAddress common.Address) (str
 	return tokenPair.Denom, nil
 }
 
-// SetTokenPairOwnerAddress sets the owner address for the token pair
-func (k Keeper) SetTokenPairOwnerAddress(ctx sdk.Context, pair types.TokenPair, newOwner string) {
-	pair.SetOwnerAddress(newOwner)
-
-	k.SetTokenPair(ctx, pair)
-}
-
 // SetTokenPairOwnerAddresses sets the authorized minter addresses for the token pair
 func (k Keeper) SetTokenPairOwnerAddresses(ctx sdk.Context, pair types.TokenPair, addresses []string) {
 	pair.SetOwnerAddresses(addresses)
