@@ -40,14 +40,14 @@ const (
 	TypeMsgConvertERC20 = "convert_ERC20"
 	TypeMsgConvertCoin  = "convert_coin"
 
-	TypeMsgMint              = "mint"
-	TypeMsgBurn              = "burn"
-	TypeMsgAddMinter         = "add_minter"
-	TypeMsgRemoveMinter      = "remove_minter"
+	TypeMsgMint         = "mint"
+	TypeMsgBurn         = "burn"
+	TypeMsgAddMinter    = "add_minter"
+	TypeMsgRemoveMinter = "remove_minter"
 
-	AttributeKeyMinterAddress   = "minter_address"
-	AttributeKeyToken           = "token"
-	AttributeKeyOwnerAddresses  = "owner_addresses"
+	AttributeKeyMinterAddress  = "minter_address"
+	AttributeKeyToken          = "token"
+	AttributeKeyOwnerAddresses = "owner_addresses"
 )
 
 var MsgConvertERC20CustomGetSigner = txsigning.CustomGetSigner{
@@ -176,8 +176,8 @@ func (m MsgAddMinter) ValidateBasic() error {
 		return errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	if !common.IsHexAddress(m.Token) {
-		return errorsmod.Wrapf(errortypes.ErrInvalidAddress, "invalid ERC20 contract address %s", m.Token)
+	if err := validateToken(m.Token); err != nil {
+		return err
 	}
 
 	if _, err := sdk.AccAddressFromBech32(m.MinterAddress); err != nil {
@@ -192,14 +192,28 @@ func (m MsgRemoveMinter) ValidateBasic() error {
 		return errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	if !common.IsHexAddress(m.Token) {
-		return errorsmod.Wrapf(errortypes.ErrInvalidAddress, "invalid ERC20 contract address %s", m.Token)
+	if err := validateToken(m.Token); err != nil {
+		return err
 	}
 
 	if _, err := sdk.AccAddressFromBech32(m.MinterAddress); err != nil {
 		return errorsmod.Wrap(err, "invalid minter address")
 	}
 
+	return nil
+}
+
+func validateToken(token string) error {
+	if common.IsHexAddress(token) {
+		return nil
+	}
+	if err := sdk.ValidateDenom(token); err != nil {
+		return errorsmod.Wrapf(
+			errortypes.ErrInvalidRequest,
+			"token '%s' is neither a valid hex contract address nor a valid denom: %s",
+			token,
+			err.Error())
+	}
 	return nil
 }
 
