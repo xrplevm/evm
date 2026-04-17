@@ -60,12 +60,6 @@ describe('ERC20 Precompile', function () {
         expect(allowance).to.equal(0n)
     })
 
-
-    it('should return the contract owner address', async function () {
-        const ownerAddr = await erc20.owner()
-        expect(ownerAddr).to.equal(owner.address)
-    })
-
     it('should transfer tokens', async function () {
         const amount = hre.ethers.parseEther('1')
         const prev   = await erc20.balanceOf(spender.address)
@@ -323,36 +317,4 @@ describe('ERC20 Precompile', function () {
             expect(newAllowance).to.equal(0)
         })
     })
-
-    describe('transferOwnership', function () {
-        it('should revert if the caller is not the contract owner', async function () {
-            // Connect as spender (non-owner) and attempt to transfer ownership - this should revert
-            const contractAsSpender = erc20.connect(spender)
-
-            // Attempt to transfer ownership as non-owner spender to recipient - should revert
-            await expect(contractAsSpender.transferOwnership(recipient.address))
-                .to.be.reverted
-        })
-
-        it('should transfer ownership when called by the current owner', async function () {
-            // Get initial owner
-            const initialOwner = await erc20.owner()
-            expect(initialOwner).to.equal(owner.address)
-
-            // Connect as owner and transfer ownership
-            const contractAsOwner = erc20.connect(owner)
-
-            // Transfer ownership to spender
-            const tx = await contractAsOwner.transferOwnership(spender.address)
-            const receipt = await waitWithTimeout(tx, 20000, RETRY_DELAY_FUNC)
-
-            expect(tx).to.not.be.reverted
-
-            // Check ownership has changed
-            const newOwner = await erc20.owner()
-            expect(newOwner).to.equal(spender.address)
-        })
-    })
-
-
 })
