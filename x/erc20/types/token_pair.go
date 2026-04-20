@@ -78,10 +78,6 @@ func (tp TokenPair) Validate() error {
 }
 
 func validateOwnerAddresses(addresses []string) error {
-	if len(addresses) == 0 {
-		return errorsmod.Wrap(ErrInvalidOwnerAddresses, "owner addresses cannot be empty")
-	}
-
 	for _, addr := range addresses {
 		if _, err := sdk.AccAddressFromBech32(addr); err != nil {
 			return errorsmod.Wrapf(ErrInvalidOwnerAddresses, "invalid owner address: %s", addr)
