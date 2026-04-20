@@ -6,6 +6,8 @@ import (
 	utiltx "github.com/cosmos/evm/testutil/tx"
 	"github.com/cosmos/evm/x/erc20/types"
 
+	"cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -103,6 +105,77 @@ func (s *KeeperTestSuite) TestMintingEnabled() {
 			} else {
 				s.Require().Error(err)
 			}
+		})
+	}
+}
+
+func (s *KeeperTestSuite) TestMintCoinsMultiMinter() {
+	var (
+		ctx  sdk.Context
+		pair types.TokenPair
+	)
+	minterA := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	minterB := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	stranger := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	receiver := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+
+	testCases := []struct {
+		name    string
+		owners  []string
+		sender  sdk.AccAddress
+		expErr  error
+		expPass bool
+	}{
+		{
+			"single authorized minter",
+			[]string{minterA.String()},
+			minterA,
+			nil,
+			true,
+		},
+		{
+			"second authorized minter in multi-minter list",
+			[]string{minterA.String(), minterB.String()},
+			minterB,
+			nil,
+			true,
+		},
+		{
+			"sender not in list",
+			[]string{minterA.String()},
+			stranger,
+			types.ErrMinterIsNotOwner,
+			false,
+		},
+		{
+			"empty owner addresses",
+			nil,
+			minterA,
+			types.ErrMinterIsNotOwner,
+			false,
+		},
+	}
+
+	for _, tc := range testCases {
+		s.Run(tc.name, func() {
+			s.SetupTest()
+			ctx = s.network.GetContext()
+
+			pair = types.NewTokenPair(utiltx.GenerateAddress(), "mintcoin", types.OWNER_MODULE)
+			pair.OwnerAddresses = tc.owners
+			s.registerPair(ctx, pair)
+
+			amount := math.NewInt(100)
+			err := s.network.App.GetErc20Keeper().MintCoins(ctx, tc.sender, receiver, amount, pair.Erc20Address)
+
+			if !tc.expPass {
+				s.Require().ErrorIs(err, tc.expErr)
+				return
+			}
+			s.Require().NoError(err)
+
+			bal := s.network.App.GetBankKeeper().GetBalance(ctx, receiver, pair.Denom)
+			s.Require().Equal(amount, bal.Amount)
 		})
 	}
 }
