@@ -207,14 +207,17 @@ func validateToken(token string) error {
 	if common.IsHexAddress(token) {
 		return nil
 	}
-	if err := sdk.ValidateDenom(token); err != nil {
-		return errorsmod.Wrapf(
-			errortypes.ErrInvalidRequest,
-			"token '%s' is neither a valid hex contract address nor a valid denom: %s",
-			token,
-			err.Error())
+
+	err := sdk.ValidateDenom(token)
+	if err == nil {
+		return nil
 	}
-	return nil
+
+	return errorsmod.Wrapf(
+		errortypes.ErrInvalidRequest,
+		"token '%s' is neither a valid hex contract address nor a valid denom: %s",
+		token,
+		err.Error())
 }
 
 // GetSignBytes implements the LegacyMsg interface.
