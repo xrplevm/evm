@@ -823,3 +823,24 @@ func TestHexAddressFromBech32String(t *testing.T) {
 		})
 	}
 }
+
+func TestHasDuplicates(t *testing.T) {
+	testCases := []struct {
+		name   string
+		input  []string
+		expect bool
+	}{
+		{"nil", nil, false},
+		{"empty", []string{}, false},
+		{"single element", []string{"a"}, false},
+		{"unique elements", []string{"a", "b", "c"}, false},
+		{"adjacent duplicates", []string{"a", "a", "b"}, true},
+		{"non-adjacent duplicates", []string{"a", "b", "a"}, true},
+		{"all duplicates", []string{"a", "a", "a"}, true},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			require.Equal(t, tc.expect, utils.HasDuplicates(tc.input))
+		})
+	}
+}
