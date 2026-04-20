@@ -198,3 +198,51 @@ func (suite *TokenPairTestSuite) TestNewTokenPairSTRv2() {
 
 	}
 }
+
+func (suite *TokenPairTestSuite) TestValidateOwnerAddresses() {
+	validErc20 := utiltx.GenerateAddress().String()
+	owner1, _ := utiltx.NewAccAddressAndKey()
+	owner2, _ := utiltx.NewAccAddressAndKey()
+
+	testCases := []struct {
+		name       string
+		pair       types.TokenPair
+		expectPass bool
+	}{
+		{
+			name:       "fail native coin with invalid owner address",
+			pair:       types.TokenPair{Erc20Address: validErc20, Denom: "test", Enabled: true, ContractOwner: types.OWNER_MODULE, OwnerAddresses: []string{"not-a-bech32"}},
+			expectPass: false,
+		},
+		{
+			name:       "fail native coin with duplicate owner addresses",
+			pair:       types.TokenPair{Erc20Address: validErc20, Denom: "test", Enabled: true, ContractOwner: types.OWNER_MODULE, OwnerAddresses: []string{owner1.String(), owner1.String()}},
+			expectPass: false,
+		},
+		{
+			name:       "fail external token with owner addresses",
+			pair:       types.TokenPair{Erc20Address: validErc20, Denom: "test", Enabled: true, ContractOwner: types.OWNER_EXTERNAL, OwnerAddresses: []string{owner1.String()}},
+			expectPass: false,
+		},
+		{
+			name:       "pass native coin without owner addresses",
+			pair:       types.TokenPair{Erc20Address: validErc20, Denom: "test", Enabled: true, ContractOwner: types.OWNER_MODULE, OwnerAddresses: []string{}},
+			expectPass: true,
+		},
+		{
+			name:       "pass native coin with valid owner addresses",
+			pair:       types.TokenPair{Erc20Address: validErc20, Denom: "test", Enabled: true, ContractOwner: types.OWNER_MODULE, OwnerAddresses: []string{owner1.String(), owner2.String()}},
+			expectPass: true,
+		},
+		{
+			name:       "pass external token without owner addresses",
+			pair:       types.TokenPair{Erc20Address: validErc20, Denom: "test", Enabled: true, ContractOwner: types.OWNER_EXTERNAL, OwnerAddresses: []string{}},
+			expectPass: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		err := tc.pair.Validate()
+		suite.Require().Equal(tc.expectPass, err == nil, tc.name)
+	}
+}

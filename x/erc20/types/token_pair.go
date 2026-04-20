@@ -66,6 +66,8 @@ func (tp TokenPair) Validate() error {
 	}
 
 	if tp.IsNativeCoin() {
+		// Empty OwnerAddresses is allowed here for IBC-registered pairs, the
+		// remove minter handler enforces that the set is not left empty.
 		return validateOwnerAddresses(tp.OwnerAddresses)
 	}
 
