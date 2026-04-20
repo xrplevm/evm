@@ -11,6 +11,8 @@ import (
 
 	utiltx "github.com/cosmos/evm/testutil/tx"
 	"github.com/cosmos/evm/x/erc20/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type TokenPairTestSuite struct {
@@ -244,5 +246,48 @@ func (suite *TokenPairTestSuite) TestValidateOwnerAddresses() {
 	for _, tc := range testCases {
 		err := tc.pair.Validate()
 		suite.Require().Equal(tc.expectPass, err == nil, tc.name)
+	}
+}
+
+func (suite *TokenPairTestSuite) TestIsAuthorizedMinter() {
+	owner1, _ := utiltx.NewAccAddressAndKey()
+	owner2, _ := utiltx.NewAccAddressAndKey()
+	other, _ := utiltx.NewAccAddressAndKey()
+
+	testCases := []struct {
+		name       string
+		addresses  []string
+		query      sdk.AccAddress
+		expectPass bool
+	}{
+		{
+			name:       "empty owner addresses",
+			addresses:  []string{},
+			query:      owner1,
+			expectPass: false,
+		},
+		{
+			name:       "address not in set",
+			addresses:  []string{owner1.String(), owner2.String()},
+			query:      other,
+			expectPass: false,
+		},
+		{
+			name:       "address present",
+			addresses:  []string{owner1.String(), owner2.String()},
+			query:      owner2,
+			expectPass: true,
+		},
+		{
+			name:       "invalid bech32 entry is skipped",
+			addresses:  []string{"not-a-bech32", owner1.String()},
+			query:      owner1,
+			expectPass: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		pair := types.TokenPair{OwnerAddresses: tc.addresses}
+		suite.Require().Equal(tc.expectPass, pair.IsAuthorizedMinter(tc.query), tc.name)
 	}
 }
