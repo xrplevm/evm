@@ -344,9 +344,9 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "wad",
+          "type": "uint256"
         }
       ],
       "name": "withdraw",
