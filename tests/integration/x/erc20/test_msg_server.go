@@ -631,3 +631,53 @@ func (s *KeeperTestSuite) TestRemoveMinter() {
 		})
 	}
 }
+
+func (s *KeeperTestSuite) TestAddMinterThenMint() {
+	s.SetupTest()
+	ctx := s.network.GetContext()
+
+	authority := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+	newMinter := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	receiver := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+
+	pair := types.NewTokenPair(utiltx.GenerateAddress(), "mintcoin", types.OWNER_MODULE)
+	s.registerPair(ctx, pair)
+
+	_, err := s.network.App.GetErc20Keeper().AddMinter(ctx, &types.MsgAddMinter{
+		Authority:     authority,
+		Token:         pair.Erc20Address,
+		MinterAddress: newMinter.String(),
+	})
+	s.Require().NoError(err)
+
+	amount := math.NewInt(100)
+	err = s.network.App.GetErc20Keeper().MintCoins(ctx, newMinter, receiver, amount, pair.Erc20Address)
+	s.Require().NoError(err)
+
+	bal := s.network.App.GetBankKeeper().GetBalance(ctx, receiver, pair.Denom)
+	s.Require().Equal(amount, bal.Amount)
+}
+
+func (s *KeeperTestSuite) TestRemoveMinterThenMint() {
+	s.SetupTest()
+	ctx := s.network.GetContext()
+
+	authority := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+	removed := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	kept := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	receiver := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+
+	pair := types.NewTokenPair(utiltx.GenerateAddress(), "mintcoin", types.OWNER_MODULE)
+	pair.OwnerAddresses = []string{removed.String(), kept.String()}
+	s.registerPair(ctx, pair)
+
+	_, err := s.network.App.GetErc20Keeper().RemoveMinter(ctx, &types.MsgRemoveMinter{
+		Authority:     authority,
+		Token:         pair.Erc20Address,
+		MinterAddress: removed.String(),
+	})
+	s.Require().NoError(err)
+
+	err = s.network.App.GetErc20Keeper().MintCoins(ctx, removed, receiver, math.NewInt(100), pair.Erc20Address)
+	s.Require().ErrorIs(err, types.ErrMinterIsNotOwner)
+}
