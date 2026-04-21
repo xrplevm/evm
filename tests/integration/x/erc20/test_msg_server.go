@@ -10,6 +10,7 @@ import (
 	"go.uber.org/mock/gomock"
 
 	"github.com/cosmos/evm/testutil/integration/base/factory"
+	utiltx "github.com/cosmos/evm/testutil/tx"
 	"github.com/cosmos/evm/x/erc20/keeper"
 	"github.com/cosmos/evm/x/erc20/types"
 	erc20mocks "github.com/cosmos/evm/x/erc20/types/mocks"
@@ -466,6 +467,167 @@ func (s *KeeperTestSuite) TestUpdateParams() {
 			} else {
 				s.Require().NoError(err)
 			}
+		})
+	}
+}
+
+func (s *KeeperTestSuite) TestTransferContractOwnership() {
+	s.SetupTest()
+	authority := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+	newOwner := sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()
+
+	_, err := s.network.App.GetErc20Keeper().TransferContractOwnership(s.network.GetContext(), &types.MsgTransferOwnership{
+		Authority: authority,
+		Token:     utiltx.GenerateAddress().String(),
+		NewOwner:  newOwner,
+	})
+	s.Require().ErrorIs(err, types.ErrTransferOwnershipDeprecated)
+}
+
+func (s *KeeperTestSuite) TestAddMinter() {
+	authority := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+	minter := sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()
+
+	testCases := []struct {
+		name        string
+		malleate    func() *types.MsgAddMinter
+		expPass     bool
+		errContains string
+	}{
+		{
+			"fail - unauthorized authority",
+			func() *types.MsgAddMinter {
+				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+				s.registerPair(s.network.GetContext(), pair)
+				return &types.MsgAddMinter{
+					Authority:     sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+					Token:         pair.Erc20Address,
+					MinterAddress: minter,
+				}
+			},
+			false,
+			"invalid authority",
+		},
+		{
+			"fail - invalid minter bech32",
+			func() *types.MsgAddMinter {
+				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+				s.registerPair(s.network.GetContext(), pair)
+				return &types.MsgAddMinter{
+					Authority:     authority,
+					Token:         pair.Erc20Address,
+					MinterAddress: "not-a-bech32",
+				}
+			},
+			false,
+			"decoding bech32 failed",
+		},
+		{
+			"pass - delegates to AddMinterAddress",
+			func() *types.MsgAddMinter {
+				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+				s.registerPair(s.network.GetContext(), pair)
+				return &types.MsgAddMinter{
+					Authority:     authority,
+					Token:         pair.Erc20Address,
+					MinterAddress: minter,
+				}
+			},
+			true,
+			"",
+		},
+	}
+
+	for _, tc := range testCases {
+		s.Run(tc.name, func() {
+			s.SetupTest()
+			msg := tc.malleate()
+			ctx := s.network.GetContext()
+
+			_, err := s.network.App.GetErc20Keeper().AddMinter(ctx, msg)
+			if !tc.expPass {
+				s.Require().ErrorContains(err, tc.errContains)
+				return
+			}
+			s.Require().NoError(err)
+			addrs := s.network.App.GetErc20Keeper().GetOwnerAddresses(ctx, msg.Token)
+			s.Require().Contains(addrs, msg.MinterAddress)
+		})
+	}
+}
+
+func (s *KeeperTestSuite) TestRemoveMinter() {
+	authority := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+	minter := sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()
+	other := sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()
+
+	testCases := []struct {
+		name        string
+		malleate    func() *types.MsgRemoveMinter
+		expPass     bool
+		errContains string
+	}{
+		{
+			"fail - unauthorized authority",
+			func() *types.MsgRemoveMinter {
+				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+				pair.OwnerAddresses = []string{minter, other}
+				s.registerPair(s.network.GetContext(), pair)
+				return &types.MsgRemoveMinter{
+					Authority:     sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+					Token:         pair.Erc20Address,
+					MinterAddress: minter,
+				}
+			},
+			false,
+			"invalid authority",
+		},
+		{
+			"fail - invalid minter bech32",
+			func() *types.MsgRemoveMinter {
+				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+				pair.OwnerAddresses = []string{minter, other}
+				s.registerPair(s.network.GetContext(), pair)
+				return &types.MsgRemoveMinter{
+					Authority:     authority,
+					Token:         pair.Erc20Address,
+					MinterAddress: "not-a-bech32",
+				}
+			},
+			false,
+			"decoding bech32 failed",
+		},
+		{
+			"pass - delegates to RemoveMinterAddress",
+			func() *types.MsgRemoveMinter {
+				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+				pair.OwnerAddresses = []string{minter, other}
+				s.registerPair(s.network.GetContext(), pair)
+				return &types.MsgRemoveMinter{
+					Authority:     authority,
+					Token:         pair.Erc20Address,
+					MinterAddress: minter,
+				}
+			},
+			true,
+			"",
+		},
+	}
+
+	for _, tc := range testCases {
+		s.Run(tc.name, func() {
+			s.SetupTest()
+			msg := tc.malleate()
+			ctx := s.network.GetContext()
+
+			_, err := s.network.App.GetErc20Keeper().RemoveMinter(ctx, msg)
+			if !tc.expPass {
+				s.Require().ErrorContains(err, tc.errContains)
+				return
+			}
+			s.Require().NoError(err)
+			addrs := s.network.App.GetErc20Keeper().GetOwnerAddresses(ctx, msg.Token)
+			s.Require().NotContains(addrs, msg.MinterAddress)
 		})
 	}
 }
