@@ -497,11 +497,9 @@ func (s *KeeperTestSuite) TestAddMinter() {
 		{
 			"fail - unauthorized authority",
 			func() *types.MsgAddMinter {
-				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-				s.registerPair(s.network.GetContext(), pair)
 				return &types.MsgAddMinter{
 					Authority:     sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
-					Token:         pair.Erc20Address,
+					Token:         utiltx.GenerateAddress().String(),
 					MinterAddress: minter,
 				}
 			},
@@ -511,11 +509,9 @@ func (s *KeeperTestSuite) TestAddMinter() {
 		{
 			"fail - invalid minter bech32",
 			func() *types.MsgAddMinter {
-				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-				s.registerPair(s.network.GetContext(), pair)
 				return &types.MsgAddMinter{
 					Authority:     authority,
-					Token:         pair.Erc20Address,
+					Token:         utiltx.GenerateAddress().String(),
 					MinterAddress: "not-a-bech32",
 				}
 			},
@@ -570,12 +566,9 @@ func (s *KeeperTestSuite) TestRemoveMinter() {
 		{
 			"fail - unauthorized authority",
 			func() *types.MsgRemoveMinter {
-				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-				pair.OwnerAddresses = []string{minter, other}
-				s.registerPair(s.network.GetContext(), pair)
 				return &types.MsgRemoveMinter{
 					Authority:     sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
-					Token:         pair.Erc20Address,
+					Token:         utiltx.GenerateAddress().String(),
 					MinterAddress: minter,
 				}
 			},
@@ -585,12 +578,9 @@ func (s *KeeperTestSuite) TestRemoveMinter() {
 		{
 			"fail - invalid minter bech32",
 			func() *types.MsgRemoveMinter {
-				pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
-				pair.OwnerAddresses = []string{minter, other}
-				s.registerPair(s.network.GetContext(), pair)
 				return &types.MsgRemoveMinter{
 					Authority:     authority,
-					Token:         pair.Erc20Address,
+					Token:         utiltx.GenerateAddress().String(),
 					MinterAddress: "not-a-bech32",
 				}
 			},
