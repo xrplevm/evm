@@ -245,7 +245,69 @@ func (suite *TokenPairTestSuite) TestValidateOwnerAddresses() {
 
 	for _, tc := range testCases {
 		err := tc.pair.Validate()
-		suite.Require().Equal(tc.expectPass, err == nil, tc.name)
+		if tc.expectPass {
+			suite.Require().NoError(err, tc.name)
+		} else {
+			suite.Require().Error(err, tc.name)
+		}
+	}
+}
+
+func (suite *TokenPairTestSuite) TestValidateToken() {
+	testCases := []struct {
+		name       string
+		token      string
+		expectPass bool
+	}{
+		{
+			name:       "fail empty string",
+			token:      "",
+			expectPass: false,
+		},
+		{
+			name:       "fail invalid char",
+			token:      "invalid!",
+			expectPass: false,
+		},
+		{
+			name:       "fail denom starts with number",
+			token:      "1test",
+			expectPass: false,
+		},
+		{
+			name:       "fail hex address with invalid length",
+			token:      "0x5dCA2483280D9727c80b5518faC4556617fb19",
+			expectPass: false,
+		},
+		{
+			name:       "pass hex contract address with 0x prefix",
+			token:      utiltx.GenerateAddress().String(),
+			expectPass: true,
+		},
+		{
+			name:       "pass hex contract address without 0x prefix",
+			token:      strings.TrimPrefix(utiltx.GenerateAddress().String(), "0x"),
+			expectPass: true,
+		},
+		{
+			name:       "pass plain cosmos denom",
+			token:      "axrp",
+			expectPass: true,
+		},
+		{
+			name:       "pass ibc denom",
+			token:      "ibc/DF63978F803A2E27CA5CC9B7631654CCF0BBC788B3B7F0A10200508E37C70992",
+			expectPass: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		err := types.ValidateToken(tc.token)
+		if tc.expectPass {
+			suite.Require().NoError(err, tc.name)
+		} else {
+			suite.Require().Error(err, tc.name)
+		}
 	}
 }
 

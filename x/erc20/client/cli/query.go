@@ -2,9 +2,7 @@ package cli
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/evm/x/erc20/types"
@@ -134,8 +132,8 @@ func GetParamsCmd() *cobra.Command {
 
 func GetOwnerAddressesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "owner-addresses CONTRACT_ADDRESS",
-		Short: "Gets the owner addresses for a given ERC20 contract address",
+		Use:   "owner-addresses TOKEN",
+		Short: "Gets the owner addresses for a given ERC20 contract address or Cosmos denom",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -143,8 +141,8 @@ func GetOwnerAddressesCmd() *cobra.Command {
 				return err
 			}
 
-			if !common.IsHexAddress(args[0]) {
-				return fmt.Errorf("invalid contract address")
+			if err := types.ValidateToken(args[0]); err != nil {
+				return err
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)

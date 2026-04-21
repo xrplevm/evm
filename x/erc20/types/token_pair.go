@@ -9,6 +9,7 @@ import (
 	"github.com/cosmos/evm/utils"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 // NewTokenPairSTRv2 creates a new TokenPair instance in the context of the
@@ -117,4 +118,19 @@ func (tp TokenPair) IsNativeCoin() bool {
 // IsNativeERC20 returns true if the owner of the ERC20 contract is an EOA.
 func (tp TokenPair) IsNativeERC20() bool {
 	return tp.ContractOwner == OWNER_EXTERNAL
+}
+
+// ValidateToken returns nil if token is either a valid hex contract address
+// or a valid Cosmos SDK denom.
+func ValidateToken(token string) error {
+	if common.IsHexAddress(token) {
+		return nil
+	}
+	if err := sdk.ValidateDenom(token); err == nil {
+		return nil
+	}
+	return errorsmod.Wrapf(
+		errortypes.ErrInvalidRequest,
+		"token '%s' is neither a valid hex contract address nor a valid denom", token,
+	)
 }

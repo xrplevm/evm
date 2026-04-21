@@ -176,7 +176,7 @@ func (m MsgAddMinter) ValidateBasic() error {
 		return errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	if err := validateToken(m.Token); err != nil {
+	if err := ValidateToken(m.Token); err != nil {
 		return err
 	}
 
@@ -192,7 +192,7 @@ func (m MsgRemoveMinter) ValidateBasic() error {
 		return errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	if err := validateToken(m.Token); err != nil {
+	if err := ValidateToken(m.Token); err != nil {
 		return err
 	}
 
@@ -201,23 +201,6 @@ func (m MsgRemoveMinter) ValidateBasic() error {
 	}
 
 	return nil
-}
-
-func validateToken(token string) error {
-	if common.IsHexAddress(token) {
-		return nil
-	}
-
-	err := sdk.ValidateDenom(token)
-	if err == nil {
-		return nil
-	}
-
-	return errorsmod.Wrapf(
-		errortypes.ErrInvalidRequest,
-		"token '%s' is neither a valid hex contract address nor a valid denom: %s",
-		token,
-		err.Error())
 }
 
 // GetSignBytes implements the LegacyMsg interface.
