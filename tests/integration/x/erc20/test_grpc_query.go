@@ -181,3 +181,34 @@ func (s *KeeperTestSuite) TestQueryParams() {
 	s.Require().NoError(err)
 	s.Require().Equal(expParams, res.Params)
 }
+
+func (s *KeeperTestSuite) TestTokenPairQueryPopulatesDeprecatedOwnerAddress() {
+	s.SetupTest()
+	ctx := s.network.GetContext()
+
+	first := sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()
+	second := sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()
+	owners := []string{first, second}
+
+	pair := types.NewTokenPair(utiltx.GenerateAddress(), "qcoin", types.OWNER_MODULE)
+	pair.OwnerAddresses = owners
+	s.registerPair(ctx, pair)
+
+	singleRes, err := s.queryClient.TokenPair(ctx, &types.QueryTokenPairRequest{Token: pair.Erc20Address})
+	s.Require().NoError(err)
+	s.Require().Equal(owners, singleRes.TokenPair.OwnerAddresses)
+	s.Require().Equal(first, singleRes.TokenPair.OwnerAddress)
+
+	listRes, err := s.queryClient.TokenPairs(ctx, &types.QueryTokenPairsRequest{})
+	s.Require().NoError(err)
+	var found bool
+	for _, p := range listRes.TokenPairs {
+		if p.Erc20Address == pair.Erc20Address {
+			s.Require().Equal(owners, p.OwnerAddresses)
+			s.Require().Equal(first, p.OwnerAddress)
+			found = true
+			break
+		}
+	}
+	s.Require().True(found, "registered pair not returned by TokenPairs query")
+}
