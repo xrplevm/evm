@@ -119,6 +119,48 @@ func (s *KeeperTestSuite) TestGetTokenPair() {
 	}
 }
 
+func (s *KeeperTestSuite) TestGetTokenPairWithOwnerAddresses() {
+	s.SetupTest()
+	ctx := s.network.GetContext()
+
+	pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+	s.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+
+	owners := []string{
+		sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+		sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String(),
+	}
+	s.network.App.GetErc20Keeper().SetTokenPairOwnerAddresses(ctx, pair, owners)
+
+	got, found := s.network.App.GetErc20Keeper().GetTokenPair(ctx, pair.GetID())
+	s.Require().True(found)
+	s.Require().Equal(owners, got.OwnerAddresses)
+	s.Require().Empty(got.OwnerAddress, "deprecated OwnerAddress must be empty when OwnerAddresses is used")
+}
+
+func (s *KeeperTestSuite) TestGetTokenPairsWithOwnerAddresses() {
+	s.SetupTest()
+	ctx := s.network.GetContext()
+
+	pair := types.NewTokenPair(utiltx.GenerateAddress(), "coin", types.OWNER_MODULE)
+	s.network.App.GetErc20Keeper().SetTokenPair(ctx, pair)
+
+	owners := []string{sdk.AccAddress(utiltx.GenerateAddress().Bytes()).String()}
+	s.network.App.GetErc20Keeper().SetTokenPairOwnerAddresses(ctx, pair, owners)
+
+	res := s.network.App.GetErc20Keeper().GetTokenPairs(ctx)
+
+	var found bool
+	for _, p := range res {
+		if p.Erc20Address == pair.Erc20Address {
+			found = true
+			s.Require().Equal(owners, p.OwnerAddresses)
+			s.Require().Empty(p.OwnerAddress, "deprecated OwnerAddress must be empty when OwnerAddresses is used")
+		}
+	}
+	s.Require().True(found, "registered pair not returned by GetTokenPairs")
+}
+
 func (s *KeeperTestSuite) TestDeleteTokenPair() {
 	tokenDenom := "random"
 
