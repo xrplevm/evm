@@ -6,6 +6,8 @@ import (
 	utiltx "github.com/cosmos/evm/testutil/tx"
 	"github.com/cosmos/evm/x/erc20/types"
 
+	"cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -249,7 +251,7 @@ func (s *KeeperTestSuite) TestMigrateOwnerAddresses() {
 
 	migrate := types.NewTokenPair(utiltx.GenerateAddress(), "migrate", types.OWNER_MODULE)
 	migrate.OwnerAddress = legacyOwner
-	k.SetTokenPair(ctx, migrate)
+	s.registerPair(ctx, migrate)
 
 	ibcLegacy := types.NewTokenPair(utiltx.GenerateAddress(), "empty", types.OWNER_MODULE)
 	k.SetTokenPair(ctx, ibcLegacy)
@@ -284,4 +286,15 @@ func (s *KeeperTestSuite) TestMigrateOwnerAddresses() {
 	s.Require().True(found)
 	s.Require().Empty(got.OwnerAddresses)
 	s.Require().Equal(legacyOwner, got.OwnerAddress)
+
+	// After migration, the legacy owner (now sitting in OwnerAddresses[0])
+	// must be able to mint.
+	legacyOwnerAcc, err := sdk.AccAddressFromBech32(legacyOwner)
+	s.Require().NoError(err)
+	receiver := sdk.AccAddress(utiltx.GenerateAddress().Bytes())
+	amount := math.NewInt(100)
+
+	err = k.MintCoins(ctx, legacyOwnerAcc, receiver, amount, migrate.Erc20Address)
+	s.Require().NoError(err)
+	s.Require().Equal(amount, s.network.App.GetBankKeeper().GetBalance(ctx, receiver, migrate.Denom).Amount)
 }
