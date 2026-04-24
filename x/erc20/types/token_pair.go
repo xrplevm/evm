@@ -1,12 +1,13 @@
 package types
 
 import (
-	errorsmod "cosmossdk.io/errors"
 	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/cometbft/cometbft/crypto/tmhash"
 
 	"github.com/cosmos/evm/utils"
+
+	errorsmod "cosmossdk.io/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"

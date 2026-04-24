@@ -27,15 +27,15 @@ const (
 	// The results can be inspected here:
 	// https://github.com/evmos/evmos/blob/malte/erc20-gas-tests/precompiles/erc20/plot_gas_values.ipynb
 
-	GasTransfer          = 9_000
-	GasTransferFrom      = 30_500
-	GasApprove           = 8_100
-	GasName              = 3_421
-	GasSymbol            = 3_464
-	GasDecimals          = 427
-	GasTotalSupply       = 2_480
-	GasBalanceOf         = 2_870
-	GasAllowance         = 3_225
+	GasTransfer     = 9_000
+	GasTransferFrom = 30_500
+	GasApprove      = 8_100
+	GasName         = 3_421
+	GasSymbol       = 3_464
+	GasDecimals     = 427
+	GasTotalSupply  = 2_480
+	GasBalanceOf    = 2_870
+	GasAllowance    = 3_225
 )
 
 var (

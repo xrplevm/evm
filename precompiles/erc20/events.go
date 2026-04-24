@@ -92,4 +92,3 @@ func (p Precompile) EmitApprovalEvent(ctx sdk.Context, stateDB vm.StateDB, owner
 
 	return nil
 }
-

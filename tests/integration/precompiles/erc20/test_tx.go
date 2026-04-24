@@ -831,4 +831,3 @@ func (s *PrecompileTestSuite) TestBurnFrom() {
 		})
 	}
 }
-

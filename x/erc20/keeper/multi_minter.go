@@ -27,7 +27,7 @@ func (k Keeper) AddMinterAddress(ctx sdk.Context, newMinter sdk.AccAddress, toke
 		return errorsmod.Wrapf(types.ErrMinterAlreadyExists, "address '%s'", newMinterStr)
 	}
 
-	newAddresses := append(pair.OwnerAddresses, newMinterStr)
+	newAddresses := append(pair.OwnerAddresses, newMinterStr) //nolint:gocritic // new slice is intentional
 	k.SetTokenPairOwnerAddresses(ctx, pair, newAddresses)
 
 	emitEventOwnerAddressesChange(ctx, types.TypeMsgAddMinter, token, newMinterStr, newAddresses)

@@ -225,4 +225,3 @@ func (k Keeper) SetTokenPairOwnerAddresses(ctx sdk.Context, pair types.TokenPair
 
 	k.SetTokenPair(ctx, pair)
 }
-

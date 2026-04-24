@@ -199,4 +199,3 @@ func ParseBurnFromArgs(args []interface{}) (from common.Address, amount *big.Int
 
 	return from, amount, nil
 }
-
