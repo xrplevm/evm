@@ -282,4 +282,13 @@ replace (
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )
 
-retract v0.4.0
+retract (
+	v0.5.1
+	v0.5.0
+	v0.4.2
+	v0.4.1
+	v0.4.0
+	v0.3.2
+	v0.3.1
+	v0.3.0
+)
