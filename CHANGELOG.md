@@ -6,6 +6,24 @@
 
 - Fix historical `eth_getCode`/`eth_call` returning empty results for contracts stored in the legacy Ethermint layout: `GetCodeHash` now falls back to the `EthAccount` code hash when the code-hash index misses.
 
+## v0.6.0
+
+Follow the [migration document](docs/migrations/v0.5.x_to_v0.6.0.md) for upgrade instructions.
+
+### BREAKING CHANGES
+- Removed IBC Transfer wrapper. Users are now required to use the precompile to transfer ERC20 tokens.
+- Added StateDB as a parameter to internal EVM calls.
+
+### DEPENDENCIES
+
+### IMPROVEMENTS
+
+### FEATURES
+
+### BUG FIXES
+
+- Align precompile gas calculation with expected EVM gas semantics.
+
 ## v0.5.1
 
 ### DEPENDENCIES
