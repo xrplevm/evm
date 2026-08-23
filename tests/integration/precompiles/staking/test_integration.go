@@ -2211,7 +2211,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 
 						txArgs.To = &contractTwoAddr
 
-						revertReasonCheck := execRevertedCheck.WithErrContains(
+						reverReasonCheck := execRevertedCheck.WithErrContains(
 							errorsmod.Wrapf(
 								sdkerrors.ErrUnauthorized, "%s is not allowed to receive funds", bondedTokensPoolAccAddr.String(),
 							).Error(),
@@ -2221,7 +2221,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 							s.keyring.GetPrivKey(0),
 							txArgs,
 							args,
-							revertReasonCheck,
+							reverReasonCheck,
 						)
 						Expect(err).To(BeNil(), "error while calling the smart contract: %v", err)
 						Expect(s.network.NextBlock()).To(BeNil())
@@ -2257,7 +2257,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 								txArgs.Amount = tc.msgAmt
 							}
 
-							revertReasonCheck := execRevertedCheck.WithErrContains(
+							reverReasonCheck := execRevertedCheck.WithErrContains(
 								errorsmod.Wrapf(
 									sdkerrors.ErrUnauthorized, "%s is not allowed to receive funds", bondedTokensPoolAccAddr.String(),
 								).Error(),
@@ -2267,7 +2267,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 								s.keyring.GetPrivKey(0),
 								txArgs,
 								args,
-								revertReasonCheck,
+								reverReasonCheck,
 							)
 							Expect(err).To(BeNil(), "error while calling the smart contract: %v", err)
 							Expect(s.network.NextBlock()).To(BeNil())
@@ -2302,14 +2302,14 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 						nonExistingVal.String(),
 					}
 
-					revertReasonCheck := execRevertedCheck.WithErrContains(
+					reverReasonCheck := execRevertedCheck.WithErrContains(
 						stakingtypes.ErrNoValidatorFound.Error(),
 					)
 
 					_, _, err = s.factory.CallContractAndCheckLogs(
 						delegator.Priv,
 						txArgs, callArgs,
-						revertReasonCheck,
+						reverReasonCheck,
 					)
 					Expect(err).To(BeNil(), "error while calling the smart contract: %v", err)
 					Expect(s.network.NextBlock()).To(BeNil())
@@ -2622,7 +2622,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 					valAddr.String(), big.NewInt(1e18), big.NewInt(expCreationHeight),
 				}
 
-				txArgs.GasLimit = 50_000_000
+				txArgs.GasLimit = 1e9
 
 				logCheckArgs := passCheck.
 					WithExpEvents(staking.EventTypeCancelUnbondingDelegation)
@@ -3310,7 +3310,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 
 				callArgs.MethodName = "testDelegateIncrementCounter"
 				callArgs.Args = []interface{}{valAddr.String()}
-				txArgs.GasLimit = 50_000_000
+				txArgs.GasLimit = 1e9
 				txArgs.Amount = delegationAmount
 
 				delegationCheck := passCheck.WithExpEvents(
@@ -3360,7 +3360,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 				callArgs.Args = []interface{}{valAddr.String()}
 
 				txArgs.Amount = delegationAmount
-				txArgs.GasLimit = 50_000_000
+				txArgs.GasLimit = 1e9
 
 				delegationCheck := passCheck.WithExpEvents(
 					staking.EventTypeDelegate,
@@ -3392,7 +3392,7 @@ func TestPrecompileIntegrationTestSuite(t *testing.T, create network.CreateEvmAp
 				callArgs.Args = []interface{}{valAddr.String()}
 
 				txArgs.Amount = big.NewInt(2e18)
-				txArgs.GasLimit = 50_000_000
+				txArgs.GasLimit = 1e9
 
 				delegationCheck := defaultLogCheck.WithErrContains(vm.ErrExecutionReverted.Error())
 				_, _, err = s.factory.CallContractAndCheckLogs(
