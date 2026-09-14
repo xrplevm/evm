@@ -59,12 +59,12 @@ func (k *Keeper) EndBlock(ctx sdk.Context) error {
 	gasUsed := math.NewIntFromUint64(ctx.BlockGasMeter().GasConsumedToLimit())
 
 	if !gasWanted.IsInt64() {
-		k.Logger(ctx).Error("gas wanted exceeds MaxInt64, clamping", "gas_wanted", gasWanted.String())
+		k.Logger(ctx).Error("gas wanted exceeds MaxInt64, clamping", "gas_wanted", gasWanted)
 		gasWanted = math.NewInt(gomath.MaxInt64)
 	}
 
 	if !gasUsed.IsInt64() {
-		k.Logger(ctx).Error("gas used exceeds MaxInt64, clamping", "gas_used", gasUsed.String())
+		k.Logger(ctx).Error("gas used exceeds MaxInt64, clamping", "gas_used", gasUsed)
 		gasUsed = math.NewInt(gomath.MaxInt64)
 	}
 
