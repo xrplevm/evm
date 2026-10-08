@@ -832,21 +832,26 @@ func (m *TraceConfig) GetTracerJsonConfig() string {
 	return ""
 }
 
-//func init() {
-//	proto.RegisterEnum("ethermint.evm.v1.AccessType", AccessType_name, AccessType_value)
-//	proto.RegisterType((*Params)(nil), "ethermint.evm.v1.Params")
-//	proto.RegisterType((*AccessControl)(nil), "ethermint.evm.v1.AccessControl")
-//	proto.RegisterType((*AccessControlType)(nil), "ethermint.evm.v1.AccessControlType")
-//	proto.RegisterType((*ChainConfig)(nil), "ethermint.evm.v1.ChainConfig")
-//	proto.RegisterType((*State)(nil), "ethermint.evm.v1.State")
-//	proto.RegisterType((*TransactionLogs)(nil), "ethermint.evm.v1.TransactionLogs")
-//	proto.RegisterType((*Log)(nil), "ethermint.evm.v1.Log")
-//	proto.RegisterType((*TxResult)(nil), "ethermint.evm.v1.TxResult")
-//	proto.RegisterType((*AccessTuple)(nil), "ethermint.evm.v1.AccessTuple")
-//	proto.RegisterType((*TraceConfig)(nil), "ethermint.evm.v1.TraceConfig")
-//}
+func init() {
+	// NOTE: This package is the only registrar of the legacy ethermint.evm.v1
+	// types and descriptors (evm.pb.go and tx.pb.go). They are required to decode
+	// pre-v9 (Evmos-era) transactions stored in historical blocks, e.g. AccessListTx
+	// and DynamicFeeTx with access lists (ethermint.evm.v1.AccessTuple).
+	// Do not register these names anywhere else.
+	proto.RegisterEnum("ethermint.evm.v1.AccessType", AccessType_name, AccessType_value)
+	proto.RegisterType((*Params)(nil), "ethermint.evm.v1.Params")
+	proto.RegisterType((*AccessControl)(nil), "ethermint.evm.v1.AccessControl")
+	proto.RegisterType((*AccessControlType)(nil), "ethermint.evm.v1.AccessControlType")
+	proto.RegisterType((*ChainConfig)(nil), "ethermint.evm.v1.ChainConfig")
+	proto.RegisterType((*State)(nil), "ethermint.evm.v1.State")
+	proto.RegisterType((*TransactionLogs)(nil), "ethermint.evm.v1.TransactionLogs")
+	proto.RegisterType((*Log)(nil), "ethermint.evm.v1.Log")
+	proto.RegisterType((*TxResult)(nil), "ethermint.evm.v1.TxResult")
+	proto.RegisterType((*AccessTuple)(nil), "ethermint.evm.v1.AccessTuple")
+	proto.RegisterType((*TraceConfig)(nil), "ethermint.evm.v1.TraceConfig")
+}
 
-//func init() { proto.RegisterFile("ethermint/evm/v1/evm.proto", fileDescriptor_d21ecc92c8c8583e) }
+func init() { proto.RegisterFile("ethermint/evm/v1/evm.proto", fileDescriptor_d21ecc92c8c8583e) }
 
 var fileDescriptor_d21ecc92c8c8583e = []byte{
 	// 1927 bytes of a gzipped FileDescriptorProto
