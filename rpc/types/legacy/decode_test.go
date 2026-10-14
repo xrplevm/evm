@@ -14,6 +14,7 @@ import (
 
 // Pre-v9 blocks store Ethereum txs as ethermint.evm.v1 messages. Decoding one
 // with a non-empty access list resolves ethermint.evm.v1.AccessTuple by name.
+// An empty access list encodes no AccessTuple, so it never resolves the name.
 func TestDecodeLegacyTxWithAccessList(t *testing.T) {
 	evmChainID := constants.ExampleChainID.EVMChainID
 	chainID := sdkmath.NewIntFromUint64(evmChainID)
@@ -46,6 +47,14 @@ func TestDecodeLegacyTxWithAccessList(t *testing.T) {
 				Accesses:  accessList,
 			},
 		},
+		{
+			name: "access list tx with empty access list",
+			txData: &legacytypes.AccessListTx{
+				ChainID:  &chainID,
+				Amount:   &zero,
+				GasPrice: &zero,
+			},
+		},
 	}
 
 	encodingConfig := encoding.MakeConfig(evmChainID)
@@ -70,7 +79,7 @@ func TestDecodeLegacyTxWithAccessList(t *testing.T) {
 			require.True(t, ok)
 			txData, err := legacytypes.UnpackTxData(msg.Data)
 			require.NoError(t, err)
-			require.Equal(t, *accessList.ToEthAccessList(), txData.GetAccessList())
+			require.Equal(t, tc.txData.GetAccessList(), txData.GetAccessList())
 		})
 	}
 }
