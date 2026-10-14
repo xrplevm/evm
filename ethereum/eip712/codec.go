@@ -31,7 +31,7 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 
 	// Register the TxData interface for legacy ethermint transaction types.
 	// These are needed to decode pre-v9 upgrade transactions that use ethermint.evm.v1 proto package.
-	// The proto types are registered in evm/rpc/types/legacy/tx.pb.go via init().
+	// The proto types and file descriptors are registered by the init() functions in evm/rpc/types/legacy.
 	registry.RegisterInterface(
 		"ethermint.evm.v1.TxData",
 		(*legacytypes.TxData)(nil),

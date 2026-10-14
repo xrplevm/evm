@@ -442,13 +442,11 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
 func init() {
-	// NOTE: Proto type registration is enabled here for the EVM module.
-	// Since the node application uses a local replace (github.com/cosmos/evm => ../evm),
-	// both the node and EVM will use these same proto registrations.
-	//
-	// To avoid duplicate registration errors, ensure that node/types/legacy/ethermint/evm/tx.pb.go
-	// has proto registration DISABLED (commented out).
-
+	// NOTE: This package is the only registrar of the legacy ethermint.evm.v1
+	// types and descriptors (evm.pb.go and tx.pb.go). They are required to decode
+	// pre-v9 (Evmos-era) transactions stored in historical blocks, e.g. AccessListTx
+	// and DynamicFeeTx with access lists (ethermint.evm.v1.AccessTuple).
+	// Do not register these names anywhere else.
 	proto.RegisterType((*MsgEthereumTx)(nil), "ethermint.evm.v1.MsgEthereumTx")
 	proto.RegisterType((*LegacyTx)(nil), "ethermint.evm.v1.LegacyTx")
 	proto.RegisterType((*AccessListTx)(nil), "ethermint.evm.v1.AccessListTx")
@@ -459,7 +457,7 @@ func init() {
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "ethermint.evm.v1.MsgUpdateParamsResponse")
 }
 
-//func init() { proto.RegisterFile("ethermint/evm/v1/tx.proto", fileDescriptor_f75ac0a12d075f21) }
+func init() { proto.RegisterFile("ethermint/evm/v1/tx.proto", fileDescriptor_f75ac0a12d075f21) }
 
 var fileDescriptor_f75ac0a12d075f21 = []byte{
 	// 1038 bytes of a gzipped FileDescriptorProto
